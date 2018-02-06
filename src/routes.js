@@ -1,11 +1,13 @@
-import React from 'react';
-import {
-  Router,
-  Route,
-} from 'react-router';
-
 import Home from './react/home';
 
-export default () => (
-    <Route path='/' component={Home} />
-);
+export default [
+  { path: '/1234',
+    exact: true,
+    component: Home,
+    loadData: () => getSomeData(),
+  },
+];
+
+async function getSomeData() {
+  console.log('data loaded');
+}
