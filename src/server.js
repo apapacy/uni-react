@@ -6,8 +6,8 @@ const app = express();
 import { createServer } from 'http'
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
-import { StaticRouter } from 'react-router'
-import App from './react/home'
+import { StaticRouter, Switch, Route } from 'react-router'
+import Routes from './routes'
 
 app.use(function(req, res, next) {
   const context = {}
@@ -16,7 +16,7 @@ app.use(function(req, res, next) {
       location={req.url}
       context={context}
     >
-    <App/>
+      <Routes/>
     </StaticRouter>
   )
 
