@@ -1,4 +1,5 @@
 import express from 'express';
+import './api/test';
 
 const PORT = 3000;
 const app = express();

@@ -1,9 +1,14 @@
 require('babel-polyfill');
+path = require('path');
 const webpack = require('webpack');
-const compiler = webpack(require('../../webpack.config.server'));
-compiler.run(function(err){
-  console.log(err)
-  watchServerChanges();
+const compiler = webpack(require('./webpack.config.server'));
+compiler.run(function(err, data) {
+  if (err) {
+    console.log('Server compile error:' + JSON.stringify(err))
+    process.exit(5);
+  } else {
+    watchServerChanges();
+  }
 });
 
 
@@ -13,7 +18,7 @@ compiler.run(function(err){
  // socket Map cache.
  function initHttpServer() {
    // start the server, getting back a reference to http.Server
-   const httpServer = require('../../dist/server.bundle.js');
+   const httpServer = require('./dist/server.bundle.js');
    const sockets = new Map(); // cache all sockets in a Map
    let nextSocketId = 0;
 
@@ -37,7 +42,6 @@ compiler.run(function(err){
      // contains the running http.Server and socket cache
      let httpServerInitObject;
      let initialLoad = true;
-     const compiler = webpack(require('../../webpack.config.server'));
      const compilerOptions = {
        aggregateTimeout: 300, // wait so long for more changes
        poll: true // use polling instead of native watchers
@@ -51,25 +55,28 @@ compiler.run(function(err){
        }
 
        if (initialLoad) {
-         // first time run, just start the server, no need to restart
          initialLoad = false;
          httpServerInitObject = initHttpServer();
          console.log('Server bundling done');
        } else {
-         // subsequent runs need to close the server and restart
-         // call close() method, but this won't complete until all
-         // sockets are destroyed below.
          httpServerInitObject.httpServer.close(function () {
-           // if we reach this step, that means we have succeeded
-           // in shutting down the server!!! Omg fuck yea!
-           httpServerInitObject = initHttpServer(); // re-start
+           clearCache();
+           httpServerInitObject = initHttpServer();
            console.log('Server restarted ' + new Date());
          });
-
-         // This is where the magic happens: destroy all open sockets
          for (var socket of httpServerInitObject.sockets.values()) {
            socket.destroy();
          }
        }
      });
    }
+
+function clearCache() {
+  const cacheIds = Object.keys(require.cache);
+  for(let id of cacheIds) {
+    if (id === path.resolve(__dirname, 'dist', 'server.bundle.js')) {
+      delete require.cache[id];
+      return;
+    }
+  }
+}
