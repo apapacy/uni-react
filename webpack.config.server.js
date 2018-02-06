@@ -6,11 +6,14 @@ module.exports = {
   devtool: 'cheap-module-inline-source-map',
   entry: './src/server.js',
   target: 'node',
-  externals: [nodeExternals()],
+  externals: [
+    nodeExternals(),
+    './api/test'
+  ],
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'src'),
     filename: 'server.bundle.js',
-    libraryTarget: 'commonjs2'
+    libraryTarget: 'commonjs2',
   },
   module: {
    rules: [
@@ -19,7 +22,7 @@ module.exports = {
        use: 'raw-loader'
      }, {
        test: /\.js$/,
-       exclude: [/node_modules/, /src\/api/],
+       exclude: [/node_modules/, /api/, path.resolve(__dirname, 'src', 'api')],
        use: "babel-loader"
      }
    ]
