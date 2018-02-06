@@ -8,23 +8,23 @@ import ReactDOMServer from 'react-dom/server'
 import { StaticRouter, Switch, Route } from 'react-router'
 import { matchPath } from 'react-router-dom'
 import routes from './routes';
-import Router from './router'
+import AppRouter from './router'
 
 app.use(function(req, res, next) {
   const promises = []
   routes.some(route => {
     const match = matchPath(req.path, route);
-    if (match && typeof route.Component.getInitialProps == 'function') {
-      promises.push(route.Component.getInitialProps({req, res, next}));
+    if (match && typeof route.component.getInitialProps == 'function') {
+      promises.push(route.component.getInitialProps({req, res, next, match}));
     }
     return match;
   })
 
-  const context = {}
   Promise.all(promises).then(data => {
+    const context = {data};
     const html = ReactDOMServer.renderToString(
       <StaticRouter location={req.url} context={context}>
-        <Router {...data[0]}/>
+        <AppRouter/>
       </StaticRouter>
     )
 
