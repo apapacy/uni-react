@@ -1,7 +1,13 @@
 import React from 'react';
 
 export default class Home extends React.Component {
-  render() {
+  static async getInitialProps({ req }) {
+   const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
+   return { userAgent, a: 16 }
+  }
+  render(data) {
+    console.log('props', this.props);
+    console.log('props-data', this.data);
     return (
       <h1>Hello Kitty!</h1>
     );

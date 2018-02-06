@@ -11,26 +11,20 @@ import routes from './routes';
 import Router from './router'
 
 app.use(function(req, res, next) {
-
   const promises = []
-  // use `some` to imitate `<Switch>` behavior of selecting only
-  // the first to match
   routes.some(route => {
-    // use `matchPath` here
-    const match = matchPath(req.path, route)
-    if (match)
-      promises.push(route.loadData(match))
-    return match
+    const match = matchPath(req.path, route);
+    if (match && typeof route.component.getInitialProps == 'function') {
+      promises.push(route.component.getInitialProps({req, res, next}));
+    }
+    return match;
   })
 
   const context = {}
   Promise.all(promises).then(data => {
     const html = ReactDOMServer.renderToString(
-      <StaticRouter
-        location={req.url}
-        context={context}
-      >
-        <Router/>
+      <StaticRouter location={req.url} context={context}>
+        <Router data={data[0]}/>
       </StaticRouter>
     )
 
