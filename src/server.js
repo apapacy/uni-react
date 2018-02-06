@@ -14,8 +14,8 @@ app.use(function(req, res, next) {
   const promises = []
   routes.some(route => {
     const match = matchPath(req.path, route);
-    if (match && typeof route.component.getInitialProps == 'function') {
-      promises.push(route.component.getInitialProps({req, res, next}));
+    if (match && typeof route.Component.getInitialProps == 'function') {
+      promises.push(route.Component.getInitialProps({req, res, next}));
     }
     return match;
   })
@@ -24,7 +24,7 @@ app.use(function(req, res, next) {
   Promise.all(promises).then(data => {
     const html = ReactDOMServer.renderToString(
       <StaticRouter location={req.url} context={context}>
-        <Router data={data[0]}/>
+        <Router {...data[0]}/>
       </StaticRouter>
     )
 

@@ -5,8 +5,11 @@ import routes from './routes';
 export default (data) => (
   <Switch>
     { routes.map(props => {
-      console.log('data==', data)
-      return <Route key={ props.path } {...props} staticContext={data}/>
+      props.staticContext = data
+      console.log('data==', props)
+      const Component = props.Component;
+      props.render = () => (<Component {...data}/>);
+      return <Route key={ props.path } {...props}/>
     }) }
   </Switch>
 );

@@ -4,6 +4,6 @@ export default [
   {
     path: '/1234',
     exact: true,
-    component: Home,
+    Component: Home,
   },
 ];
