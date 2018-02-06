@@ -4,20 +4,28 @@ const path = require('path');
 
 module.exports = {
   devtool: 'cheap-module-inline-source-map',
-  entry:  ['babel-polyfill','./src/client.js'],
+  entry: ['babel-polyfill', './src/client.js'],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'app.bundle.[hash].js'
   },
   module: {
-   rules: [
-     { test: /\.txt$/, use: 'raw-loader' },
-     { test: /\.js$/, exclude: /node_modules/, use: "babel-loader" }
-   ]
+    rules: [{
+        test: /\.txt$/,
+        use: 'raw-loader'
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: "babel-loader"
+      }
+    ]
   },
 
   plugins: [
     //new webpack.optimize.UglifyJsPlugin(),
-    new HtmlWebpackPlugin({template: './src/index.html'})
+    new HtmlWebpackPlugin({
+      template: './src/index.html'
+    })
   ]
 };

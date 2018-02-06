@@ -8,7 +8,7 @@ module.exports = {
   target: 'node',
   externals: [
     nodeExternals(),
-    './api/test'
+    /\/api\/.*$/
   ],
   output: {
     path: path.resolve(__dirname, 'src'),
@@ -16,15 +16,13 @@ module.exports = {
     libraryTarget: 'commonjs2',
   },
   module: {
-   rules: [
-     {
-       test: /\.txt$/,
-       use: 'raw-loader'
-     }, {
-       test: /\.js$/,
-       exclude: [/node_modules/, /api/, path.resolve(__dirname, 'src', 'api')],
-       use: "babel-loader"
-     }
-   ]
+    rules: [{
+      test: /\.txt$/,
+      use: 'raw-loader'
+    }, {
+      test: /\.js$/,
+      exclude: [/node_modules/],
+      use: "babel-loader"
+    }]
   }
 };
