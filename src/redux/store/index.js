@@ -4,12 +4,12 @@ import { createLogger } from 'redux-logger';
 import promisedMiddleware from './promisedMiddleware';
 import rootReducer from '../reducers';
 
-export default function configureStore() {
+export default function prepareStore(initialState) {
   const store = compose(
      applyMiddleware(promisedMiddleware()),
      applyMiddleware(thunk),
      applyMiddleware(createLogger({})),
-    )(createStore)(rootReducer);
+   )(createStore)(rootReducer, initialState);
 
   if (module.hot) {
     module.hot.accept('reducers', () => {

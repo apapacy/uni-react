@@ -12,6 +12,8 @@ import routes from './react/routes';
 import AppRouter from './react/router'
 import createStore from './redux/store';
 
+app.use('/static', express.static('dist'))
+
 app.use(async function(req, res, next) {
   const store = createStore();
   const promises = []
@@ -41,7 +43,13 @@ app.use(async function(req, res, next) {
     } else {
       res.write(`
         <!doctype html>
+        <script>
+         // WARNING: See the following for security issues around embedding JSON in HTML:
+         // http://redux.js.org/docs/recipes/ServerRendering.html#security-considerations
+         window.__PRELOADED_STATE__ = ${JSON.stringify(store.getState()).replace(/</g, '\\u003c')}
+        </script>
         <div id="app">${html}</div>
+        <script src='/static/app.bundle.js'></script>
       `)
       res.end()
     }

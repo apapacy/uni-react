@@ -4,12 +4,16 @@ import {userActions} from '../redux/actions';
 
 
 class Home extends React.Component {
-  static async getInitialProps({ req, match, store }) {
-   console.log('getInitialProps')
+  static async getInitialProps({ req, match, store, dispatch }) {
+   console.log('getInitialProps');
    const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
-   let action
-   await store.dispatchAsync(userActions.login({name: 'John', userAgent}));
-   return {}
+   const action = userActions.login({name: 'John', userAgent});
+   if (req) {
+     await store.dispatchAsync(action);
+   } else {
+     dispatch(action);
+   }
+   return;
   }
   constructor(props, ...rest) {
     super(props, ...rest);
@@ -17,21 +21,25 @@ class Home extends React.Component {
   render(data) {
     console.log(this.props)
     return (
-      <h1>Hello {this.props.user.name} from {this.props.user.userAgent}!</h1>
+      <h1>{this.props.user.count}) Hello {this.props.user.name} from {this.props.user.userAgent}!</h1>
     );
   }
 
 
     componentWillMount(){
+      // only server
       console.log('componentWillMount')
     }
     async componentDidMount(){
-      console.log('componentDidMount');
-      this.props.data = await Home.getInitialProps(this.props);
-
+      // client and server
+      console.log('componentDidMount', this.props);
+      await Home.getInitialProps(this.props);
     }
     componentWillReceiveProps(){console.log('componentWillReceiveProps')}
-    shouldComponentUpdate(){console.log('shouldComponentUpdate')}
+    shouldComponentUpdate(){
+      console.log('shouldComponentUpdate')
+      return true;
+    }
     componentWillUpdate(){console.log('componentWillUpdate')}
     componentDidUpdate(){console.log('componentDidUpdate')}
     componentWillUnmount(){console.log('componentWillUnmount')}
@@ -47,4 +55,4 @@ class Home extends React.Component {
 
 }
 
-export default connect((state) => state/*, mapDispatchToProps*/)(Home)
+export default connect((state) => ({user: state.user})/*, mapDispatchToProps*/)(Home)
