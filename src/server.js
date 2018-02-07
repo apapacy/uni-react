@@ -9,8 +9,15 @@ import { StaticRouter, Switch, Route } from 'react-router'
 import { matchPath } from 'react-router-dom'
 import routes from './react/routes';
 import AppRouter from './react/router'
+import createStore from './redux/store';
+import {userActions} from './redux/actions';
 
-app.use(function(req, res, next) {
+app.use(async function(req, res, next) {
+  const store = createStore();
+  console.log(userActions);
+  let action
+  await store.dispatchAsync(userActions.login({name: 'Joe'}));
+  console.log(store.getState())
   const promises = []
   routes.some(route => {
     const match = matchPath(req.path, route);

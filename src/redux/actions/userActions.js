@@ -4,9 +4,20 @@ LOGIN_REQUEST,
 LOGIN_FAIL,
 LOGIN_SUCCESS,
 LOGOUT_SUCCESS
-} from 'constants/User';
+} from '../constants/userConstants';
+
 
 export function login(payload) {
+  return {
+    promised: () => new Promise(function(resolve, reject){
+      setTimeout(() => resolve({name:'John'}), 8000);
+    }),
+    types: [ LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAIL ]
+  }
+}
+
+
+export function login0(payload) {
   return  (dispatch) => {
     dispatch({
       type: LOGIN_REQUEST

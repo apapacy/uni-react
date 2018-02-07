@@ -3,17 +3,18 @@ import {
  LOGIN_FAIL,
  LOGIN_SUCCESS,
  LOGOUT_SUCCESS
-} from 'constants/User';
+} from '../constants/userConstants';
 
-const initialState = JSON.parse(window.localStorage.getItem('rr_user')) || {};
+const initialState = {};
 
 export default function userReducer(state = initialState, action) {
+  console.log('****************', action.type)
   switch (action.type) {
     case LOGIN_REQUEST:
       return {};
     case LOGIN_SUCCESS:
       return {
-        ...state, name: action.payload.name, isAuthenticated: action.payload.isAuthenticated
+        ...state, name: action.payload.name, isAuthenticated: true
       };
     case LOGIN_FAIL:
       return {};
