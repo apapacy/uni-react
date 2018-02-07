@@ -3,7 +3,7 @@ const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
-  devtool: 'cheap-module-inline-source-map',
+  devtool: 'eval',
   entry: './src/server.js',
   target: 'node',
   externals: [
@@ -20,9 +20,9 @@ module.exports = {
       test: /\.txt$/,
       use: 'raw-loader'
     }, {
-      test: /\.js$/,
+      test: /\.jsx?$/,
       exclude: [/node_modules/],
-      use: "babel-loader"
+      use: "babel-loader?retainLines=true"
     }]
   }
 };

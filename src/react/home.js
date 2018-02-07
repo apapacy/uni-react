@@ -10,18 +10,21 @@ export default class Home extends React.Component {
     super(props, ...rest);
   }
   render(data) {
-    console.log('render',this.props)
+    try {
     return (
-      <h1>Hello {this.props.staticContext.data[0].userAgent}!</h1>
+      <h1>Hello {this.props.staticContext.data[10].userAgent}!</h1>
     );
+  } catch(ex) {
+    console.log(ex)
+  }
   }
 
 
     componentWillMount(){
-      console.log('componentWillMount', this.props)
+      console.log('componentWillMount')
     }
     async componentDidMount(){
-      console.log('componentDidMount', this.props);
+      console.log('componentDidMount');
       this.props.data = await Home.getInitialProps(this.props);
 
     }
