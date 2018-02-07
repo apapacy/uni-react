@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
-const regexpReactFolder = new RegExp(`^${path.resolve(__dirname, 'src', 'react')}.*$`)
+const regexpReactFolder = new RegExp(`^${path.resolve(__dirname, 'src')}/(react|redux)/.*$`)
 
 module.exports = {
   devtool: 'eval',
@@ -9,12 +9,12 @@ module.exports = {
   target: 'node',
   externals: [
     nodeExternals(),
-    // function(context, request, callback) {
-    //  if (request == module.exports.entry || regexpReactFolder.test(path.resolve(context, request))){
-    //    return callback();
-    //  }
-    //  return callback(null, 'commonjs2 ' + request);
-    // }
+    function(context, request, callback) {
+      if (request == module.exports.entry || regexpReactFolder.test(path.resolve(context, request))){
+        return callback();
+      }
+      return callback(null, 'commonjs2 ' + request);
+     }
   ],
   output: {
     path: path.resolve(__dirname, 'src'),
