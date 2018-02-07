@@ -11,19 +11,14 @@ import { Provider } from 'react-redux'
 import routes from './react/routes';
 import AppRouter from './react/router'
 import createStore from './redux/store';
-import {userActions} from './redux/actions';
 
 app.use(async function(req, res, next) {
   const store = createStore();
-  console.log(userActions);
-  let action
-  await store.dispatchAsync(userActions.login({name: 'John'}));
-  console.log(store.getState())
   const promises = []
   routes.some(route => {
     const match = matchPath(req.path, route);
     if (match && typeof route.component.getInitialProps == 'function') {
-      promises.push(route.component.getInitialProps({req, res, next, match}));
+      promises.push(route.component.getInitialProps({req, res, next, match, store}));
     }
     return match;
   })

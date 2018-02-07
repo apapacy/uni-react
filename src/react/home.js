@@ -1,12 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux'
+import {userActions} from '../redux/actions';
 
 
 class Home extends React.Component {
-  static async getInitialProps({ req, match }) {
+  static async getInitialProps({ req, match, store }) {
    console.log('getInitialProps')
    const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
-   return { userAgent, a: 16 }
+   let action
+   await store.dispatchAsync(userActions.login({name: 'John', userAgent}));
+   return {}
   }
   constructor(props, ...rest) {
     super(props, ...rest);
@@ -14,7 +17,7 @@ class Home extends React.Component {
   render(data) {
     console.log(this.props)
     return (
-      <h1>Hello {this.props.staticContext.data[0].userAgent}!</h1>
+      <h1>Hello {this.props.user.name} from {this.props.user.userAgent}!</h1>
     );
   }
 

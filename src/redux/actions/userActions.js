@@ -7,10 +7,10 @@ LOGOUT_SUCCESS
 } from '../constants/userConstants';
 
 
-export function login(payload) {
+export function login({name, userAgent}) {
   return {
     promised: () => new Promise(function(resolve, reject){
-      setTimeout(() => resolve({name:'John'}), 500);
+      setTimeout(() => resolve({name, userAgent}), 500);
       setTimeout(() => reject({name:'Luka'}), 1000);
     }),
     types: [ LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAIL ]

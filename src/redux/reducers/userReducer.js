@@ -8,13 +8,15 @@ import {
 const initialState = {};
 
 export default function userReducer(state = initialState, action) {
-  console.log('****************', action)
   switch (action.type) {
     case LOGIN_REQUEST:
       return {};
     case LOGIN_SUCCESS:
       return {
-        ...state, name: action.payload.name, isAuthenticated: true
+        ...state,
+        name: action.payload.name,
+        userAgent: action.payload.userAgent,
+        isAuthenticated: true
       };
     case LOGIN_FAIL:
       return {};
