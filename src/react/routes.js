@@ -1,4 +1,4 @@
-import Home from './react/home';
+import Home from './home';
 
 export default [
   {

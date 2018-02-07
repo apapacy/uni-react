@@ -7,8 +7,8 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { StaticRouter, Switch, Route } from 'react-router'
 import { matchPath } from 'react-router-dom'
-import routes from './routes';
-import AppRouter from './router'
+import routes from './react/routes';
+import AppRouter from './react/router'
 
 app.use(function(req, res, next) {
   const promises = []
