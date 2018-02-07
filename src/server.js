@@ -7,6 +7,7 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { StaticRouter, Switch, Route } from 'react-router'
 import { matchPath } from 'react-router-dom'
+import { Provider } from 'react-redux'
 import routes from './react/routes';
 import AppRouter from './react/router'
 import createStore from './redux/store';
@@ -16,7 +17,7 @@ app.use(async function(req, res, next) {
   const store = createStore();
   console.log(userActions);
   let action
-  await store.dispatchAsync(userActions.login({name: 'Joe'}));
+  await store.dispatchAsync(userActions.login({name: 'John'}));
   console.log(store.getState())
   const promises = []
   routes.some(route => {
@@ -30,9 +31,11 @@ app.use(async function(req, res, next) {
   Promise.all(promises).then(data => {
     const context = {data};
     const html = ReactDOMServer.renderToString(
-      <StaticRouter location={req.url} context={context}>
-        <AppRouter/>
-      </StaticRouter>
+      <Provider store={store}>
+        <StaticRouter location={req.url} context={context}>
+          <AppRouter/>
+        </StaticRouter>
+      </Provider>
     )
 
     if (context.url) {

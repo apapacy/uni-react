@@ -32,7 +32,7 @@ function watchServerChanges() {
   let httpServerInitObject;
   let initialLoad = true;
   const compilerOptions = {
-    aggregateTimeout: 300,
+    aggregateTimeout: 500,
     poll: true
   };
   compiler.watch(compilerOptions, function onServerChange(err, stats) {

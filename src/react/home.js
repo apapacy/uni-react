@@ -1,6 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux'
 
-export default class Home extends React.Component {
+
+class Home extends React.Component {
   static async getInitialProps({ req, match }) {
    console.log('getInitialProps')
    const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
@@ -10,13 +12,10 @@ export default class Home extends React.Component {
     super(props, ...rest);
   }
   render(data) {
-    try {
+    console.log(this.props)
     return (
       <h1>Hello {this.props.staticContext.data[0].userAgent}!</h1>
     );
-  } catch(ex) {
-    console.log(ex)
-  }
   }
 
 
@@ -44,3 +43,5 @@ export default class Home extends React.Component {
 
 
 }
+
+export default connect((state) => state/*, mapDispatchToProps*/)(Home)
