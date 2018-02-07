@@ -12,7 +12,7 @@ export default class Home extends React.Component {
   render(data) {
     try {
     return (
-      <h1>Hello {this.props.staticContext.data[10].userAgent}!</h1>
+      <h1>Hello {this.props.staticContext.data[0].userAgent}!</h1>
     );
   } catch(ex) {
     console.log(ex)
