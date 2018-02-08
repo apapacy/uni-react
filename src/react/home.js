@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
-import {userActions} from '../redux/actions';
+import {userActions} from '../redux/action5s';
 
 class Home extends React.PureComponent {
   static async getInitialProps({ req, match, store, dispatch }) {
