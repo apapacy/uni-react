@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import {userActions} from '../redux/actions';
 
+console.log('************')
 class Home extends React.PureComponent {
   static async getInitialProps({ req, match, store, dispatch }) {
    console.log('getInitialProps');
@@ -22,7 +23,7 @@ class Home extends React.PureComponent {
   render(data) {
     console.log(this.props)
     return (
-      <h1>{this.props.user.count}) Hello {this.props.user.name} from {this.props.user.userAgent}!</h1>
+      <h1>****{this.props.user.count}) Hello {this.props.user.name} from {this.props.user.userAgent}!</h1>
     );
   }
 

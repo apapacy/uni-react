@@ -4,11 +4,25 @@ const webpack = require('webpack');
 const compiler = webpack(require('./webpack.config.server'));
 const server = path.resolve(__dirname, './src/server.bundle.js');
 
-compiler.compile(function(err, data) {
+compiler.run(function(err, data) {
   if (err) {
-    console.log('Server compile error:' + JSON.stringify(err))
+    console.log('Server compile error:', err)
+    process.exit(5);
+  }
+});
+
+let started = false;
+
+compiler.plugin("done", function(stats) {
+  if (started) {
+    return;
+  }
+  if (stats.compilation.errors && stats.compilation.errors.length) {
+    console.log('Server compile errors:', stats.compilation.errors);
+    require(server);
     process.exit(5);
   } else {
+    started = true;
     watchServerChanges();
   }
 });
@@ -17,7 +31,7 @@ function initHttpServer() {
   let httpServer;
   try {
     httpServer = require(server);
-  } catch(ex) {
+  } catch (ex) {
     console.log('on require', ex)
     return;
   }
@@ -36,33 +50,40 @@ function initHttpServer() {
   };
 }
 
+let httpServer;
+
+const compilerOptions = {
+  aggregateTimeout: 300,
+  poll: 150,
+  ignored: server,
+};
+
 function watchServerChanges() {
-  let httpServer;
-  const compilerOptions = {
-    aggregateTimeout: 300,
-    poll: 150,
-    ignored: server,
-  };
-  compiler.watch(compilerOptions, function onServerChange(err, stats) {
-    if (err) {
-      console.log('Server bundling error:' + JSON.stringify(err));
-      return;
-    }
-    if (httpServer && httpServer.httpServer) {
-      httpServer.httpServer.close(function() {
-        clearCache();
-        httpServer = initHttpServer() || httpServer;
-        console.log('Server restarted ' + new Date());
-      });
-      for (var socket of httpServer.sockets.values()) {
-        socket.destroy();
-      }
-    } else {
-      httpServer = initHttpServer();
-      console.log('Server bundling done');
-    }
-  });
+  compiler.watch(compilerOptions, onServerChange);
 }
+
+function onServerChange(err, stats) {
+  if (err) {
+    console.log('Server bundling error:', err);
+    // clearCache();
+    //compiler.watch(compilerOptions, onServerChange);
+    //return;
+  }
+  if (httpServer && httpServer.httpServer) {
+    httpServer.httpServer.close(function() {
+      clearCache();
+      httpServer = initHttpServer() || httpServer;
+      console.log('Server restarted ' + new Date());
+    });
+    for (var socket of httpServer.sockets.values()) {
+      socket.destroy();
+    }
+  } else {
+    httpServer = initHttpServer();
+    console.log('Server bundling done');
+  }
+}
+
 
 function clearCache() {
   const cacheIds = Object.keys(require.cache);
