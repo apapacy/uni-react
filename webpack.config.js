@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = {
   devtool: 'cheap-module-inline-source-map',
-  entry: ['babel-polyfill', './src/client.js'],
+  entry: './src/client.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'app.bundle.js'
