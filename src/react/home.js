@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import {userActions} from '../redux/actions';
 
-console.log('************')
 class Home extends React.PureComponent {
   static async getInitialProps({ req, match, store, dispatch }) {
    console.log('getInitialProps');

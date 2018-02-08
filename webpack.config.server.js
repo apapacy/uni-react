@@ -7,7 +7,7 @@ module.exports = {
   devtool: 'eval',
   entry: './src/server.js',
   target: 'async-node',
-  bail: true,
+  bail: false,
   externals: [
     nodeExternals(),
     function(context, request, callback) {

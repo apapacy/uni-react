@@ -4,16 +4,7 @@ const webpack = require('webpack');
 const compiler = webpack(require('./webpack.config.server'));
 const server = path.resolve(__dirname, './src/server.bundle.js');
 
-compiler.run(function(err, data) {
-  if (err) {
-    console.log('Server compile error:', err)
-    process.exit(5);
-  }
-});
-
-let started = false;
-
-compiler.plugin("done", function(stats) {
+/*compiler.plugin("done", function(stats) {
   if (started) {
     return;
   }
@@ -25,54 +16,27 @@ compiler.plugin("done", function(stats) {
     started = true;
     watchServerChanges();
   }
-});
+});*/
 
-function initHttpServer() {
-  let httpServer;
-  try {
-    httpServer = require(server);
-  } catch (ex) {
-    console.log('on require', ex)
-    return;
-  }
-  const sockets = new Map();
-  let nextSocketId = 0;
-  httpServer.on('connection', function(socket) {
-    const socketId = nextSocketId++;
-    sockets.set(socketId, socket);
-    socket.on('close', function() {
-      sockets.delete(socketId);
-    });
-  });
-  return {
-    httpServer,
-    sockets
-  };
-}
+
 
 let httpServer;
-
 const compilerOptions = {
   aggregateTimeout: 300,
   poll: 150,
   ignored: server,
 };
 
-function watchServerChanges() {
-  compiler.watch(compilerOptions, onServerChange);
-}
+compiler.watch(compilerOptions, onServerChange);
 
 function onServerChange(err, stats) {
   if (err) {
     console.log('Server bundling error:', err);
-    // clearCache();
-    //compiler.watch(compilerOptions, onServerChange);
-    //return;
+    return true;
   }
   if (httpServer && httpServer.httpServer) {
     httpServer.httpServer.close(function() {
-      clearCache();
-      httpServer = initHttpServer() || httpServer;
+      httpServer = initHttpServer();
       console.log('Server restarted ' + new Date());
     });
     for (var socket of httpServer.sockets.values()) {
@@ -84,6 +48,25 @@ function onServerChange(err, stats) {
   }
 }
 
+function initHttpServer() {
+  try {
+    clearCache();
+    httpServer = require(server);
+  } catch (ex) {
+    console.log('Module require error: ', ex)
+    return;
+  }
+  const sockets = new Map();
+  let nextSocketId = 0;
+  httpServer.on('connection', function(socket) {
+    const socketId = nextSocketId++;
+    sockets.set(socketId, socket);
+    socket.on('close', function() {
+      sockets.delete(socketId);
+    });
+  });
+  return { httpServer, sockets };
+}
 
 function clearCache() {
   const cacheIds = Object.keys(require.cache);
