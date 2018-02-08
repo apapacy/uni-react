@@ -15,13 +15,12 @@ module.exports = {
         use: 'raw-loader'
       },
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         use: "babel-loader"
       }
     ]
   },
-
   plugins: [
     //new webpack.optimize.UglifyJsPlugin(),
     new HtmlWebpackPlugin({
