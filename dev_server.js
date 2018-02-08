@@ -1,7 +1,7 @@
-require('babel-polyfill');
-path = require('path');
+const path = require('path');
 const webpack = require('webpack');
 const compiler = webpack(require('./webpack.config.server'));
+
 compiler.compile(function(err, data) {
   if (err) {
     console.log('Server compile error:' + JSON.stringify(err))

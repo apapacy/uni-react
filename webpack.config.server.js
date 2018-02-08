@@ -4,9 +4,9 @@ const nodeExternals = require('webpack-node-externals');
 const regexpReactFolder = new RegExp(`^${path.resolve(__dirname, 'src')}/(react|redux)/.*$`)
 
 module.exports = {
-  devtool: 'eval',
-  entry: './src/server.js',
-  target: 'node',
+  devtool: 'cheap-module-inline-source-map',
+  entry: ['./src/server.js'],
+  // target: 'node',
   externals: [
     nodeExternals(),
     function(context, request, callback) {
