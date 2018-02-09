@@ -11,7 +11,7 @@ import { StaticRouter, Switch, Route } from 'react-router';
 import { matchPath } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import routes from './react/routes';
-import AppRouter from './react/router';
+import AppRouter from './react/serverRouter';
 import createStore from './redux/store';
 import stats from '../dist/stats.generated';
 
