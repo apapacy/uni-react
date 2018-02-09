@@ -2,6 +2,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
 const webpack = require('webpack'); //to access built-in
 const path = require('path');
 const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
+const nodeEnv = process.env.NODE_ENV || 'development';
+const isDevelopment = nodeEnv == 'development';
 
 module.exports = {
   devtool: 'cheap-module-inline-source-map',
@@ -11,8 +13,8 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[hash].bundle.js',
-    chunkFilename: '[name].[hash].bundle.js',
+    filename: isDevelopment ? '[name].bundle.js': '[name].[hash].bundle.js',
+    // chunkFilename: isDevelopment ? '[name].bundle.js': '[name].[hash].bundle.js',
   },
   module: {
     rules: [{
@@ -38,7 +40,8 @@ module.exports = {
     }),
     function(compiler) {
   		this.plugin("done", function(stats) {
-  		    require("fs").writeFileSync(path.join(__dirname, "dist", "stats.generated.json"), JSON.stringify(stats.toJson().assetsByChunkName));
+  		    require("fs").writeFileSync(path.join(__dirname, "dist", "stats.generated.js"),
+           'module.exports=' + JSON.stringify(stats.toJson().assetsByChunkName) + ';console.log(module.exports);\n');
       });
     }
   ]

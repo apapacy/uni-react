@@ -12,12 +12,11 @@ import { Provider } from 'react-redux';
 import routes from './react/routes';
 import AppRouter from './react/router';
 import createStore from './redux/store';
-let stats = JSON.parse(fs.readFileSync('./dist/stats.generated.json', 'utf8'));
+import stats from '../dist/stats.generated';
 
 app.use('/static', express.static('dist'))
 
 app.use(async function(req, res, next) {
-  console.log(stats.assetsByChunkName);
   const store = createStore();
   const promises = []
   routes.some(route => {
