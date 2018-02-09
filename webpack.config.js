@@ -35,6 +35,11 @@ module.exports = {
 			name: "common",
       minChunks: 2
 			// chunks: ["adminPageA", "adminPageB"]
-		}),
+    }),
+    function(compiler) {
+  		this.plugin("done", function(stats) {
+  		    require("fs").writeFileSync(path.join(__dirname, "dist", "stats.generated.json"), JSON.stringify(stats.toJson()));
+      });
+    }
   ]
 };
