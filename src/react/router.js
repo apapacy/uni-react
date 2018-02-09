@@ -6,7 +6,10 @@ export default (data) => (
   <Switch>
     { routes.map(props => {
       props.render = function() {
-        const Component = require('./' + props.componentName).default;
+        let Component = require('./' + props.componentName);
+        if (Component.default) {
+          Component = Component.default;
+        }
         return <Component/>;
       };
       return <Route key={ props.path } {...props}/>

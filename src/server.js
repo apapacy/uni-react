@@ -20,8 +20,10 @@ app.use(async function(req, res, next) {
   routes.some(route => {
     const match = matchPath(req.path, route);
     if (match) {
-      const component = require('./react/' + route.componentName).default;
-      console.log('*****',component)
+      let component = require('./react/' + route.componentName);
+      if (component.default) {
+        component = component.default;
+      }
       if (typeof component.getInitialProps == 'function') {
         promises.push(component.getInitialProps({req, res, next, match, store}));
       }
