@@ -24,6 +24,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: isDevelopment ? '[name].bundle.js': '[name].[hash].bundle.js',
+    publicPath: "/static/"
     // chunkFilename: isDevelopment ? '[name].bundle.js': '[name].[hash].bundle.js',
   },
   module: {
