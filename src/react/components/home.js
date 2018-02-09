@@ -1,13 +1,11 @@
 'use strict'
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom';
-import {userActions} from '../redux/actions';
+import {userActions} from '../../redux/actions';
 
-console.log('******************* Room ****************')
-
-class Room extends React.PureComponent {
+class Home extends React.PureComponent {
   static async getInitialProps({ req, match, store, dispatch }) {
    console.log('getInitialProps');
    const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
@@ -26,9 +24,8 @@ class Room extends React.PureComponent {
     console.log(this.props)
     return (
       <div>
-        <h1>==={this.props.user.count}) Hello {this.props.user.name} from {this.props.user.userAgent}!</h1>
-        <Link to="/home">About</Link>
-        <Link to="/home/12">About</Link>
+        <h1>{this.props.user.count}) Hello {this.props.user.name} from {this.props.user.userAgent}!</h1>
+        <Link to="/room">About</Link>
       </div>
     );
   }
@@ -41,7 +38,7 @@ class Room extends React.PureComponent {
     async componentDidMount(){
       // client and server
       console.log('componentDidMount', this.props);
-      await Room.getInitialProps(this.props);
+      await Home.getInitialProps(this.props);
     }
     componentWillReceiveProps(){console.log('componentWillReceiveProps')}
     shouldComponentUpdate0(){
@@ -61,7 +58,7 @@ class Room extends React.PureComponent {
 
 }
 
-Room.propTypes = {
+Home.propTypes = {
   user: PropTypes.shape({
     name: PropTypes.string.isRequired,
     count: PropTypes.number.isRequired,
@@ -69,4 +66,4 @@ Room.propTypes = {
   }),
 };
 
-export default connect((state) => ({user: state.user})/*, mapDispatchToProps*/)(Room)
+export default connect((state) => ({user: state.user})/*, mapDispatchToProps*/)(Home)

@@ -1,3 +1,4 @@
+'use strict';
 import fs from 'fs';
 import express from 'express';
 import './api/test';
@@ -18,7 +19,8 @@ app.use('/static', express.static('dist'))
 
 app.use(async function(req, res, next) {
   const store = createStore();
-  const promises = []
+  const promises = [];
+  const componentNames = [];
   routes.some(route => {
     const match = matchPath(req.path, route);
     if (match) {
@@ -26,6 +28,7 @@ app.use(async function(req, res, next) {
       if (component.default) {
         component = component.default;
       }
+      componentNames.push(route.componentName);
       if (typeof component.getInitialProps == 'function') {
         promises.push(component.getInitialProps({req, res, next, match, store}));
       }
@@ -58,7 +61,7 @@ app.use(async function(req, res, next) {
         </script>
         <div id="app">${html}</div>
         <script src='/static/${stats.common}'></script>
-        <script src='/static/${stats.app}'></script>
+        <script src='/static/${stats[componentNames[0]]}'></script>
       `)
       res.end()
     }

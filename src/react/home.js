@@ -22,7 +22,7 @@ class Home extends React.PureComponent {
   render(data) {
     console.log(this.props)
     return (
-      <h1> +++*** {this.props.user.count}) Hello {this.props.user.name} from {this.props.user.userAgent}!</h1>
+      <h1>{this.props.user.count}) Hello {this.props.user.name} from {this.props.user.userAgent}!</h1>
     );
   }
 

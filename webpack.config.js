@@ -4,13 +4,23 @@ const path = require('path');
 const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isDevelopment = nodeEnv == 'development';
+const routes = require('./src/react/routes');
+
+const entry = {};
+for (let i = 0; i < routes.length; i++ ) {
+  entry[routes[i].componentName] = [
+    './src/client.js',
+    './src/react/' + routes[i].componentName + '.js'
+  ];
+}
 
 module.exports = {
   devtool: 'cheap-module-inline-source-map',
-  entry: {
-    app: './src/client.js',
-    vendor: ['react', 'react-dom']
-  },
+  entry,
+  //entry: {
+  //  app: './src/client.js',
+  //  vendor: ['react', 'react-dom']
+  //},
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: isDevelopment ? '[name].bundle.js': '[name].[hash].bundle.js',

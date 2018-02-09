@@ -1,13 +1,17 @@
 // import Home from './home';
 
-export default [
+module.exports = [
   {
-    path: '/home/:id',
-    exact: false,
+    path: '/home',
+    exact: true,
     // component: Home,
     componentName: 'home'
-  },
-  {
+  }, {
+    path: '/home/:id',
+    exact: true,
+    // component: Home,
+    componentName: 'components/home'
+  }, {
     path: '/room',
     exact: false,
     // component: Home,
