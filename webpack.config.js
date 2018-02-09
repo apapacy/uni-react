@@ -11,8 +11,8 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].bundle.js',
-    chunkFilename: '[name].bundle.js',
+    filename: '[name].[hash].bundle.js',
+    chunkFilename: '[name].[hash].bundle.js',
   },
   module: {
     rules: [{
@@ -38,7 +38,7 @@ module.exports = {
     }),
     function(compiler) {
   		this.plugin("done", function(stats) {
-  		    require("fs").writeFileSync(path.join(__dirname, "dist", "stats.generated.json"), JSON.stringify(stats.toJson()));
+  		    require("fs").writeFileSync(path.join(__dirname, "dist", "stats.generated.json"), JSON.stringify(stats.toJson().assetsByChunkName));
       });
     }
   ]

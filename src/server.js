@@ -1,20 +1,23 @@
+import fs from 'fs';
 import express from 'express';
 import './api/test';
 const PORT = 3000;
 const app = express();
-import { createServer } from 'http'
-import React from 'react'
-import ReactDOMServer from 'react-dom/server'
-import { StaticRouter, Switch, Route } from 'react-router'
-import { matchPath } from 'react-router-dom'
-import { Provider } from 'react-redux'
+import { createServer } from 'http';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import { StaticRouter, Switch, Route } from 'react-router';
+import { matchPath } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import routes from './react/routes';
-import AppRouter from './react/router'
+import AppRouter from './react/router';
 import createStore from './redux/store';
+let stats = JSON.parse(fs.readFileSync('./dist/stats.generated.json', 'utf8'));
 
 app.use('/static', express.static('dist'))
 
 app.use(async function(req, res, next) {
+  console.log(stats.assetsByChunkName);
   const store = createStore();
   const promises = []
   routes.some(route => {
@@ -55,8 +58,8 @@ app.use(async function(req, res, next) {
          window.__PRELOADED_STATE__ = ${JSON.stringify(store.getState()).replace(/</g, '\\u003c')}
         </script>
         <div id="app">${html}</div>
-        <script src='/static/common.bundle.js'></script>
-        <script src='/static/app.bundle.js'></script>
+        <script src='/static/${stats.common}'></script>
+        <script src='/static/${stats.app}'></script>
       `)
       res.end()
     }

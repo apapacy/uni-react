@@ -64,7 +64,8 @@ function initHttpServer() {
 function clearCache() {
   const cacheIds = Object.keys(require.cache);
   for (let id of cacheIds) {
-    if (id === serverPath) {
+    if (serverPath === id) {
+      console.log('delete ================ ', id)
       delete require.cache[id];
       return;
     }
