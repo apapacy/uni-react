@@ -5,6 +5,10 @@ import routes from './routes';
 export default (data) => (
   <Switch>
     { routes.map(props => {
+      props.render = function() {
+        const Component = require('./' + props.componentName).default;
+        return <Component/>;
+      };
       return <Route key={ props.path } {...props}/>
     }) }
   </Switch>

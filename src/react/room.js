@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import {userActions} from '../redux/actions';
 
-class Home extends React.PureComponent {
+console.log('******************* Room ****************')
+
+class Room extends React.PureComponent {
   static async getInitialProps({ req, match, store, dispatch }) {
    console.log('getInitialProps');
    const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
@@ -34,7 +36,7 @@ class Home extends React.PureComponent {
     async componentDidMount(){
       // client and server
       console.log('componentDidMount', this.props);
-      await Home.getInitialProps(this.props);
+      await Room.getInitialProps(this.props);
     }
     componentWillReceiveProps(){console.log('componentWillReceiveProps')}
     shouldComponentUpdate0(){
@@ -54,7 +56,7 @@ class Home extends React.PureComponent {
 
 }
 
-Home.propTypes = {
+Room.propTypes = {
   user: PropTypes.shape({
     name: PropTypes.string.isRequired,
     count: PropTypes.number.isRequired,
@@ -62,4 +64,4 @@ Home.propTypes = {
   }),
 };
 
-export default connect((state) => ({user: state.user})/*, mapDispatchToProps*/)(Home)
+export default connect((state) => ({user: state.user})/*, mapDispatchToProps*/)(Room)

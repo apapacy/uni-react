@@ -19,8 +19,12 @@ app.use(async function(req, res, next) {
   const promises = []
   routes.some(route => {
     const match = matchPath(req.path, route);
-    if (match && typeof route.component.getInitialProps == 'function') {
-      promises.push(route.component.getInitialProps({req, res, next, match, store}));
+    if (match) {
+      const component = require('./react/' + route.componentName).default;
+      console.log('*****',component)
+      if (typeof component.getInitialProps == 'function') {
+        promises.push(component.getInitialProps({req, res, next, match, store}));
+      }
     }
     return match;
   })
@@ -49,6 +53,7 @@ app.use(async function(req, res, next) {
          window.__PRELOADED_STATE__ = ${JSON.stringify(store.getState()).replace(/</g, '\\u003c')}
         </script>
         <div id="app">${html}</div>
+        <script src='/static/common.bundle.js'></script>
         <script src='/static/app.bundle.js'></script>
       `)
       res.end()

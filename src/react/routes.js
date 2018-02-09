@@ -1,9 +1,16 @@
-import Home from './home';
+// import Home from './home';
 
 export default [
   {
-    path: '/:id',
+    path: '/home/:id',
     exact: false,
-    component: Home,
+    // component: Home,
+    componentName: 'home'
+  },
+  {
+    path: '/room',
+    exact: false,
+    // component: Home,
+    componentName: 'room'
   },
 ];
