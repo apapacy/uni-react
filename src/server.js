@@ -61,7 +61,9 @@ app.use(async function(req, res, next) {
         </script>
         <div id="app">${html}</div>
         <script src='/static/${stats.common}'></script>
-        <script src='/static/${stats[componentNames[0]]}'></script>
+        ${componentNames.map(componentName =>
+            `<script src='/static/${stats[componentName]}'></script>`
+        )}
       `)
       res.end()
     }
