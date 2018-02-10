@@ -13,7 +13,7 @@ class Room extends React.PureComponent {
    const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
    const action = userActions.login({name: 'John', userAgent});
    if (req) {
-     await store.dispatchAsync(action);
+     await store.dispatch(action);
    } else {
      dispatch(action);
    }
