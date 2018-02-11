@@ -3,23 +3,28 @@ const HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
 const path = require('path');
 const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
 const nodeEnv = process.env.NODE_ENV || 'development';
-const isDevelopment = nodeEnv == 'development';
+let isDevelopment = nodeEnv == 'development';
 const routes = require('./src/react/routes');
-const hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&r0eload=true';
+const hotMiddlewareScript =
+   'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true';
+
+isDevelopment = true;
 
 const entry = {};
 for (let i = 0; i < routes.length; i++ ) {
   entry[routes[i].componentName] = [
     //'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
     //'webpack/hot/only-dev-server',
+    hotMiddlewareScript,
     'react-hot-loader/patch',
     './src/client.js',
     './src/react/' + routes[i].componentName + '.js',
-    hotMiddlewareScript,
+    //'webpack/hot/only-dev-server',
   ];
 }
 
 module.exports = {
+  context: __dirname,
   devtool: 'cheap-module-eval-source-map',
   entry,
   //entry: {
@@ -40,7 +45,21 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: "babel-loader",
+        loader: "babel-loader",
+        options: {
+          babelrc: false,
+          presets: [
+            'es2015',
+            'react',
+            'stage-0',
+          ],
+          plugins: [
+            "transform-runtime",
+            "syntax-dynamic-import",
+            'react-hot-loader/babel',
+            'loadable-components/babel'
+          ],
+        }
       }
     ]
   },
@@ -48,6 +67,7 @@ module.exports = {
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.NamedModulesPlugin(),
     //new webpack.NoEmitOnErrorsPlugin(),
     //new webpack.optimize.UglifyJsPlugin(),
     //new HtmlWebpackPlugin({

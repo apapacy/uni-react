@@ -23,10 +23,12 @@ const compiler = webpack(webpackConfig);
 
 app.use(webpackDevMiddleware(compiler, {
   noInfo: true,
-  publicPath: webpackConfig.output.publicPath
-  //disableHostCheck: true,
-  //headers: { 'Access-Control-Allow-Origin': '*' },
-  // historyApiFallback: true,
+  publicPath: webpackConfig.output.publicPath,
+  //hot: true,
+  //hotOnly: true,
+  disableHostCheck: true,
+  headers: { 'Access-Control-Allow-Origin': '*' },
+  //historyApiFallback: true,
 }));
 
 app.use(webpackHotMiddleware(compiler, {
@@ -36,7 +38,7 @@ app.use(webpackHotMiddleware(compiler, {
 }));
 
 
-//app.use('/static', express.static('dist'))
+app.use('/static', express.static('dist'))
 // app.use('/static', (req, res, next) => void(0));
 
 app.use('/', async function(req, res, next) {

@@ -24,15 +24,5 @@ hydrate(
 )
 
 if (module.hot) {
-  module.hot.accept( () =>
-    render(
-      <Provider store={store}>
-        <Router history={createBrowserHistory()}>
-          <AppRouter />
-        </Router>
-      </Provider>,
-      document.getElementById('app')
-    )
-  );
-  console.log('222222222222')
+  module.hot.accept();
 }

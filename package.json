@@ -21,6 +21,7 @@
     "babel-polyfill": "^6.26.0",
     "express": "^4.16.2",
     "history": "^4.7.2",
+    "loadable-components": "^1.1.1",
     "react": "^16.2.0",
     "react-dev-middleware": "^2.1.9",
     "react-dom": "^16.2.0",
