@@ -8,37 +8,29 @@ const routes = require('./src/react/routes');
 const hotMiddlewareScript =
    'webpack-hot-middleware/client?path=http://localhost:3001/__webpack_hmr&timeout=20000';
 
-isDevelopment = true;
+isDevelopment = false;
 
 const entry = {};
 for (let i = 0; i < routes.length; i++ ) {
   entry[routes[i].componentName] = [
-    //'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
-    //'webpack/hot/only-dev-server',
-    hotMiddlewareScript,
-    //'react-hot-loader/patch',
     './src/client.js',
     './src/react/' + routes[i].componentName + '.js',
-    //'webpack/hot/only-dev-server',
   ];
+  if (isDevelopment) {
+    entry[routes[i].componentName].unshift(hotMiddlewareScript);
+  }
 }
 
 module.exports = {
-
   target: 'web',
   cache: isDevelopment,
   devtool: isDevelopment ? 'cheap-module-source-map' : 'hidden-source-map',
   context: __dirname,
-  // devtool: 'cheap-module-eval-source-map',
   entry,
-  //entry: {
-  //  app: './src/client.js',
-  //  vendor: ['react', 'react-dom']
-  //},
   output: {
     path: path.resolve(__dirname, 'dist'),
+    publicPath: isDevelopment ? 'http://localhost:3001/static/' : '/static/',
     filename: isDevelopment ? '[name].bundle.js': '[name].[hash].bundle.js',
-    publicPath: "http://localhost:3001/static/",
     chunkFilename: isDevelopment ? '[name].bundle.js': '[name].[hash].bundle.js',
   },
   module: {

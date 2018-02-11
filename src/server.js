@@ -15,6 +15,7 @@ import AppRouter from './react/serverRouter';
 import createStore from './redux/store';
 import stats from '../dist/stats.generated';
 
+console.log(stats)
 
 app.use('/static', express.static('dist'))
 // app.use('/static', (req, res, next) => void(0));
@@ -62,9 +63,9 @@ app.use('/', async function(req, res, next) {
          window.__PRELOADED_STATE__ = ${JSON.stringify(store.getState()).replace(/</g, '\\u003c')}
         </script>
         <div id="app">${html}</div>
-        <script src='http://localhost:3001/static/${stats.common[0]}'></script>
+        <script src='${assets(stats.common)}'></script>
         ${componentNames.map(componentName =>
-            `<script src='http://localhost:3001/static/${stats[componentName][0]}'></script>`
+            `<script src='${assets(stats[componentName])}'></script>`
         )}
       `)
       res.end()
@@ -76,6 +77,19 @@ const httpServer = app.listen(PORT, () => {
   console.log(`Listening at ${PORT}`);
 });
 
+function assets(name, isDevelopment) {
+  let prefix;
+  if (isDevelopment) {
+    prefix = 'http://localhost:3001/static/'
+  } else {
+    prefix = '/static/'
+  }
+  if (name instanceof Array) {
+    return prefix + name[0];
+  } else {
+    return prefix + name;
+  }
+}
 
 
 module.exports = httpServer;

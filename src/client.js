@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AppRouter from './react/devRouter';
+import AppRouter from './react/clientRouter';
 // import browserHistory from './clientHistory';
 import { Router, Route, Switch, matchPath} from 'react-router-dom';
 import { Provider } from 'react-redux'
@@ -23,7 +23,7 @@ const component = hydrate(
   document.getElementById('app')
 )
 
-if (module.hot) {
+//if (module.hot) {
   // module.hot.accept();
-  module.hot.accept('./react/clientRouter', ()=> component.forceUpdate());
-}
+  //module.hot.accept('./react/clientRouter', ()=> component.forceUpdate());
+//}

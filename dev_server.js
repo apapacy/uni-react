@@ -94,7 +94,7 @@ devApp.use(webpackDevMiddleware(devCompiler, {
 
 devApp.use(webpackHotMiddleware(devCompiler, {
   log: console.log,
-  //path: 'http://localhost:3001/__webpack_hmr',
+  path: '/__webpack_hmr',
   heartbeat: 10 * 1000
 }));
 
