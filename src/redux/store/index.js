@@ -11,12 +11,12 @@ export default function prepareStore(initialState) {
      applyMiddleware(createLogger({})),
    )(createStore)(rootReducer, initialState);
 
-  //if (module.hot) {
-  //  module.hot.accept(() => {
-  //    const nextRootReducer = rootReducer;
-  //    store.replaceReducer(nextRootReducer);
-  //  });
-  //}
+  if (module.hot) {
+    module.hot.accept(() => {
+      const nextRootReducer = rootReducer;
+      store.replaceReducer(nextRootReducer);
+    });
+  }
 
   store.dispatchAsync = function dispatchAsync(action, ...rest) {
     console.log(action)

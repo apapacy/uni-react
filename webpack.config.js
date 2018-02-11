@@ -6,7 +6,7 @@ const nodeEnv = process.env.NODE_ENV || 'development';
 let isDevelopment = nodeEnv == 'development';
 const routes = require('./src/react/routes');
 const hotMiddlewareScript =
-   'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true';
+   'webpack-hot-middleware/client?path=http://localhost:3001/__webpack_hmr&timeout=20000';
 
 isDevelopment = true;
 
@@ -16,7 +16,7 @@ for (let i = 0; i < routes.length; i++ ) {
     //'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
     //'webpack/hot/only-dev-server',
     hotMiddlewareScript,
-    'react-hot-loader/patch',
+    //'react-hot-loader/patch',
     './src/client.js',
     './src/react/' + routes[i].componentName + '.js',
     //'webpack/hot/only-dev-server',
@@ -24,8 +24,12 @@ for (let i = 0; i < routes.length; i++ ) {
 }
 
 module.exports = {
+
+  target: 'web',
+  cache: isDevelopment,
+  devtool: isDevelopment ? 'cheap-module-source-map' : 'hidden-source-map',
   context: __dirname,
-  devtool: 'cheap-module-eval-source-map',
+  // devtool: 'cheap-module-eval-source-map',
   entry,
   //entry: {
   //  app: './src/client.js',
@@ -34,7 +38,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: isDevelopment ? '[name].bundle.js': '[name].[hash].bundle.js',
-    publicPath: "/static/",
+    publicPath: "http://localhost:3001/static/",
     chunkFilename: isDevelopment ? '[name].bundle.js': '[name].[hash].bundle.js',
   },
   module: {
@@ -47,6 +51,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: "babel-loader",
         options: {
+          cacheDirectory: isDevelopment,
           babelrc: false,
           presets: [
             'es2015',
@@ -56,8 +61,17 @@ module.exports = {
           plugins: [
             "transform-runtime",
             "syntax-dynamic-import",
-            'react-hot-loader/babel',
-            'loadable-components/babel'
+            ["react-transform", {
+                    "transforms": [{
+                      "transform": "react-transform-hmr",
+                      // if you use React Native, pass "react-native" instead:
+                      "imports": ["react"],
+                      // this is important for Webpack HMR:
+                      "locals": ["module"]
+                    }]
+                    // note: you can put more transforms into array
+                    // this is just one of them!
+                  }],
           ],
         }
       }

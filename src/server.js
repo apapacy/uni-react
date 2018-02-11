@@ -14,28 +14,6 @@ import routes from './react/routes';
 import AppRouter from './react/serverRouter';
 import createStore from './redux/store';
 import stats from '../dist/stats.generated';
-import webpackConfig from '../webpack.config';
-import webpack from 'webpack';
-const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
-
-const compiler = webpack(webpackConfig);
-
-app.use(webpackDevMiddleware(compiler, {
-  noInfo: true,
-  publicPath: webpackConfig.output.publicPath,
-  //hot: true,
-  //hotOnly: true,
-  disableHostCheck: true,
-  headers: { 'Access-Control-Allow-Origin': '*' },
-  //historyApiFallback: true,
-}));
-
-app.use(webpackHotMiddleware(compiler, {
-  log: console.log,
-  path: '/__webpack_hmr',
-  heartbeat: 10 * 1000
-}));
 
 
 app.use('/static', express.static('dist'))
@@ -84,9 +62,9 @@ app.use('/', async function(req, res, next) {
          window.__PRELOADED_STATE__ = ${JSON.stringify(store.getState()).replace(/</g, '\\u003c')}
         </script>
         <div id="app">${html}</div>
-        <script src='/static/${stats.common}'></script>
+        <script src='http://localhost:3001/static/${stats.common[0]}'></script>
         ${componentNames.map(componentName =>
-            `<script src='/static/${stats[componentName]}'></script>`
+            `<script src='http://localhost:3001/static/${stats[componentName][0]}'></script>`
         )}
       `)
       res.end()
@@ -97,5 +75,7 @@ app.use('/', async function(req, res, next) {
 const httpServer = app.listen(PORT, () => {
   console.log(`Listening at ${PORT}`);
 });
+
+
 
 module.exports = httpServer;

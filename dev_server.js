@@ -3,6 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const compiler = webpack(require('./webpack.config.server'));
 const serverPath = path.resolve(__dirname, './src/server.bundle.js');
+const devApp = require('express')();
 
 watch();
 
@@ -70,3 +71,35 @@ function clearCache() {
     }
   }
 }
+
+
+const webpackConfig = require('./webpack.config');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+
+const devCompiler = webpack(webpackConfig);
+
+devApp.use(webpackDevMiddleware(devCompiler, {
+  // contentBase: 'http://localhost:3001',
+  quiet: true,
+  noInfo: true,
+  hot: true,
+  inline: true,
+  lazy: false,
+  publicPath: webpackConfig.output.publicPath,
+  headers: {'Access-Control-Allow-Origin': '*'},
+  stats: {colors: true},
+  //historyApiFallback: true,
+}));
+
+devApp.use(webpackHotMiddleware(devCompiler, {
+  log: console.log,
+  //path: 'http://localhost:3001/__webpack_hmr',
+  heartbeat: 10 * 1000
+}));
+
+
+
+devApp.listen(3001, () => {
+  console.log(`Listening at ${3001}`);
+});

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AppRouter from './react/clientRouter';
+import AppRouter from './react/devRouter';
 // import browserHistory from './clientHistory';
 import { Router, Route, Switch, matchPath} from 'react-router-dom';
 import { Provider } from 'react-redux'
@@ -14,7 +14,7 @@ const preloadedState = window.__PRELOADED_STATE__
 delete window.__PRELOADED_STATE__
 const store = createStore(preloadedState)
 
-hydrate(
+const component = hydrate(
   <Provider store={store}>
     <Router history={createBrowserHistory()}>
       <AppRouter />
@@ -24,5 +24,6 @@ hydrate(
 )
 
 if (module.hot) {
-  module.hot.accept();
+  // module.hot.accept();
+  module.hot.accept('./react/clientRouter', ()=> component.forceUpdate());
 }
