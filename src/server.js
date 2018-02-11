@@ -14,10 +14,32 @@ import routes from './react/routes';
 import AppRouter from './react/serverRouter';
 import createStore from './redux/store';
 import stats from '../dist/stats.generated';
+import webpackConfig from '../webpack.config';
+import webpack from 'webpack';
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
 
-app.use('/static', express.static('dist'))
+const compiler = webpack(webpackConfig);
 
-app.use(async function(req, res, next) {
+app.use(webpackDevMiddleware(compiler, {
+  noInfo: true,
+  publicPath: webpackConfig.output.publicPath
+  //disableHostCheck: true,
+  //headers: { 'Access-Control-Allow-Origin': '*' },
+  // historyApiFallback: true,
+}));
+
+app.use(webpackHotMiddleware(compiler, {
+  log: console.log,
+  path: '/__webpack_hmr',
+  heartbeat: 10 * 1000
+}));
+
+
+//app.use('/static', express.static('dist'))
+// app.use('/static', (req, res, next) => void(0));
+
+app.use('/', async function(req, res, next) {
   const store = createStore();
   const promises = [];
   const componentNames = [];

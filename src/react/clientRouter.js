@@ -3,7 +3,6 @@ import { Router, Route, Switch} from 'react-router';
 import routes from './routes';
 import Loadable from 'react-loadable';
 
-
 export default (data) => (
   <Switch>
     {
