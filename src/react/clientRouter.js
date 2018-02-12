@@ -4,6 +4,14 @@ import routes from './routes';
 import Loadable from 'react-loadable';
 import universal from 'react-universal-component'
 
+const UniversalComponent = universal(props => import(`./${props.componentName}`), {
+    loadingTransition: false,
+    loading: () => null,
+    //minDelay: 500,
+  }
+);
+
+
 export default (data) => (
   <Switch>
     {
@@ -15,14 +23,16 @@ export default (data) => (
           timeout: 10000,
         });*/
         const componentName = props.componentName;
-        props.component = universal(
+        props.component = () => <UniversalComponent componentName={componentName} />;
+
+        /*universal(
           () => import('./' + props.componentName),
           {
             loadingTransition: false,
             loading: () => null,
             //minDelay: 500,
           }
-        );
+        );*/
         return <Route key={ props.path } {...props}/>
       })
     }
