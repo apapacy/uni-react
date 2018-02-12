@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import AppRouter from './react/clientRouter';
 // import browserHistory from './clientHistory';
-import { Router, Route, Switch, matchPath} from 'react-router-dom';
+import { Router, Route, Switch, matchPath, applyRouterMiddleware} from 'react-router-dom';
+//import {useTransitions, withTransition} from 'react-router-transitions';
 import { Provider } from 'react-redux'
 import routes from './react/routes';
 import { hydrate, render } from 'react-dom'
@@ -11,6 +12,8 @@ import { createBrowserHistory } from 'history';
 
 import Layout from './react/components/layout';
 //import { AppContainer } from 'react-hot-loader'
+
+console.log('********************', applyRouterMiddleware);
 
 const preloadedState = window.__PRELOADED_STATE__
 delete window.__PRELOADED_STATE__

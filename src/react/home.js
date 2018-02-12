@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import {userActions} from '../redux/actions';
 import Layout from './components/layout';
+import Transition from 'react-transition-group/Transition';
+
 
 class Home extends React.PureComponent {
   static async getInitialProps({ req, match, store, dispatch }) {

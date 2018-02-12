@@ -80,11 +80,11 @@ module.exports = {
     //new HtmlWebpackPlugin({
     //  template: './src/index.html'
     //}),
-		new CommonsChunkPlugin({
-			name: "common",
-      minChunks: 2
+		//new CommonsChunkPlugin({
+		//	name: "common",
+    //  minChunks: 2
 			// chunks: ["adminPageA", "adminPageB"]
-    }),
+    //}),
     function(compiler) {
   		this.plugin("done", function(stats) {
   		    require("fs").writeFileSync(path.join(__dirname, "dist", "stats.generated.js"),

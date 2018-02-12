@@ -81,7 +81,7 @@ const httpServer = app.listen(PORT, () => {
   console.log(`Listening at ${PORT}`);
 });
 
-function assets(name, isDevelopment) {
+function assets(name, isDevelopment = true) {
   let prefix;
   if (isDevelopment) {
     prefix = 'http://localhost:3001/static/'
