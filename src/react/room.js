@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
 import {userActions} from '../redux/actions';
+import Layout from './components/layout';
+
 
 console.log('******************* Room ****************')
 
@@ -25,11 +27,14 @@ class Room extends React.PureComponent {
   render(data) {
     console.log(this.props)
     return (
+      <Layout>
+
       <div>
         <h1>{this.props.user.count}) Hello {this.props.user.name} from {this.props.user.userAgent}!</h1>
         <Link to="/home">About</Link>
         <Link to="/home/12">About</Link>
       </div>
+      </Layout>
     );
   }
 

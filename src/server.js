@@ -14,11 +14,15 @@ import routes from './react/routes';
 import AppRouter from './react/serverRouter';
 import createStore from './redux/store';
 import stats from '../dist/stats.generated';
+import api from './api/routes';
+import Layout from './react/components/layout';
+import { Link } from 'react-router-dom';
 
-console.log(stats)
 
 app.use('/static', express.static('dist'))
 // app.use('/static', (req, res, next) => void(0));
+
+app.use('/api', api);
 
 app.use('/', async function(req, res, next) {
   const store = createStore();
@@ -44,7 +48,7 @@ app.use('/', async function(req, res, next) {
     const html = ReactDOMServer.renderToString(
       <Provider store={store}>
         <StaticRouter location={req.url} context={context}>
-          <AppRouter/>
+            <AppRouter/>
         </StaticRouter>
       </Provider>
     )

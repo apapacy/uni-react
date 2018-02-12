@@ -8,7 +8,7 @@ const routes = require('./src/react/routes');
 const hotMiddlewareScript =
    'webpack-hot-middleware/client?path=http://localhost:3001/__webpack_hmr&timeout=20000';
 
-isDevelopment = false;
+isDevelopment = true;
 
 const entry = {};
 for (let i = 0; i < routes.length; i++ ) {
@@ -53,6 +53,7 @@ module.exports = {
           plugins: [
             "transform-runtime",
             "syntax-dynamic-import",
+            //"universal-import",
             ["react-transform", {
                     "transforms": [{
                       "transform": "react-transform-hmr",
