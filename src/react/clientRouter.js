@@ -16,7 +16,7 @@ const timeout = { enter: 1000, exit: 1000 }
 const UniversalComponent = universal(props => import(`./${props.componentName}`), {
     loadingTransition: false,
     loading: () => null,
-    //minDelay: 500,
+    delay: 0,
   }
 );
 
@@ -28,16 +28,16 @@ export default (data) => (
         const Component = Loadable({
           loader: () => import('./' + props.componentName),
           loading: () => null,
-          //delay: 0,
+          delay: 0,
           timeout: 10000,
         });
         //const componentName = props.componentName;
-        props.component = universal(() => import(`./${props.componentName}`), {
+        props.component = Component;/* = universal(() => import(`./${props.componentName}`), {
             loadingTransition: false,
             loading: () => null,
-            minDelay: 1000,
+            minDelay: 0,
           }
-        );;
+        );;*/
         //= () => <UniversalComponent componentName={componentName} />;
 
         /*universal(

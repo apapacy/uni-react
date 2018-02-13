@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import invariant from "invariant";
 import { createLocation } from "history";
 import { Link, matchPath } from 'react-router-dom';
-import routes from '../routes';
+import routes from './routes';
+import Loadable from 'react-loadable';
 
 const isModifiedEvent = event =>
   !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
@@ -39,10 +40,9 @@ class AsyncLink extends Link {
           matchPath(this.context.router.history.location.pathname, route) ? route : null);
         console.log('../' + route.componentName, route);
 
-        System.import('./' + route.componentName).then((data) => {
-          console.log('imported', data)
-           locate();
-         });
+        
+        route.component.preload()
+           setTimeout(locate, 3000);
       } else {
         //locate();
       }
