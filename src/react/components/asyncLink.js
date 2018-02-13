@@ -4,16 +4,15 @@ import invariant from "invariant";
 import { createLocation } from "history";
 import { Link, matchPath } from 'react-router-dom';
 import routes from '../routes';
+import Loadable from 'react-loadable';
 
-const isModifiedEvent = event =>
-  !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
 
 /**
  * The public API for rendering a history-aware <a>.
  */
 class AsyncLink extends Link {
 
-  handleClick = event => {
+  handleClick = (event) => {
     if (this.props.onClick) this.props.onClick(event);
 
     if (
@@ -38,11 +37,15 @@ class AsyncLink extends Link {
         const route = routes.find((route) =>
           matchPath(this.context.router.history.location.pathname, route) ? route : null);
         console.log('../' + route.componentName, route);
-
-        System.import('./' + route.componentName).then((data) => {
-          console.log('imported', data)
-           locate();
-         });
+        const Console = console;
+        alert(2)
+         //console.log(route.component.preload())
+        route.component.load()
+        Console.log('=================================')
+        alert(1)
+        console.log('imported', data)
+        alert(2)
+         setTimeout(locate,3000);
       } else {
         //locate();
       }

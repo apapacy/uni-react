@@ -36,13 +36,9 @@ class AsyncLink extends Link {
       }
       console.log(this)
       if (this.context.router.history.location.pathname) {
-        const route = routes.find((route) =>
-          matchPath(this.context.router.history.location.pathname, route) ? route : null);
+        const route = routes.find((route) => matchPath(this.context.router.history.location.pathname, route) ? route : null);
         console.log('../' + route.componentName, route);
-
-        
-        route.component.preload()
-           setTimeout(locate, 3000);
+         route.component.pre().then(function() {setTimeout(locate, 1000)});
       } else {
         //locate();
       }

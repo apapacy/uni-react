@@ -49,8 +49,10 @@ module.exports = {
             'es2015',
             'react',
             'stage-0',
+            'stage-3',
           ],
           plugins: [
+            //"dynamic-import-webpack",
             "transform-runtime",
             "syntax-dynamic-import",
             //"universal-import",
