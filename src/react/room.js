@@ -28,14 +28,12 @@ class Room extends React.PureComponent {
   render(data) {
     console.log(this.props)
     return (
-      <Layout>
 
       <div>
         <h1>{this.props.user.count}) Hello {this.props.user.name} from {this.props.user.userAgent}!</h1>
         <Link to="/home">About</Link>
         <Link to="/home/12">About</Link>
       </div>
-      </Layout>
     );
   }
 

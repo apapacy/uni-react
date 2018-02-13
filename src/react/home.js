@@ -24,9 +24,7 @@ class Home extends React.PureComponent {
   render(data) {
     console.log(this.props)
     return (
-      <Layout>
       <h1>{this.props.user.count}) Hello {this.props.user.name} from {this.props.user.userAgent}!</h1>
-      </Layout>
     );
   }
 

@@ -48,7 +48,9 @@ app.use('/', async function(req, res, next) {
     const html = ReactDOMServer.renderToString(
       <Provider store={store}>
         <StaticRouter location={req.url} context={context}>
+        <Layout>
             <AppRouter/>
+            </Layout>
         </StaticRouter>
       </Provider>
     )
