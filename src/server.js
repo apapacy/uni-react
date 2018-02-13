@@ -16,7 +16,7 @@ import Layout from './react/components/layout';
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isDevelopment = nodeEnv === 'development';
-const port = process.env.port || 3000;
+const port = Number(process.env.port) || 3000;
 const app = express();
 
 app.set('env', nodeEnv);

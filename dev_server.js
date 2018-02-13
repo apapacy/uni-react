@@ -3,7 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const compiler = webpack(require('./webpack/config.server'));
 const serverPath = path.resolve(__dirname, './src/server.bundle.js');
-const port = process.env.PORT || 3001;
+const port = Number(process.env.PORT) || 3000;
 
 watch();
 
@@ -90,6 +90,6 @@ hotApp.use(webpackClientHotMiddleware(clientCompiler, {
   heartbeat: 10 * 1000
 }));
 
-hotApp.listen(port, () => {
-  console.log(`Listening at ${port}`);
+hotApp.listen(port + 1, () => {
+  console.log(`Listening at ${port + 1}`);
 });
