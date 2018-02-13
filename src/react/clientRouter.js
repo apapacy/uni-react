@@ -20,7 +20,7 @@ export default (data) => (
         const Component = Loadable({
           loader: () => import('./' + props.componentName),
           loading: () => <span>&nbsp;</span>,
-          delay: 0,
+          delay: () => 0,
           timeout: 10000,
         });
         //const componentName = props.componentName;

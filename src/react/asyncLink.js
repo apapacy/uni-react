@@ -6,15 +6,18 @@ import { Link, matchPath } from 'react-router-dom';
 import routes from './routes';
 import Loadable from 'react-loadable';
 
+
+
 const isModifiedEvent = event =>
   !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
+
 
 /**
  * The public API for rendering a history-aware <a>.
  */
 class AsyncLink extends Link {
 
-  handleClick = event => {
+  handleClick = (event) => {
     if (this.props.onClick) this.props.onClick(event);
 
     if (
@@ -27,7 +30,7 @@ class AsyncLink extends Link {
 
       const { history } = this.context.router;
       const { replace, to } = this.props;
-      const locate = () => {
+      function locate() {
         if (replace) {
           history.replace(to);
         } else {
@@ -36,9 +39,11 @@ class AsyncLink extends Link {
       }
       console.log(this)
       if (this.context.router.history.location.pathname) {
-        const route = routes.find((route) => matchPath(this.context.router.history.location.pathname, route) ? route : null);
-        console.log('../' + route.componentName, route);
-         route.component.pre().then(function() {setTimeout(locate, 1000)});
+        const route = routes.find((route) => matchPath(this.props.to, route) ? route : null);
+        const path = String('./' + route.componentName)
+        console.log(route)
+        console.log('===============', path)
+        import(`${path}`).then(function() {locate()})
       } else {
         //locate();
       }
