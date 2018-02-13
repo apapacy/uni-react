@@ -1,32 +1,32 @@
 const webpack = require('webpack');
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
-const regexpReactFolder = new RegExp(`^${path.resolve(__dirname, 'src')}/(react|redux)/.*$`)
+const externalFolder = new RegExp(`^${path.resolve(__dirname, '../src')}/(react|redux)/.*$`)
+const nodeEnv = process.env.NODE_ENV || 'development';
+const isDevelopment = nodeEnv === 'development';
 
 module.exports = {
-  devtool: 'eval',
+  devtool: isDevelopment ? 'eval' : false,
   entry: './src/server.js',
   target: 'async-node',
-  bail: false,
+  bail: !isDevelopment,
   externals: [
     nodeExternals(),
     function(context, request, callback) {
-      if (request == module.exports.entry || regexpReactFolder.test(path.resolve(context, request))){
+      if (request == module.exports.entry
+        || externalFolder.test(path.resolve(context, request))){
         return callback();
       }
       return callback(null, 'commonjs2 ' + request);
      }
   ],
   output: {
-    path: path.resolve(__dirname, 'src'),
+    path: path.resolve(__dirname, '../src'),
     filename: 'server.bundle.js',
     libraryTarget: 'commonjs2',
   },
   module: {
     rules: [{
-      test: /\.txt$/,
-      use: 'raw-loader'
-    }, {
       test: /\.jsx?$/,
       exclude: [/node_modules/],
       use: "babel-loader?retainLines=true"

@@ -3,7 +3,8 @@ import { Router, Route, Switch} from 'react-router';
 import routes from './routes';
 import Loadable from 'react-loadable';
 //import universal from 'react-universal-component'
-import loadable from 'loadable-components'
+import loadable from 'loadable-components';
+import Layout from './components/layout';
 
 //import Transition from 'react-transition-group/Transition';
 //import TransitionGroup from 'react-transition-group/TransitionGroup';
@@ -14,6 +15,7 @@ import loadable from 'loadable-components'
 
 
 export default (data) => (
+  <Layout>
   <Switch>
     {
       routes.map(props => {
@@ -48,4 +50,5 @@ export default (data) => (
       })
     }
   </Switch>
+  </Layout>
 );

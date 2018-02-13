@@ -1,26 +1,27 @@
-'use strict';
-import fs from 'fs';
-import express from 'express';
-import './api/test';
-const PORT = 3000;
-const app = express();
+'use strict'
 import { createServer } from 'http';
+import express from 'express';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { StaticRouter, Switch, Route } from 'react-router';
+import { StaticRouter, Switch } from 'react-router';
 import { matchPath } from 'react-router-dom';
 import { Provider } from 'react-redux';
+
 import routes from './react/routes';
 import AppRouter from './react/serverRouter';
 import createStore from './redux/store';
 import stats from '../dist/stats.generated';
 import api from './api/routes';
 import Layout from './react/components/layout';
-import { Link } from 'react-router-dom';
 
+const nodeEnv = process.env.NODE_ENV || 'development';
+const isDevelopment = nodeEnv === 'development';
+const port = process.env.port || 3000;
+const app = express();
+
+app.set('env', nodeEnv);
 
 app.use('/static', express.static('dist'))
-// app.use('/static', (req, res, next) => void(0));
 
 app.use('/api', api);
 
@@ -28,7 +29,7 @@ app.use('/', async function(req, res, next) {
   const store = createStore();
   const promises = [];
   const componentNames = [];
-  routes.some(route => {
+  routes.forEach(route => {
     const match = matchPath(req.path, route);
     if (match) {
       let component = require('./react/' + route.componentName);
@@ -48,13 +49,10 @@ app.use('/', async function(req, res, next) {
     const html = ReactDOMServer.renderToString(
       <Provider store={store}>
         <StaticRouter location={req.url} context={context}>
-        <Layout>
             <AppRouter/>
-            </Layout>
         </StaticRouter>
       </Provider>
-    )
-
+    );
     if (context.url) {
       res.writeHead(301, {
         Location: context.url
@@ -71,7 +69,7 @@ app.use('/', async function(req, res, next) {
         <div id="app">${html}</div>
         <script src='${assets(stats.common)}'></script>
         ${componentNames.map(componentName =>
-            `<script src='${assets(stats[componentName])}'></script>`
+          `<script src='${assets(stats[componentName])}'></script>`
         )}
       `)
       res.end()
@@ -79,16 +77,16 @@ app.use('/', async function(req, res, next) {
   })
 });
 
-const httpServer = app.listen(PORT, () => {
-  console.log(`Listening at ${PORT}`);
+const httpServer = app.listen(port, () => {
+  console.log(`Listening at ${port}`);
 });
 
-function assets(name, isDevelopment = true) {
+function assets(name) {
   let prefix;
   if (isDevelopment) {
-    prefix = 'http://localhost:3001/static/'
+    prefix = `http://localhost:${port + 1}/static/`;
   } else {
-    prefix = '/static/'
+    prefix = '/static/';
   }
   if (name instanceof Array) {
     return prefix + name[0];
@@ -96,6 +94,5 @@ function assets(name, isDevelopment = true) {
     return prefix + name;
   }
 }
-
 
 module.exports = httpServer;

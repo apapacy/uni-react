@@ -1,8 +1,10 @@
 import React from 'react';
 import { Router, Route, Switch} from 'react-router';
 import routes from './routes';
+import Layout from './components/layout'
 
 export default (data) => (
+  <Layout>
   <Switch>
     {
       routes.map(props => {
@@ -14,4 +16,6 @@ export default (data) => (
       })
     }
   </Switch>
+  </Layout>
+
 );

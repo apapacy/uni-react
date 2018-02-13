@@ -1,9 +1,9 @@
 'use strict';
 const path = require('path');
 const webpack = require('webpack');
-const compiler = webpack(require('./webpack.config.server'));
+const compiler = webpack(require('./webpack/config.server'));
 const serverPath = path.resolve(__dirname, './src/server.bundle.js');
-const devApp = require('express')();
+const port = process.env.PORT || 3001;
 
 watch();
 
@@ -12,7 +12,6 @@ function watch() {
   const compilerOptions = {
     aggregateTimeout: 300,
     poll: 150,
-    ignored: server,
   };
   compiler.watch(compilerOptions, onServerChange);
   function onServerChange(err, stats) {
@@ -72,34 +71,25 @@ function clearCache() {
   }
 }
 
+const webpackClientConfig = require('./webpack/config.client.dev');
+const webpackClientDevMiddleware = require('webpack-dev-middleware');
+const webpackClientHotMiddleware = require('webpack-hot-middleware');
+const clientCompiler = webpack(webpackClientConfig);
+const hotApp = require('express')();
 
-const webpackConfig = require('./webpack.config');
-const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
-
-const devCompiler = webpack(webpackConfig);
-
-devApp.use(webpackDevMiddleware(devCompiler, {
-  // contentBase: 'http://localhost:3001',
-  quiet: true,
-  noInfo: true,
-  hot: true,
-  inline: true,
-  lazy: false,
-  publicPath: webpackConfig.output.publicPath,
+hotApp.use(webpackClientDevMiddleware(clientCompiler, {
+  publicPath: webpackClientConfig.output.publicPath,
   headers: {'Access-Control-Allow-Origin': '*'},
   stats: {colors: true},
-  //historyApiFallback: true,
+  historyApiFallback: true,
 }));
 
-devApp.use(webpackHotMiddleware(devCompiler, {
+hotApp.use(webpackClientHotMiddleware(clientCompiler, {
   log: console.log,
   path: '/__webpack_hmr',
   heartbeat: 10 * 1000
 }));
 
-
-
-devApp.listen(3001, () => {
-  console.log(`Listening at ${3001}`);
+hotApp.listen(port, () => {
+  console.log(`Listening at ${port}`);
 });
