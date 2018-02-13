@@ -27,7 +27,6 @@ class AsyncLink extends Link {
       !isModifiedEvent(event) // ignore clicks with modifier keys
     ) {
       event.preventDefault();
-
       const { history } = this.context.router;
       const { replace, to } = this.props;
       function locate() {
@@ -37,15 +36,15 @@ class AsyncLink extends Link {
           history.push(to);
         }
       }
-      console.log(this)
       if (this.context.router.history.location.pathname) {
         const route = routes.find((route) => matchPath(this.props.to, route) ? route : null);
-        const path = String('./' + route.componentName)
-        console.log(route)
-        console.log('===============', path)
-        import(`${path}`).then(function() {locate()})
+        if (route) {
+          import(`${String('./' + route.componentName)}`).then(function() {locate()})
+        } else {
+          locate();
+        }
       } else {
-        //locate();
+        locate();
       }
     }
   };
