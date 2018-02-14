@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "rm -rf ./dist && mkdir ./dist && NODE_ENV=development webpack -d --config=./webpack/config.server.js && NODE_ENV=development webpack -d --config=./webpack/config.client.dev.js && node ./dev_server",
+    "hot": "rm -rf ./dist && mkdir ./dist && NODE_ENV=development webpack -d --config=./webpack/config.server.js && NODE_ENV=development webpack -d --config=./webpack/config.client.dev.js && node ./hot_server",
     "build": "rm -rf ./dist && mkdir ./dist && NODE_ENV=production  webpack --config=./webpack/config.server.js && NODE_ENV=production webpack --config=./webpack/config.client.prod.js",
     "start": "NODE_ENV=production node ./server"
   },

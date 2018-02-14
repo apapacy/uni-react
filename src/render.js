@@ -18,7 +18,7 @@ import api from './api/routes';
 import Layout from './react/components/layout';
 import { Link } from 'react-router-dom';
 
-export const serverRenderer =   ({ clientStats }) => (req, res) => {
+module.exports = (req, res, next) => {
 
   const store = createStore();
   const promises = [];
@@ -70,9 +70,7 @@ export const serverRenderer =   ({ clientStats }) => (req, res) => {
       res.end()
     }
   })
-
-
-}
+};
 
 function assets(name, isDevelopment) {
   let prefix;

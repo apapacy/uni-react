@@ -8,7 +8,7 @@ const isDevelopment = nodeEnv === 'development';
 module.exports = {
   name: 'server',
   devtool: isDevelopment ? 'eval' : false,
-  entry: './src/server.js',
+  entry: './src/render.js',
   target: 'node',
   bail: !isDevelopment,
   externals: [
@@ -23,7 +23,7 @@ module.exports = {
   ],
   output: {
     path: path.resolve(__dirname, '../src'),
-    filename: 'server.bundle.js',
+    filename: 'render.bundle.js',
     libraryTarget: 'commonjs2',
   },
   module: {
