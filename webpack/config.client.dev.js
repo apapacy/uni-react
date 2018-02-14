@@ -6,7 +6,7 @@ const nodeEnv = process.env.NODE_ENV || 'development';
 const port = Number(process.env.PORT) || 3000;
 const isDevelopment = nodeEnv === 'development';
 const routes = require('../src/react/routes');
-const hotMiddlewareScript = `webpack-hot-middleware/client?path=http://localhost:${port + 1}/__webpack_hmr&timeout=20000`;
+const hotMiddlewareScript = `webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000`;
 
 const entry = {};
 for (let i = 0; i < routes.length; i++ ) {
@@ -28,7 +28,7 @@ module.exports = {
   entry,
   output: {
     path: path.resolve(__dirname, '../dist'),
-    publicPath: isDevelopment ? 'http://localhost:3001/static/' : '/static/',
+    publicPath: isDevelopment ? '/static/' : '/static/',
     filename: isDevelopment ? '[name].bundle.js': '[name].[hash].bundle.js',
     chunkFilename: isDevelopment ? '[name].bundle.js': '[name].[hash].bundle.js',
   },

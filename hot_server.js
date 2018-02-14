@@ -40,7 +40,7 @@ app.use(webpackClientHotMiddleware(clientCompiler, {
 }));
 
 
-app.use('/static', express.static('dist'))
+//app.use('/static', express.static('dist'))
 
 app.use('/api', api);
 app.use('/', (req, res, next) => render(req, res, next));
