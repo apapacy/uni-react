@@ -2,3 +2,4 @@
 /package-lock.json
 /dist
 /src/server.bundle.js
+/src/render.bundle.js
