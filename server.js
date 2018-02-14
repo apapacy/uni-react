@@ -1,27 +1,22 @@
 'use strict';
 const path = require('path');
-const port = Number(process.env.PORT) || 3000;
-
-const serverPath = path.resolve(__dirname, './src/render.bundle.js');
-let render = require(serverPath);
-
-const api = require('./src/api/routes');
-
-
-
 const createServer = require('http').createServer;
 const express = require('express');
+const port = Number(process.env.PORT) || 3000;
+const api = require('./src/api/routes');
+const app = express();
+const serverPath = path.resolve(__dirname, './src/render.bundle.js');
+let render = require(serverPath);
+let serverCompiler
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isDevelopment = nodeEnv === 'development';
-const app = express();
-
 app.set('env', nodeEnv);
 
 if (isDevelopment) {
   const webpack = require('webpack');
-  var compiler = webpack([require('./webpack/config.server')]);
-  const webpackClientConfig = require('./webpack/config.client.dev');
+  serverCompiler = webpack([require('./webpack/config.server')]);
+  const webpackClientConfig = require('./webpack/config.client');
   const webpackClientDevMiddleware = require('webpack-dev-middleware');
   const webpackClientHotMiddleware = require('webpack-hot-middleware');
   //const webpackHotServerMiddleware = require('webpack-hot-server-middleware');
@@ -40,11 +35,12 @@ if (isDevelopment) {
     heartbeat: 10 * 1000
   }));
 
-//app.use('/static', express.static('dist'))
+
 
 app.use('/api', api);
 app.use('/', (req, res, next) => render(req, res, next));
 } else {
+  app.use('/static', express.static('dist'));
   app.use('/api', api);
   app.use('/', render);
 }
@@ -69,7 +65,7 @@ if (isDevelopment) {
       aggregateTimeout: 300,
       poll: 150,
     };
-    compiler.watch(compilerOptions, onServerChange);
+    serverCompiler.watch(compilerOptions, onServerChange);
     function onServerChange(err, stats) {
       if (err || stats.compilation && stats.compilation.errors && stats.compilation.errors.length) {
         console.log('Server bundling error:', err || stats.compilation.errors);
