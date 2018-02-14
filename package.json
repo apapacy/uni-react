@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "hot": "rm -rf ./dist && mkdir ./dist && NODE_ENV=development webpack -d --config=./webpack/config.server.js && NODE_ENV=development webpack -d --config=./webpack/config.client.js && node ./server",
-    "build": "rm -rf ./dist && mkdir ./dist && NODE_ENV=production  webpack --config=./webpack/config.server.js && NODE_ENV=production webpack --config=./webpack/config.client.js",
+    "build": "rm -rf ./dist && mkdir ./dist && NODE_ENV=production  webpack --config=./webpack/config.server.js && NODE_ENV=production webpack -p --config=./webpack/config.client.js",
     "start": "NODE_ENV=production node ./server"
   },
   "repository": {
@@ -25,6 +25,7 @@
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-plugin-universal-import": "^1.4.0",
     "babel-polyfill": "^6.26.0",
+    "babel-preset-2017": "0.0.0",
     "babel-preset-stage-3": "^6.24.1",
     "cross-env": "^5.1.3",
     "express": "^4.16.2",

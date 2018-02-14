@@ -42,8 +42,10 @@ module.exports = {
           babelrc: false,
           presets: [
             'es2015',
+            'es2017',
             'react',
             'stage-0',
+            'stage-3'
           ],
           plugins: [
             "transform-runtime",
@@ -68,6 +70,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.NamedModulesPlugin(),
+    //new webpack.optimize.UglifyJsPlugin(),
     function(compiler) {
   		this.plugin("done", function(stats) {
   		    require("fs").writeFileSync(path.join(__dirname, "../dist", "stats.generated.js"),
@@ -79,7 +82,7 @@ module.exports = {
       new CommonsChunkPlugin({
         name: "common",
         minChunks: 2
-      })
+      }),
     ]
   ),
 };

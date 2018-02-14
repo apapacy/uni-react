@@ -19,26 +19,21 @@ if (isDevelopment) {
   const webpackClientConfig = require('./webpack/config.client');
   const webpackClientDevMiddleware = require('webpack-dev-middleware');
   const webpackClientHotMiddleware = require('webpack-hot-middleware');
-  //const webpackHotServerMiddleware = require('webpack-hot-server-middleware');
   const clientCompiler = webpack(webpackClientConfig);
-
   app.use(webpackClientDevMiddleware(clientCompiler, {
     publicPath: webpackClientConfig.output.publicPath,
     headers: {'Access-Control-Allow-Origin': '*'},
     stats: {colors: true},
     historyApiFallback: true,
   }));
-
   app.use(webpackClientHotMiddleware(clientCompiler, {
     log: console.log,
     path: '/__webpack_hmr',
     heartbeat: 10 * 1000
   }));
-
-
-
-app.use('/api', api);
-app.use('/', (req, res, next) => render(req, res, next));
+  app.use('/static', express.static('dist'));
+  app.use('/api', api);
+  app.use('/', (req, res, next) => render(req, res, next));
 } else {
   app.use('/static', express.static('dist'));
   app.use('/api', api);
