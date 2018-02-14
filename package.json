@@ -46,6 +46,7 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
+    "webpack-hot-server-middleware": "^0.4.0",
     "webpack-node-externals": "^1.6.0"
   },
   "devDependencies": {

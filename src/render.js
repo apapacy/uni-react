@@ -18,7 +18,7 @@ import api from './api/routes';
 import Layout from './react/components/layout';
 import { Link } from 'react-router-dom';
 
-export default ({ clientStats }) => (req, res) => {
+export const serverRenderer =   ({ clientStats }) => (req, res) => {
 
   const store = createStore();
   const promises = [];

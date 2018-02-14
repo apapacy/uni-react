@@ -20,6 +20,7 @@ for (let i = 0; i < routes.length; i++ ) {
 }
 
 module.exports = {
+  name: 'client',
   target: 'web',
   cache: isDevelopment,
   devtool: isDevelopment ? 'cheap-module-source-map' : 'hidden-source-map',

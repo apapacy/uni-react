@@ -6,9 +6,10 @@ const nodeEnv = process.env.NODE_ENV || 'development';
 const isDevelopment = nodeEnv === 'development';
 
 module.exports = {
+  name: 'server',
   devtool: isDevelopment ? 'eval' : false,
   entry: './src/server.js',
-  target: 'async-node',
+  target: 'node',
   bail: !isDevelopment,
   externals: [
     nodeExternals(),
