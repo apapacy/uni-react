@@ -8,8 +8,12 @@ module.exports = [
     exact: true,
     componentName: 'components/usersList',
   }, {
-    path: '/room',
-    exact: false,
-    componentName: 'room',
+    path: '/users/page/:page',
+    exact: true,
+    componentName: 'components/usersList',
+  }, {
+    path: '/users/:id',
+    exact: true,
+    componentName: 'components/user',
   },
 ];

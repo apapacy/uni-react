@@ -19,6 +19,7 @@ module.exports = (req, res, next) => {
   const componentNames = [];
   routes.some(route => {
     const match = matchPath(req.path, route);
+    console.log('****************', match)
     if (match) {
       let component = require('./react/' + route.componentName);
       if (component.default) {
