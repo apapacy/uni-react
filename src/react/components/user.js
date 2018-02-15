@@ -25,21 +25,21 @@ class User extends React.PureComponent {
   render() {
     console.log(this.props)
     const user = this.props.user;
-    return <table>
+    return this.props.user ? <table>
       <tbody>
         <tr><td>id</td><td>{user.id}</td></tr>
         <tr><td>name</td><td>{user.name}</td></tr>
         <tr><td>email</td><td>{user.email}</td></tr>
         <tr><td>phone</td><td>{user.phone}</td></tr>
       </tbody>
-    </table>;
+    </table> : null;
   }
 }
 
 User.propTypes = {
   user: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
+    id: PropTypes.number,
+    name: PropTypes.string,
   }),
 };
 

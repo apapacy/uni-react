@@ -20,6 +20,7 @@ class UsersList extends React.PureComponent {
   }
   componentDidMount(){
     // client and server
+    console.log(PropTypes)
     console.log('componentDidMount', this.props);
     return UsersList.getInitialProps(this.props);
   }
@@ -31,17 +32,16 @@ class UsersList extends React.PureComponent {
 }
 
 UsersList.propTypes = {
-  user: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    count: PropTypes.number.isRequired,
-    userAgent: PropTypes.string.isRequired,
-  }),
-  users: PropTypes.arrayOf(
+  users:  PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
-    }).isRequired,
-  )
+    })
+  ),
+};
+
+UsersList.defaultProps = {
+  users: [],
 };
 
 export default connect((state) => ({ user: state.user, users: state.user.users }))(UsersList);
