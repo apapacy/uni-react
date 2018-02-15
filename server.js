@@ -31,7 +31,7 @@ if (isDevelopment) {
     path: '/__webpack_hmr',
     heartbeat: 10 * 1000
   }));
-  app.use('/static', express.static('dist'));
+  //app.use('/static', express.static('dist'));
   app.use('/api', api);
   app.use('/', (req, res, next) => render(req, res, next));
 } else {
