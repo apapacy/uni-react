@@ -8,8 +8,8 @@ export default ({ children, title = 'This is the default title' }) => (
   <div>
     <header>
       <nav>
-        <Link to='/home'>Home</Link> |
-        <Link to='/home/12'>About</Link> |
+        <Link to='/'>Home</Link> |
+        <Link to='/home'>About</Link> |
         <Link to='/room'>Contact</Link>
       </nav>
     </header>
