@@ -3,6 +3,9 @@ import {
   LOGIN_FAIL,
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
+  USERS_REQUEST,
+  USERS_SUCCESS,
+  USERS_FAILURE,
 } from '../constants/userConstants';
 
 const initialState = {
@@ -25,6 +28,12 @@ export default function userReducer(state = initialState, action) {
       return { ...initialState, };
     case LOGOUT_SUCCESS:
       return { ...initialState, };
+    case USERS_REQUEST:
+      return state;
+    case USERS_SUCCESS:
+      return { ...state, users: action.payload, test: '**********************', rest: '===================', best: '777777777777777' };
+    case USERS_FAILURE:
+      return { ...state, users: void(0) };
     default:
       return state;
   }

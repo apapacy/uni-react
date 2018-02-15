@@ -42,10 +42,10 @@ class Room extends React.PureComponent {
       // only server
       console.log('componentWillMount')
     }
-    async componentDidMount(){
+    componentDidMount(){
       // client and server
       console.log('componentDidMount', this.props);
-      await Room.getInitialProps(this.props);
+      return Room.getInitialProps(this.props);
     }
     componentWillReceiveProps(){console.log('componentWillReceiveProps')}
     shouldComponentUpdate0(){

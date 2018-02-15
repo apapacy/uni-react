@@ -1,20 +1,15 @@
 module.exports = [
   {
-    path: '/a',
+    path: '/',
     exact: true,
-    // component: Home,
     componentName: 'components/home',
   }, {
-    path: '/home',
+    path: '/users',
     exact: true,
-    // component: Home,
-    name: 'home',
-    componentName: 'home',
+    componentName: 'components/usersList',
   }, {
     path: '/room',
     exact: false,
-    // component: Home,
-    name: 'room',
     componentName: 'room',
   },
 ];

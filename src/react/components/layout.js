@@ -9,7 +9,7 @@ export default ({ children, title = 'This is the default title' }) => (
     <header>
       <nav>
         <Link to='/'>Home</Link> |
-        <Link to='/home'>About</Link> |
+        <Link to='/users'>Users List</Link> |
         <Link to='/room'>Contact</Link>
       </nav>
     </header>

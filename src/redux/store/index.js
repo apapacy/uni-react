@@ -12,7 +12,7 @@ export default function prepareStore(initialState) {
   )(createStore)(rootReducer, initialState);
 
   if (module.hot) {
-    module.hot.accept(() => {
+    module.hot.accept('../reducers', () => {
       const nextRootReducer = rootReducer;
 
       store.replaceReducer(nextRootReducer);

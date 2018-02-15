@@ -1,9 +1,29 @@
+import axios from 'axios';
 import {
   LOGIN_REQUEST,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
+  USERS_REQUEST,
+  USERS_SUCCESS,
+  USERS_FAILURE,
 } from '../constants/userConstants';
+
+
+export function users() {
+  return dispatch => {
+    dispatch({ type: USERS_REQUEST});
+    return axios({
+      method: 'get',
+      baseURL: 'http://localhost:3000/api/',
+      url: 'users',
+      withCredentials: true,
+    }).then(
+      data => dispatch({ type: USERS_SUCCESS, payload: data.data }),
+      error => dispacth({ type: USERS_FAILURE, error: error })
+    );
+  }
+}
 
 function promise({ name, userAgent, }) {
   return new Promise((resolve, reject) => {
