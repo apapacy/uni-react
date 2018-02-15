@@ -1,9 +1,5 @@
 'use strict';
 import fs from 'fs';
-import express from 'express';
-import './api/test';
-const PORT = 3000;
-const app = express();
 import { createServer } from 'http';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
@@ -14,9 +10,7 @@ import routes from './react/routes';
 import AppRouter from './react/serverRouter';
 import createStore from './redux/store';
 import stats from '../dist/stats.generated';
-import api from './api/routes';
 import Layout from './react/components/layout';
-import { Link } from 'react-router-dom';
 
 module.exports = (req, res, next) => {
 

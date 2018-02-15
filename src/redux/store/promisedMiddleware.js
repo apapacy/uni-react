@@ -1,5 +1,6 @@
-export default (...args) => ({ dispatch, getState }) => (next) => (action) => {
+export default () => () => (next) => (action) => {
   const { promise, promised, types, ...rest } = action;
+
   if (!promised) {
     return next(action);
   }
@@ -9,12 +10,15 @@ export default (...args) => ({ dispatch, getState }) => (next) => (action) => {
   if (typeof promised !== 'function') {
     throw new Error('In promised middleware type of "action"."promised" must be "function"');
   }
-  const [ REQUEST, SUCCESS, FAILURE ] = types;
-  next({ ...rest, type: REQUEST });
-  action.promise = promised()
+  const [
+    REQUEST, SUCCESS, FAILURE,
+  ] = types;
+
+  next({ ...rest, type: REQUEST, });
+  return promised()
     .then(
-      payload => next({ ...rest, payload, type: SUCCESS }),
+      payload => next({ ...rest, payload, type: SUCCESS, }),
     ).catch(
-      error => next({ ...rest, error, type: FAILURE })
+      error => next({ ...rest, error, type: FAILURE, })
     );
 };
