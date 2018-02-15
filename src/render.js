@@ -17,17 +17,16 @@ module.exports = (req, res, next) => {
   const store = createStore();
   const promises = [];
   const componentNames = [];
+  const componentsPath = [];
   routes.some(route => {
     const match = matchPath(req.path, route);
-    console.log('****************', match)
-    console.log(req.path)
-    console.log(route)
     if (match) {
       let component = require('./react/' + route.componentName);
       if (component.default) {
         component = component.default;
       }
       componentNames.push(route.componentName);
+      componentsPath.push(route.path);
       if (typeof component.getInitialProps == 'function') {
         promises.push(component.getInitialProps({req, res, next, match, store}));
       }
@@ -51,6 +50,9 @@ module.exports = (req, res, next) => {
       })
       res.end()
     } else {
+      if (componentsPath.length === 0 || componentsPath[0] === '*') {
+        res.writeHead(200);
+      }
       res.write(`
         <!doctype html>
         <script>
@@ -70,12 +72,7 @@ module.exports = (req, res, next) => {
 };
 
 function assets(name, isDevelopment) {
-  let prefix;
-  if (isDevelopment) {
-    prefix = 'http://localhost:3001/static/'
-  } else {
-    prefix = '/static/'
-  }
+  const prefix = '/static/';
   if (name instanceof Array) {
     return prefix + name[0];
   } else {

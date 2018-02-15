@@ -15,5 +15,9 @@ module.exports = [
     path: '/users/:id',
     exact: true,
     componentName: 'components/user',
+  }, {
+    path: '*',
+    exact: false,
+    componentName: 'components/notFound',
   },
 ];

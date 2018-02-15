@@ -3,7 +3,7 @@ import { Router, Route, Switch} from 'react-router';
 import routes from './routes';
 import Loadable from 'react-loadable';
 import Layout from './components/layout';
-
+import NotFound from './components/notFound';
 export default (data) => (
   <Layout>
     <Switch>
