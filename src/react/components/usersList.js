@@ -5,25 +5,23 @@ import AsyncLink from '../asyncLink';
 import { userActions } from '../../redux/actions';
 
 class UsersList extends React.PureComponent {
-  static async getInitialProps({ req, match, store, dispatch }) {
-   const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
-   const action = userActions.login({name: 'John', userAgent});
-   const users = userActions.users();
-   if (req) {
-     await store.dispatch(action);
-     await store.dispatch(users);
-   } else {
-     dispatch(action);
-     dispatch(users);
-   }
-   return;
+  static async getInitialProps({ req, match, store, dispatch, users }) {
+    if (users instanceof Array && users.length) {
+      return;
+    }
+    const action = userActions.users();
+    if (req) {
+      await store.dispatch(action);
+    } else {
+      dispatch(action);
+    }
+    return;
   }
+
   componentDidMount(){
-    // client and server
-    console.log(PropTypes)
-    console.log('componentDidMount', this.props);
-    return UsersList.getInitialProps(this.props);
+    UsersList.getInitialProps(this.props);
   }
+
   render() {
     return <ul>{this.props.users.map(user => (
       <li key={user.id}>{ user.name } <AsyncLink to={`/users/${user.id}`}>see detail</AsyncLink></li>
@@ -44,4 +42,4 @@ UsersList.defaultProps = {
   users: [],
 };
 
-export default connect((state) => ({ user: state.user, users: state.user.users }))(UsersList);
+export default connect((state) => ({ users: state.user.users }))(UsersList);

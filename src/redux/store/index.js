@@ -1,12 +1,10 @@
 import { createStore, applyMiddleware, compose, } from 'redux';
 import thunk from 'redux-thunk';
 import { createLogger, } from 'redux-logger';
-import promisedMiddleware from './promisedMiddleware';
 import rootReducer from '../reducers';
 
 export default function prepareStore(initialState) {
   const store = compose(
-    applyMiddleware(promisedMiddleware()),
     applyMiddleware(thunk),
     applyMiddleware(createLogger({})),
   )(createStore)(rootReducer, initialState);

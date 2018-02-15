@@ -5,27 +5,25 @@ import AsyncLink from '../asyncLink';
 import { userActions } from '../../redux/actions';
 
 class User extends React.PureComponent {
-  static async getInitialProps({ req, match, store, dispatch }) {
-   console.log(match);
-   const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
-   const action = userActions.login({name: 'John', userAgent});
-   const user = userActions.user({ id: Number(match.params.id) });
-   if (req) {
-     await store.dispatch(user);
-   } else {
-     dispatch(user);
-   }
-   return;
+  static async getInitialProps({ req, match, store, dispatch, user }) {
+    const id = Number(match.params.id);
+    if (user && user.id === id) {
+      return;
+    }
+    const action = userActions.user({ id });
+    if (req) {
+      await store.dispatch(action);
+    } else {
+      dispatch(action);
+    }
+    return;
   }
   componentDidMount(){
-    // client and server
-    console.log('componentDidMount', this.props);
     return User.getInitialProps(this.props);
   }
   render() {
-    console.log(this.props)
     const user = this.props.user;
-    return this.props.user ? <table>
+    return user ? <table>
       <tbody>
         <tr><td>id</td><td>{user.id}</td></tr>
         <tr><td>name</td><td>{user.name}</td></tr>
