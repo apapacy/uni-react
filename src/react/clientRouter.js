@@ -1,21 +1,21 @@
 import React from 'react';
-import { Router, Route, Switch} from 'react-router';
+import { Route, Switch, } from 'react-router';
 import routes from './routes';
 import Loadable from 'react-loadable';
 import Layout from './components/layout';
-import NotFound from './components/notFound';
-export default (data) => (
+
+export default () => (
   <Layout>
     <Switch>
       {
         routes.map(props => {
-          props.component = Loadable({
-            loader: () => import('./' + props.componentName),
+          props.component = Loadable({ // eslint-disable-line  no-param-reassign
+            loader: () => import(`./${props.componentName}`),
             loading: () => null,
-            delay: () => 0,
+            delay: 0,
             timeout: 10000,
           });
-          return <Route key={ props.path } {...props}/>;
+          return <Route key={props.path} {...props}/>; // eslint-disable-line react/prop-types
         })
       }
     </Switch>

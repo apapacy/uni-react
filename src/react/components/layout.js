@@ -1,10 +1,7 @@
-//import { Link } from 'react-router-dom';
 import React from 'react';
 import Link from '../asyncLink';
-//import { Link, Route, Preload } from '../asyncRouter';
 
-
-export default ({ children, title = 'This is the default title' }) => (
+export default ({ children, }) => ( // eslint-disable-line react/prop-types
   <div>
     <header>
       <nav>
@@ -18,4 +15,4 @@ export default ({ children, title = 'This is the default title' }) => (
       {'I`m here to stay'}
     </footer>
   </div>
-)
+);

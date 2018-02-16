@@ -1,22 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
-import invariant from "invariant";
-import { createLocation } from "history";
-import { Link, matchPath } from 'react-router-dom';
+import { Link, matchPath, } from 'react-router-dom';
 import routes from './routes';
-import Loadable from 'react-loadable';
 
+function isModifiedEvent(event) {
+  return !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
+}
 
-
-const isModifiedEvent = event =>
-  !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
-
-
-/**
- * The public API for rendering a history-aware <a>.
- */
 class AsyncLink extends Link {
-
   handleClick = (event) => {
     if (this.props.onClick) this.props.onClick(event);
 
@@ -27,9 +16,10 @@ class AsyncLink extends Link {
       !isModifiedEvent(event) // ignore clicks with modifier keys
     ) {
       event.preventDefault();
-      const { history } = this.context.router;
-      const { replace, to } = this.props;
-      function locate() {
+      const { history, } = this.context.router;
+      const { replace, to, } = this.props;
+
+      function locate() { // eslint-disable-line no-inner-declarations
         if (replace) {
           history.replace(to);
         } else {
@@ -37,9 +27,12 @@ class AsyncLink extends Link {
         }
       }
       if (this.context.router.history.location.pathname) {
-        const route = routes.find((route) => matchPath(this.props.to, route) ? route : null);
-        if (route) {
-          import(`${String('./' + route.componentName)}`).then(function() {locate()})
+        const routeTo = routes.find((route) =>
+          matchPath(this.props.to, route) ? route : null
+        );
+
+        if (routeTo) {
+          import(`./${routeTo.componentName}`).then(() => locate());
         } else {
           locate();
         }
@@ -48,7 +41,6 @@ class AsyncLink extends Link {
       }
     }
   };
-
 }
 
 export default AsyncLink;

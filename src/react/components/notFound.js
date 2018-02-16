@@ -1,6 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router';
-import { connect } from 'react-redux';
+import { connect, } from 'react-redux';
 
 class NotFound extends React.PureComponent {
   render() {
@@ -8,4 +7,4 @@ class NotFound extends React.PureComponent {
   }
 }
 
-export default withRouter(connect()(NotFound));
+export default connect()(NotFound);
