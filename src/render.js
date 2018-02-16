@@ -54,17 +54,28 @@ module.exports = (req, res, next) => {
         res.writeHead(200);
       }
       res.write(`
-        <!doctype html>
-        <script>
-         // WARNING: See the following for security issues around embedding JSON in HTML:
-         // http://redux.js.org/docs/recipes/ServerRendering.html#security-considerations
-         window.__PRELOADED_STATE__ = ${JSON.stringify(store.getState()).replace(/</g, '\\u003c')}
-        </script>
-        <div id="app">${html}</div>
-        <script src='${assets(stats.common)}'></script>
-        ${componentNames.map(componentName =>
-            `<script src='${assets(stats[componentName])}'></script>`
-        )}
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <title>Conduit</title>
+            <!-- Import Ionicon icons & Google Fonts our Bootstrap theme relies on -->
+            <link href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css">
+            <link href="//fonts.googleapis.com/css?family=Titillium+Web:700|Source+Serif+Pro:400,700|Merriweather+Sans:400,700|Source+Sans+Pro:400,300,600,700,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
+            <!-- Import the custom Bootstrap 4 theme from our hosted CDN -->
+            <link rel="stylesheet" href="//demo.productionready.io/main.css">
+          </head>
+          <body>
+            <script>
+              // WARNING: See the following for security issues around embedding JSON in HTML:
+              // http://redux.js.org/docs/recipes/ServerRendering.html#security-considerations
+              window.__PRELOADED_STATE__ = ${JSON.stringify(store.getState()).replace(/</g, '\\u003c')}
+            </script>
+            <section id="app">${html}</section>
+            <script src='${assets(stats.common)}'></script>
+            ${componentNames.map(componentName =>
+              `<script src='${assets(stats[componentName])}'></script>`
+            )}
       `)
       res.end()
     }
