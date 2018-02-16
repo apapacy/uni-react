@@ -15,7 +15,7 @@ npm install
 npm run hot
 ```
 
-### Peoduction mode
+### Production mode
 
 ```
 npm run build
