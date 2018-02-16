@@ -2,11 +2,11 @@ module.exports = [
   {
     path: '/',
     exact: true,
-    componentName: 'components/home',
+    componentName: 'pages/home',
   }, {
-    path: '/users',
+    path: '/new-post',
     exact: true,
-    componentName: 'components/usersList',
+    componentName: 'pages/editor',
   }, {
     path: '/users/page/:page',
     exact: true,
