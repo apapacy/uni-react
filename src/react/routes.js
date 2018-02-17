@@ -8,6 +8,10 @@ module.exports = [
     exact: true,
     componentName: 'pages/editor',
   }, {
+    path: '/sign-up',
+    exact: true,
+    componentName: 'pages/login',
+  }, {
     path: '/users/page/:page',
     exact: true,
     componentName: 'components/usersList',

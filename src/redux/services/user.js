@@ -1,21 +1,25 @@
-export {request} from '../agent';
-const LOGIN_REQUEST = new Symbol('LOGIN_REQUEST');
-const LOGIN_SUCCESS = new Symbol('LOGIN_SUCCESS');
-const LOGIN_FAILURE = new Symbol('LOGIN_FAILURE');
+import {request} from '../agent';
+
+const LOGIN_REQUEST = Symbol('LOGIN_REQUEST');
+const LOGIN_SUCCESS = Symbol('LOGIN_SUCCESS');
+const LOGIN_FAILURE = Symbol('LOGIN_FAILURE');
 
 const initialState = void 0;
 
-export function userReduser(stats = initialState, action) {
+export function userReduser(state = initialState, action) {
   switch (action.type) {
     case LOGIN_REQUEST:
-      return ()
+      return state;
+    default:
+      return state;
   }
 }
 
 export function login({ req, email, password}) {
+  console.log('agent', request)
   return dispatch => {
     dispatch({ type: LOGIN_REQUEST, });
-    return req({
+    return request(req, {
       method: 'post',
       url: '/users/login',
       data: {user: {email, password}},

@@ -5,26 +5,26 @@ class Editor extends React.PureComponent {
     return (
 
 
-<div class="editor-page">
-  <div class="container page">
-    <div class="row">
+<div className="editor-page">
+  <div className="container page">
+    <div className="row">
 
-      <div class="col-md-10 offset-md-1 col-xs-12">
+      <div className="col-md-10 offset-md-1 col-xs-12">
         <form>
           <fieldset>
-            <fieldset class="form-group">
-                <input type="text" class="form-control form-control-lg" placeholder="Article Title"/>
+            <fieldset className="form-group">
+                <input type="text" className="form-control form-control-lg" placeholder="Article Title"/>
             </fieldset>
-            <fieldset class="form-group">
-                <input type="text" class="form-control" placeholder="What's this article about?"/>
+            <fieldset className="form-group">
+                <input type="text" className="form-control" placeholder="What's this article about?"/>
             </fieldset>
-            <fieldset class="form-group">
-                <textarea class="form-control" rows="8" placeholder="Write your article (in markdown)"></textarea>
+            <fieldset className="form-group">
+                <textarea className="form-control" rows="8" placeholder="Write your article (in markdown)"></textarea>
             </fieldset>
-            <fieldset class="form-group">
-                <input type="text" class="form-control" placeholder="Enter tags"/><div class="tag-list"></div>
+            <fieldset className="form-group">
+                <input type="text" className="form-control" placeholder="Enter tags"/><div className="tag-list"></div>
             </fieldset>
-            <button class="btn btn-lg pull-xs-right btn-primary" type="button">
+            <button className="btn btn-lg pull-xs-right btn-primary" type="button">
                 Publish Article
             </button>
           </fieldset>

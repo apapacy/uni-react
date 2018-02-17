@@ -1,10 +1,10 @@
-import axios from 'axtios';
+import axios from 'axios';
 
 const baseURL = 'https://conduit.productionready.io/api'
-const transport = axios.create(
+const transport = axios.create({
   baseURL,
   withCredentials: true,
-);
+});
 let JWT = null;
 
 export function request(req, {url, method, params, data, }) {
