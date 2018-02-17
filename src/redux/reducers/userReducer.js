@@ -22,7 +22,7 @@ export default function userReducer(state = initialState, action) {
     case USER_REQUEST:
       return state;
     case USER_SUCCESS:
-      return { ...state, user: action.payload, };
+      return { ...state, ...action.payload.user, };
     case USER_FAILURE:
       return { ...state, user: void 0, };
     default:

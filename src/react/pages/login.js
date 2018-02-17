@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect, } from 'react-redux';
-import {login} from '../../redux/services/user';
+import {login, me} from '../../redux/services/user';
 
 class Login extends React.PureComponent {
   constructor(props) {
@@ -46,6 +46,9 @@ class Login extends React.PureComponent {
             Sign up
           </button>
         </form>
+        <button onClick={() => ::this.props.me()} className="btn btn-lg btn-primary pull-xs-right">
+          Whois
+        </button>
       </div>
 
     </div>
@@ -56,7 +59,8 @@ class Login extends React.PureComponent {
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: (user) => dispatch(login(user)),
+    login: user => dispatch(login(user)),
+    me: () => dispatch(me()),
   };
 }
 

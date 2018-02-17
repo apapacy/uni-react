@@ -5,16 +5,20 @@ const transport = axios.create({
   baseURL,
   withCredentials: true,
 });
-let JWT = null;
+let JWT = void 0;
+
+export function setJWT(value) {
+  JWT = value;
+}
 
 export function request(req, {url, method, params, data, }) {
   const headers = {};
   if (req) {
     headers.Authorization = req.get('Authorization');
   } else if (JWT) {
-    headers.Authorization = `Token ${token}`;
+    headers.Authorization = `Token ${JWT}`;
   }
-  transport.request({url, method, params, data, headers });
+  return transport.request({url, method, params, data, headers });
 }
 
 const limit = (count, p) => `limit=${count}&offset=${p ? p * count : 0}`;
