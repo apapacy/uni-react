@@ -9,8 +9,9 @@ class Login extends React.PureComponent {
   }
   handleSubmit(event) {
    event.preventDefault();
-   console.log(this.emailInput.value);
-   console.log(this.passwordInput.value);
+   if (this.props.transition) {
+     return;
+   }
    this.props.login({
      email: this.emailInput.value,
      password: this.passwordInput.value,
@@ -64,4 +65,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(state => state, mapDispatchToProps)(Login);
+export default connect(state => state.user || {}, mapDispatchToProps)(Login);

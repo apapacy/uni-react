@@ -14,10 +14,12 @@ const initialState = {};
 
 export default function userReduser(state = initialState, action) {
   switch (action.type) {
+    case LOGIN_REQUEST:
+      return { transition: true };
     case LOGIN_SUCCESS:
-      return { ...action.payload.user };
+      return { ...action.payload.user, transition: false };
     case LOGIN_FAILURE:
-      return { error: action.error, failure: true };
+      return { error: action.error, failure: true, transition: false, };
     case USER_SUCCESS:
       return { ...action.payload.user };
     case USER_FAILURE:
