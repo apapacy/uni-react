@@ -18,4 +18,13 @@ router.get('/users/:id', (req, res) => {
   res.send({ id, name, phone, email, birtday, });
 });
 
+router.post('/token', (req, res) => {
+  if (req.body.token) {
+    res.cookie('token', req.body.token, { signed: true, httpOnly: true });
+  } else {
+    res.cookie('token', '', { signed: false });
+  }
+  res.send('');
+});
+
 module.exports = router;

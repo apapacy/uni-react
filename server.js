@@ -1,17 +1,23 @@
-'use strict';
 const path = require('path');
 const createServer = require('http').createServer;
 const express = require('express');
 const port = Number(process.env.PORT) || 3000;
 const api = require('./src/api/routes');
 const app = express();
+const cookieParser = require('cookie-parser')
+const cookieEncrypter = require('cookie-encrypter')
+const bodyParser = require('body-parser')
 const serverPath = path.resolve(__dirname, './src/render.bundle.js');
 let render = require(serverPath);
 let serverCompiler
-
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isDevelopment = nodeEnv === 'development';
+
 app.set('env', nodeEnv);
+app.use(cookieParser('change secret value'));
+app.use(cookieEncrypter());
+app.use(bodyParser());
+app.use('/api', api);
 
 if (isDevelopment) {
   const webpack = require('webpack');

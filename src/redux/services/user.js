@@ -1,4 +1,5 @@
 import {request, setJWT} from '../agent';
+import axios from 'axios';
 
 const LOGIN_REQUEST = Symbol('LOGIN_REQUEST');
 const LOGIN_SUCCESS = Symbol('LOGIN_SUCCESS');
@@ -38,10 +39,12 @@ export function login({ req, email, password}) {
     }).then(
       data => {
         setJWT(data.data.user.token);
+        axios.post('/api/token', {token: data.data.user.token});
         return dispatch({ type: LOGIN_SUCCESS, payload: data.data, })
       },
       error => {
         setJWT(void 0);
+        axios.post('/api/token', {token: ''});
         return dispatch({ type: LOGIN_FAILURE, error: error.response.data, })
       }
     );
