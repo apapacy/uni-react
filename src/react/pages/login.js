@@ -7,15 +7,18 @@ class Login extends React.PureComponent {
     super(props);
     this.handleSubmit = ::this.handleSubmit;
   }
-  handleSubmit(event) {
+  async handleSubmit(event) {
    event.preventDefault();
    if (this.props.transition) {
      return;
    }
-   this.props.login({
+   await this.props.login({
      email: this.emailInput.value,
      password: this.passwordInput.value,
    });
+   if (this.props.id) {
+    this.passwordInput.value = '';
+   }
  }
   render() {
     return (
@@ -35,13 +38,13 @@ class Login extends React.PureComponent {
 
         <form onSubmit={this.handleSubmit}>
           <fieldset className="form-group">
-            <input className="form-control form-control-lg" type="text" placeholder="Your Name"/>
+            <input ref={input => this.nameInput = input} className="form-control form-control-lg" type="text" placeholder="Your Name" autoComplete="off"/>
           </fieldset>
           <fieldset className="form-group">
-            <input ref={input => this.emailInput = input} className="form-control form-control-lg" type="text" placeholder="Email"/>
+            <input ref={input => this.emailInput = input} className="form-control form-control-lg" type="text" placeholder="Email" autoComplete="off"/>
           </fieldset>
           <fieldset className="form-group">
-            <input ref={input => this.passwordInput = input} className="form-control form-control-lg" type="password" placeholder="Password"/>
+            <input ref={input => this.passwordInput = input} className="form-control form-control-lg" type="password" placeholder="Password" autoComplete="off"/>
           </fieldset>
           <button className="btn btn-lg btn-primary pull-xs-right">
             Sign up
