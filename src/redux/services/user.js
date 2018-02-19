@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { request, setJWT } from '../agent';
-import { parseError } from '../utils';
+import { request, setJWT, } from '../agent';
+import { parseError, } from '../utils';
 
 const LOGIN_REQUEST = Symbol('USER_LOGIN_REQUEST');
 const LOGIN_SUCCESS = Symbol('USER_LOGIN_SUCCESS');
@@ -61,7 +61,7 @@ export function login({ email, password, }) {
       error => {
         setJWT(void 0);
         axios.post('/api/token', { token: '', });
-        return dispatch({ type: LOGIN_FAILURE, payload: parseError(error), });
+        return dispatch({ type: LOGIN_FAILURE, error: parseError(error), });
       }
     );
   };

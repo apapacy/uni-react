@@ -6,8 +6,8 @@ import ErrorsList from '../components/errorsList';
 class Settings extends React.Component {
   constructor(props) {
     super(props);
-    this.handleSubmit = ::this.handleSubmit;
-    this.handleChange = ::this.handleChange;
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.state = {
       ...this.props.user,
       password: '',

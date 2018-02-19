@@ -9,35 +9,36 @@ const cookieEncrypter = require('cookie-encrypter')
 const bodyParser = require('body-parser')
 const serverPath = path.resolve(__dirname, './src/render.bundle.js');
 let render = require(serverPath);
-let serverCompiler
+let serverCompiler;
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isDevelopment = nodeEnv === 'development';
 
 app.set('env', nodeEnv);
 app.use(cookieParser('change secret value'));
-app.use(cookieEncrypter());
+app.use(cookieEncrypter('change secret value'));
 app.use(bodyParser.json());
 app.use('/api', api);
 
 if (isDevelopment) {
   const webpack = require('webpack');
-  serverCompiler = webpack([require('./webpack/config.server')]);
   const webpackClientConfig = require('./webpack/config.client');
   const webpackClientDevMiddleware = require('webpack-dev-middleware');
   const webpackClientHotMiddleware = require('webpack-hot-middleware');
   const clientCompiler = webpack(webpackClientConfig);
+
+  serverCompiler = webpack([ require('./webpack/config.server'), ]);
   app.use(webpackClientDevMiddleware(clientCompiler, {
     publicPath: webpackClientConfig.output.publicPath,
-    headers: {'Access-Control-Allow-Origin': '*'},
-    stats: {colors: true},
+    headers: { 'Access-Control-Allow-Origin': '*', },
+    stats: { colors: true, },
     historyApiFallback: true,
   }));
   app.use(webpackClientHotMiddleware(clientCompiler, {
     log: console.log,
     path: '/__webpack_hmr',
-    heartbeat: 10 * 1000
+    heartbeat: 10 * 1000,
   }));
-  //app.use('/static', express.static('dist'));
+  // app.use('/static', express.static('dist'));
   app.use('/api', api);
   app.use('/', (req, res, next) => render(req, res, next));
 } else {
@@ -52,20 +53,23 @@ app.listen(port, () => {
 
 
 if (isDevelopment) {
-  const clearCache = () => {
+  const clearCache = () => { // eslint-disable-line func-style
     const cacheIds = Object.keys(require.cache);
-    for (let id of cacheIds) {
+
+    for (const id of cacheIds) {
       if (id === serverPath) {
         delete require.cache[id];
         return;
       }
     }
-  }
-  const watch = () => {
+  };
+
+  const watch = () => { // eslint-disable-line func-style
     const compilerOptions = {
       aggregateTimeout: 300,
       poll: 150,
     };
+
     serverCompiler.watch(compilerOptions, onServerChange);
     function onServerChange(err, stats) {
       if (err || stats.compilation && stats.compilation.errors && stats.compilation.errors.length) {
@@ -75,10 +79,11 @@ if (isDevelopment) {
       try {
         render = require(serverPath);
       } catch (ex) {
-        console.log('Error detecded', ex)
+        console.log('Error detecded', ex);
       }
       return;
     }
-  }
+  };
+
   watch();
 }
