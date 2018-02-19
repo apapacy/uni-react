@@ -12,9 +12,9 @@ module.exports = [
     exact: true,
     componentName: 'pages/login',
   }, {
-    path: '/users/page/:page',
+    path: '/settings',
     exact: true,
-    componentName: 'components/usersList',
+    componentName: 'pages/settings',
   }, {
     path: '/users/:id',
     exact: true,

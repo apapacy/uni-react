@@ -9,14 +9,14 @@ class Login extends React.PureComponent {
   }
   async handleSubmit(event) {
    event.preventDefault();
-   if (this.props.transition) {
+   if (this.props.user && this.props.user.transition) {
      return;
    }
    await this.props.login({
      email: this.emailInput.value,
      password: this.passwordInput.value,
    });
-   if (this.props.id) {
+   if (this.props.user && this.props.user.id) {
     this.passwordInput.value = '';
    }
  }
@@ -64,8 +64,8 @@ class Login extends React.PureComponent {
 function mapDispatchToProps(dispatch) {
   return {
     login: user => dispatch(login(user)),
-    me: () => dispatch(me()),
+    me: () => dispatch(me({})),
   };
 }
 
-export default connect(state => state.user || {}, mapDispatchToProps)(Login);
+export default connect(state => ({ user: state.user }), mapDispatchToProps)(Login);

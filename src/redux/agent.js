@@ -13,11 +13,12 @@ export function setJWT(value) {
 
 export function request(req, {url, method, params, data, }) {
   const headers = {};
-  if (req) {
-    headers.Authorization = req.get('Authorization');
+  if (req && req.signedCookies.token) {
+    headers.Authorization = `Token ${req.signedCookies.token}`;
   } else if (JWT) {
     headers.Authorization = `Token ${JWT}`;
   }
+  console.log(headers);
   return transport.request({url, method, params, data, headers });
 }
 

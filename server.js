@@ -16,7 +16,7 @@ const isDevelopment = nodeEnv === 'development';
 app.set('env', nodeEnv);
 app.use(cookieParser('change secret value'));
 app.use(cookieEncrypter());
-app.use(bodyParser());
+app.use(bodyParser.json());
 app.use('/api', api);
 
 if (isDevelopment) {
