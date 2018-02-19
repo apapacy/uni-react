@@ -21,7 +21,6 @@ export function request(req, {url, method, params, data, }) {
   } else if (JWT) {
     headers.Authorization = `Token ${JWT}`;
   }
-  console.log(headers);
   return transport.request({url, method, params, data, headers });
 }
 
