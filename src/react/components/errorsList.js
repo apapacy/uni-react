@@ -6,7 +6,8 @@ export default(props) => (
     {
       Object.keys(props.error.errors)
         .map(field => props.error.errors[field]
-          .map(message => <li>{field} {message}</li>))
+          .map(message =>
+            <li key={`field:${field},message:${message}`}>{field} {message}</li>))
     }
   </ul>
   : null);

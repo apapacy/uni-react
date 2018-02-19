@@ -1,11 +1,8 @@
-'use strict';
-import fs from 'fs';
-import { createServer } from 'http';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { StaticRouter, Switch, Route } from 'react-router';
-import { matchPath } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import {StaticRouter, Switch, Route,} from 'react-router';
+import {matchPath} from 'react-router-dom';
+import {Provider} from 'react-redux';
 import routes from './react/routes';
 import AppRouter from './react/serverRouter';
 import createStore from './redux/store';
@@ -28,26 +25,30 @@ module.exports = (req, res, next) => {
       componentNames.push(route.componentName);
       componentsPath.push(route.path);
       if (typeof component.getInitialProps == 'function') {
-        promises.push(component.getInitialProps({req, res, next, match, store}));
+        promises.push(component.getInitialProps({
+          req,
+          res,
+          next,
+          match,
+          store,
+        }));
       }
     }
     return match;
   })
 
   Promise.all(promises).then(data => {
-    const context = {data};
-    const html = ReactDOMServer.renderToString(
-      <Provider store={store}>
-        <StaticRouter location={req.url} context={context}>
-            <AppRouter/>
-        </StaticRouter>
-      </Provider>
-    )
+    const context = {
+      data
+    };
+    const html = ReactDOMServer.renderToString(<Provider store={store}>
+      <StaticRouter location={req.url} context={context}>
+        <AppRouter/>
+      </StaticRouter>
+    </Provider>)
 
     if (context.url) {
-      res.writeHead(301, {
-        Location: context.url
-      })
+      res.writeHead(301, {Location: context.url})
       res.end()
     } else {
       if (componentsPath.length === 0 || componentsPath[0] === '*') {
@@ -70,13 +71,11 @@ module.exports = (req, res, next) => {
               // WARNING: See the following for security issues around embedding JSON in HTML:
               // http://redux.js.org/docs/recipes/ServerRendering.html#security-considerations
               window.__PRELOADED_STATE__ = ${JSON.stringify(store.getState()).replace(/</g, '\\u003c')};
-              window.__GWT__ = "${(req.signedCookies.token || '').replace(/</g, '\\u003c')}";
+              window.__GWT__ = "${ (req.signedCookies.token || '').replace(/</g, '\\u003c')}";
             </script>
             <section id="app">${html}</section>
             <script src='${assets(stats.common)}'></script>
-            ${componentNames.map(componentName =>
-              `<script src='${assets(stats[componentName])}'></script>`
-            )}
+            ${componentNames.map(componentName => `<script src='${assets(stats[componentName])}'></script>`)}
       `)
       res.end()
     }

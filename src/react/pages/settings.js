@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {me, save, clearErrors,} from '../../redux/services/user';
+import {me, save, clearErrors} from '../../redux/services/user';
 import ErrorsList from '../components/errorsList';
 
 class Settings extends React.Component {
@@ -8,25 +8,25 @@ class Settings extends React.Component {
     super(props);
     this.handleSubmit =::this.handleSubmit;
     this.handleChange =::this.handleChange;
-    this.state = { ...this.props.user, password: '', };
+    this.state = {
+      ...this.props.user,
+      password: ''
+    };
   }
 
   async componentDidMount() {
     await Settings.getInitialProps(this.props);
-    this.setState({ ...this.props.user, password: '', });
+    this.setState({
+      ...this.props.user,
+      password: ''
+    });
   }
 
   async componentWillUnmount() {
     this.props.clearErrors();
   }
 
-  static async getInitialProps({
-    req,
-    match,
-    store,
-    dispatch,
-    user,
-  }) {
+  static async getInitialProps({req, match, store, dispatch, user}) {
     if (user && user.id) {
       return;
     }
@@ -44,26 +44,14 @@ class Settings extends React.Component {
     if (this.props.user && this.props.user.transition) {
       return;
     }
-    const {
-      bio,
-      email,
-      image,
-      username,
-      password,
-    } = this.state;
-    await this.props.save({
-      bio,
-      email,
-      image,
-      username,
-      password,
-    });
+    const {bio, email, image, username, password} = this.state;
+    await this.props.save({bio, email, image, username, password});
   }
 
   handleChange(event) {
     this.setState({
       ...this.state,
-      [event.target.name]: event.target.value,
+      [event.target.name]: event.target.value
     });
   }
 
@@ -109,7 +97,7 @@ function mapDispatchToProps(dispatch) {
     me: () => dispatch(me({})),
     save: user => dispatch(save(user)),
     clearErrors: () => dispatch(clearErrors()),
-    dispatch: dispatch,
+    dispatch: dispatch
   };
 }
 
