@@ -5,14 +5,14 @@ import {login, me,} from '../../redux/services/user';
 class Login extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.handleSubmit =::this.handleSubmit;
+    this.handleSubmit = ::this.handleSubmit;
   }
   async handleSubmit(event) {
     event.preventDefault();
     if (this.props.user && this.props.user.transition) {
       return;
     }
-    await this.props.login({email: this.emailInput.value, password: this.passwordInput.value});
+    await this.props.dispatch(login({email: this.emailInput.value, password: this.passwordInput.value}));
     if (this.props.user && this.props.user.id) {
       this.passwordInput.value = '';
     }
@@ -43,7 +43,7 @@ class Login extends React.PureComponent {
                 Sign up
               </button>
             </form>
-            <button onClick={() =>::this.props.me()} className='btn btn-lg btn-primary pull-xs-right'>
+            <button onClick={() =>::this.props.dispatch(me({}))} className='btn btn-lg btn-primary pull-xs-right'>
               Whois
             </button>
           </div>
@@ -53,11 +53,5 @@ class Login extends React.PureComponent {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    login: user => dispatch(login(user)),
-    me: () => dispatch(me({}))
-  };
-}
 
-export default connect(state => ({user: state.user}), mapDispatchToProps)(Login);
+export default connect(state => ({ user: state.user, }))(Login);

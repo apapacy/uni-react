@@ -18,9 +18,9 @@ const initialState = {};
 export default function userReduser(state = initialState, action) {
   switch (action.type) {
     case LOGIN_REQUEST:
-      return { transition: true };
+      return { transition: true, };
     case LOGIN_SUCCESS:
-      return { ...action.payload.user, transition: false };
+      return { ...action.payload.user, transition: false, };
     case LOGIN_FAILURE:
       return { error: action.error, transition: false, };
     case USER_REQUEST:
@@ -28,46 +28,46 @@ export default function userReduser(state = initialState, action) {
     case USER_SUCCESS:
       return { ...action.payload.user, transition: false, };
     case USER_FAILURE:
-      return { error: action.error, transition: false, };
+      return { ...state, error: action.error, transition: false, };
     case SAVE_REQUEST:
-      return { ...state, transition: true };
+      return { ...state, transition: true, };
     case SAVE_SUCCESS:
-      return { ...action.payload.user, transition: false };
+      return { ...action.payload.user, transition: false, };
     case SAVE_FAILURE:
       return { ...state, error: action.error, transition: false, };
-    case CLEAR_ERRORS:
-      const {error, ...nextState} = state
-      return nextState;
+    case CLEAR_ERRORS: // eslint-disable-line no-case-declarations
+      const { error, ...nextState } = state; // eslint-disable-line no-case-declarations, no-unused-vars
+
+      return nextState; // eslint-disable-line no-case-declarations
     default:
       return state;
   }
 }
 
-export function login({ email, password}) {
-  console.log('agent', request)
+export function login({ email, password, }) {
   return dispatch => {
     dispatch({ type: LOGIN_REQUEST, });
     return request(void 0, {
       method: 'post',
       url: '/users/login',
-      data: {user: {email, password}},
+      data: { user: { email, password, }, },
       withCredentials: true,
     }).then(
       data => {
         setJWT(data.data.user.token);
-        axios.post('/api/token', {token: data.data.user.token});
-        return dispatch({ type: LOGIN_SUCCESS, payload: data.data, })
+        axios.post('/api/token', { token: data.data.user.token, });
+        return dispatch({ type: LOGIN_SUCCESS, payload: data.data, });
       },
       error => {
         setJWT(void 0);
-        axios.post('/api/token', {token: ''});
-        return dispatch({ type: LOGIN_FAILURE, payload: parseError(error) })
+        axios.post('/api/token', { token: '', });
+        return dispatch({ type: LOGIN_FAILURE, payload: parseError(error), });
       }
     );
   };
 }
 
-export function me({ req }) {
+export function me({ req, }) {
   return dispatch => {
     dispatch({ type: USER_REQUEST, });
     return request(req, {
@@ -76,20 +76,21 @@ export function me({ req }) {
       withCredentials: true,
     }).then(
       data => {
-        return dispatch({ type: USER_SUCCESS, payload: data.data, })
+        return dispatch({ type: USER_SUCCESS, payload: data.data, });
       },
       error => {
-        return dispatch({ type: USER_FAILURE,  error: parseError(error) })
+        return dispatch({ type: USER_FAILURE,  error: parseError(error), });
       }
     );
   };
 }
 
-export function save({ bio, email, image, username, password }) {
+export function save({ bio, email, image, username, password, }) {
   if (!email || !username) {
-    return dispatch({ type: SAVE_FAILURE, error: { message: 'Empty username or email' } });
+    return { type: SAVE_FAILURE, error: { message: 'Empty username or email', }, };
   }
-  const user = { bio, email, image, username, }
+  const user = { bio, email, image, username, };
+
   if (password) {
     user.password = password;
   }
@@ -98,14 +99,14 @@ export function save({ bio, email, image, username, password }) {
     return request(void 0, {
       method: 'put',
       url: '/user',
-      data: { user },
+      data: { user, },
       withCredentials: true,
     }).then(
       data => {
         return dispatch({ type: SAVE_SUCCESS, payload: data.data, });
       },
       error => {
-        return dispatch({ type: SAVE_FAILURE, error: parseError(error) });
+        return dispatch({ type: SAVE_FAILURE, error: parseError(error), });
       }
     );
   };

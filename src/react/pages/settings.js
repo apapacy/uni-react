@@ -6,11 +6,11 @@ import ErrorsList from '../components/errorsList';
 class Settings extends React.Component {
   constructor(props) {
     super(props);
-    this.handleSubmit =::this.handleSubmit;
-    this.handleChange =::this.handleChange;
+    this.handleSubmit = ::this.handleSubmit;
+    this.handleChange = ::this.handleChange;
     this.state = {
       ...this.props.user,
-      password: ''
+      password: '',
     };
   }
 
@@ -18,25 +18,12 @@ class Settings extends React.Component {
     await Settings.getInitialProps(this.props);
     this.setState({
       ...this.props.user,
-      password: ''
+      password: '',
     });
   }
 
   async componentWillUnmount() {
-    this.props.clearErrors();
-  }
-
-  static async getInitialProps({req, match, store, dispatch, user}) {
-    if (user && user.id) {
-      return;
-    }
-    const action = me({req});
-    if (req) {
-      await store.dispatch(action);
-    } else {
-      dispatch(action);
-    }
-    return;
+    this.props.dispatch(clearErrors());
   }
 
   async handleSubmit(event) {
@@ -44,15 +31,30 @@ class Settings extends React.Component {
     if (this.props.user && this.props.user.transition) {
       return;
     }
-    const {bio, email, image, username, password} = this.state;
-    await this.props.save({bio, email, image, username, password});
+    const { bio, email, image, username, password, } = this.state;
+
+    await this.props.dispatch(save({ bio, email, image, username, password, }));
   }
 
   handleChange(event) {
     this.setState({
       ...this.state,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
+  }
+
+  static async getInitialProps({ req, store, dispatch, user, }) {
+    if (user && user.id) {
+      return;
+    }
+    const action = me({ req, });
+
+    if (req) {
+      await store.dispatch(action);
+    } else {
+      dispatch(action);
+    }
+    return;
   }
 
   render() {
@@ -77,7 +79,7 @@ class Settings extends React.Component {
                   <input className='form-control form-control-lg' type='text' placeholder='Email' name='email' onChange={this.handleChange} autoComplete='off' value={this.state.email}/>
                 </fieldset>
                 <fieldset className='form-group'>
-                  <input className='form-control form-control-lg' type='password' placeholder='Password' name='password' onChange={this.handleChange} autoComplete='off' value={this.state.password}/>
+                  <input ref={input => this.passwordInput = input} className='form-control form-control-lg' type='password' placeholder='Password' name='password' onChange={this.handleChange} autoComplete='off' value={this.state.password}/>
                 </fieldset>
                 <button className='btn btn-lg btn-primary pull-xs-right'>
                   Update Settings
@@ -91,14 +93,4 @@ class Settings extends React.Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    login: user => dispatch(login(user)),
-    me: () => dispatch(me({})),
-    save: user => dispatch(save(user)),
-    clearErrors: () => dispatch(clearErrors()),
-    dispatch: dispatch
-  };
-}
-
-export default connect(state => ({user: state.user}), mapDispatchToProps)(Settings);
+export default connect(state => ({ user: state.user, }))(Settings);

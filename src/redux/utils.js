@@ -6,7 +6,7 @@ export function parseError(error) {
     errors = error.response.data.errors;
   }
   if (error) {
-    message = errors.message;
+    message = error.message;
   }
   return { errors, message, };
 }
