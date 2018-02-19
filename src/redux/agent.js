@@ -5,7 +5,10 @@ const transport = axios.create({
   baseURL,
   withCredentials: true,
 });
+
 let JWT = void 0;
+if (typeof window !== 'undefined')
+ JWT = window.__GWT__;
 
 export function setJWT(value) {
   JWT = value;

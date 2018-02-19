@@ -69,7 +69,8 @@ module.exports = (req, res, next) => {
             <script>
               // WARNING: See the following for security issues around embedding JSON in HTML:
               // http://redux.js.org/docs/recipes/ServerRendering.html#security-considerations
-              window.__PRELOADED_STATE__ = ${JSON.stringify(store.getState()).replace(/</g, '\\u003c')}
+              window.__PRELOADED_STATE__ = ${JSON.stringify(store.getState()).replace(/</g, '\\u003c')};
+              window.__GWT__ = "${(req.signedCookies.token || '').replace(/</g, '\\u003c')}";
             </script>
             <section id="app">${html}</section>
             <script src='${assets(stats.common)}'></script>

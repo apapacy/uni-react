@@ -28,11 +28,11 @@ export default function userReduser(state = initialState, action) {
     case USER_FAILURE:
       return { error: action.error, failure: true };
     case SAVE_REQUEST:
-      return { transition: true };
+      return { ...state, transition: true };
     case SAVE_SUCCESS:
       return { ...action.payload.user, transition: false };
     case SAVE_FAILURE:
-      return { error: action.error, failure: true, transition: false, };
+      return { ...state, error: action.error, failure: true, transition: false, };
     default:
       return state;
   }
@@ -84,16 +84,16 @@ export function save({ bio, email, image, username, password }) {
   if (!email || !username) {
     return dispatch({ type: SAVE_FAILURE, error: { message: 'Empty username or email' } });
   }
-  const data = { bio, email, image, username, }
+  const user = { bio, email, image, username, }
   if (password) {
-    data.password = password;
+    user.password = password;
   }
   return dispatch => {
     dispatch({ type: SAVE_REQUEST, });
     return request(void 0, {
       method: 'put',
       url: '/user',
-      data,
+      data: { user },
       withCredentials: true,
     }).then(
       data => {

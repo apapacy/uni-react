@@ -10,7 +10,7 @@ class Settings extends React.PureComponent {
 
   async componentDidMount() {
     await Settings.getInitialProps(this.props);
-    this.fillInputs();``
+    this.fillInputs();
   }
 
   static async getInitialProps({ req, match, store, dispatch, user, }) {
