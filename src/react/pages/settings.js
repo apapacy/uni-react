@@ -6,12 +6,13 @@ class Settings extends React.Component {
   constructor(props) {
     super(props);
     this.handleSubmit = ::this.handleSubmit;
-    this.state = props.user || {};
+    this.handleChange = ::this.handleChange;
+    this.state = {...this.props.user, password: ''};
   }
 
   async componentDidMount() {
     await Settings.getInitialProps(this.props);
-    this.setState(this.props.user)
+    this.setState({...this.props.user, password: ''})
   }
 
   static async getInitialProps({ req, match, store, dispatch, user, }) {
@@ -27,27 +28,19 @@ class Settings extends React.Component {
     return;
   }
 
-  fillInputs() {
-    this.bioInput.value = this.props.user.bio || '';
-    this.emailInput.value = this.props.user.email || '';
-    // this.imageInput.value = this.props.user.image || '';
-    this.usernameInput.value = this.props.user.username || '';
-    this.usernameInput.password = '';
-  }
-
   async handleSubmit(event) {
    event.preventDefault();
    if (this.props.user && this.props.user.transition) {
      return;
    }
-   await this.props.save({
-     bio: this.bioInput.value,
-     email: this.emailInput.value,
-     image: this.imageInput.value,
-     username: this.usernameInput.value,
-     password: this.passwordInput.value,
-   });
-   this.fillInputs();
+   const { bio, email, image, username, password, } = this.state;
+   await this.props.save({ bio, email, image, username, password, });
+ }
+
+ handleChange(event) {
+   console.log('***********************')
+   console.log(event.target.name, event.target.value);
+   this.setState({ ...this.state, [event.target.name]: event.target.value });
  }
 
   render() {
@@ -61,23 +54,23 @@ class Settings extends React.Component {
           <fieldset>
               <fieldset className="form-group">
                 <input className="form-control" type="text" placeholder="URL of profile picture"
-                  ref={input => this.imageInput = input} autoComplete='off' value={this.state.image}/>
+                  name='image' onChange={this.handleChange} autoComplete='off' value={this.state.image}/>
               </fieldset>
               <fieldset className="form-group">
                 <input className="form-control form-control-lg" type="text" placeholder="Your Name"
-                  ref={input => this.usernameInput = input} autoComplete='off'/>
+                  name='username' onChange={this.handleChange} autoComplete='off' value={this.state.username}/>
               </fieldset>
               <fieldset className="form-group">
                 <textarea className="form-control form-control-lg" rows="8" placeholder="Short bio about you"
-                  ref={input => this.bioInput = input} autoComplete='off'></textarea>
+                  name='bio' onChange={this.handleChange} autoComplete='off' value={this.state.bio}></textarea>
               </fieldset>
               <fieldset className="form-group">
                 <input className="form-control form-control-lg" type="text" placeholder="Email"
-                  ref={input => this.emailInput = input} autoComplete='off'/>
+                  name='email' onChange={this.handleChange} autoComplete='off' value={this.state.email}/>
               </fieldset>
               <fieldset className="form-group">
-                <input ref={input => this.passwordInput = input} className="form-control form-control-lg"
-                  type="password" placeholder="Password" autoComplete='off'/>
+                <input className="form-control form-control-lg" type="password" placeholder="Password"
+                  name='password' onChange={this.handleChange} autoComplete='off' value={this.state.password}/>
               </fieldset>
               <button className="btn btn-lg btn-primary pull-xs-right">
                 Update Settings
