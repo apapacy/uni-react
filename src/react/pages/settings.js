@@ -2,15 +2,16 @@ import React from 'react';
 import { connect, } from 'react-redux';
 import { me, save, } from '../../redux/services/user';
 
-class Settings extends React.PureComponent {
+class Settings extends React.Component {
   constructor(props) {
     super(props);
     this.handleSubmit = ::this.handleSubmit;
+    this.state = props.user || {};
   }
 
   async componentDidMount() {
     await Settings.getInitialProps(this.props);
-    this.fillInputs();
+    this.setState(this.props.user)
   }
 
   static async getInitialProps({ req, match, store, dispatch, user, }) {
@@ -29,7 +30,7 @@ class Settings extends React.PureComponent {
   fillInputs() {
     this.bioInput.value = this.props.user.bio || '';
     this.emailInput.value = this.props.user.email || '';
-    this.imageInput.value = this.props.user.image || '';
+    // this.imageInput.value = this.props.user.image || '';
     this.usernameInput.value = this.props.user.username || '';
     this.usernameInput.password = '';
   }
@@ -60,7 +61,7 @@ class Settings extends React.PureComponent {
           <fieldset>
               <fieldset className="form-group">
                 <input className="form-control" type="text" placeholder="URL of profile picture"
-                  ref={input => this.imageInput = input} autoComplete='off'/>
+                  ref={input => this.imageInput = input} autoComplete='off' value={this.state.image}/>
               </fieldset>
               <fieldset className="form-group">
                 <input className="form-control form-control-lg" type="text" placeholder="Your Name"
