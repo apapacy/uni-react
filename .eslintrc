@@ -1,6 +1,12 @@
 {
     "extends": "airbnb",
     "rules": {
-        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "object-curly-newline": ["error", {
+            "ObjectExpression": { "multiline": true },
+            "ObjectPattern": { "multiline": true },
+            "ImportDeclaration": { "multiline": true },
+            "ExportDeclaration": { "multiline": true }
+        }]
      }
 }

@@ -4,9 +4,7 @@ import { login, me } from '../../redux/services/user';
 import ErrorsList from '../components/errorsList';
 
 class Login extends React.PureComponent {
-  static async getInitialProps({
-    req, store, dispatch, user,
-  }) {
+  static async getInitialProps({ req, store, dispatch, user }) {
     if (user && user.id) {
       return;
     }
@@ -81,9 +79,9 @@ class Login extends React.PureComponent {
             </div>
           </div>
         </div>
-      </div>);
+      </div>
+    );
   }
 }
-
 
 export default connect(state => ({ user: state.user }))(Login);
