@@ -1,6 +1,27 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { me, } from '../../redux/services/user';
+import { feed, } from '../../redux/services/articles';
+
 
 class Home extends React.PureComponent {
+  async componentDidMount() {
+    await Home.getInitialProps(this.props);
+  }
+
+  static async getInitialProps({ req, store, dispatch, user, }) {
+    const action = me({ req, });
+
+    if (req) {
+      await store.dispatch(action);
+      await store.dispatch(feed({ req, filter: 'feed', }));
+    } else {
+      await dispatch(action);
+      await dispatch(feed({ req, filter: 'feed', }));
+    }
+    return;
+  }
+
   render() {
     return (<div className='home-page'>
       <div className='banner'>
@@ -88,4 +109,4 @@ class Home extends React.PureComponent {
   }
 }
 
-export default Home;
+export default connect(state => ({ user: state.user, articles: state.articles, }))(Home);

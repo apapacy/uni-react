@@ -27,7 +27,11 @@ export function request(req, { url, method, params, data, }) {
   return transport.request({ url, method, params, data, headers, });
 }
 
-// const limit = (count, p) => `limit=${count}&offset=${p ? p * count : 0}`;
+function limit(count = 10, page = 1) {
+  const offset = (page - 1) * count;
+
+  return `limit=${Number(count)}&offset=${offset}`;
+}
 
 /*
 const Auth = {
