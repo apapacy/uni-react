@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { login, me } from '../../redux/services/user';
 import ErrorsList from '../components/errorsList';
 
@@ -103,5 +104,16 @@ class Login extends React.PureComponent {
     );
   }
 }
+
+Login.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    username: PropTypes.string,
+    error: PropTypes.object,
+    transition: PropTypes.bool,
+  }).isRequired,
+  match: PropTypes.shape({ params: PropTypes.object }).isRequired,
+};
 
 export default connect(state => ({ user: state.user }))(Login);
