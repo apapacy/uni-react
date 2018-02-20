@@ -7,7 +7,7 @@ import { login, me, logout } from '../../redux/services/user';
 import ErrorsList from '../components/errorsList';
 
 class Login extends React.PureComponent {
-  static async getInitialProps({ req, res, store, dispatch, match, user }) {
+  static async getInitialProps({ req, res, store, dispatch, match }) {
     const execute = dispatch || store.dispatch;
     if (match.params[0] === 'sign-out') {
       if (req) {
@@ -15,8 +15,6 @@ class Login extends React.PureComponent {
       } else {
         await dispatch(logout());
       }
-    } else if (!user || !user.id) {
-      await execute(me({ req }));
     }
   }
 
