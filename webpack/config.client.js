@@ -31,7 +31,7 @@ module.exports = {
     chunkFilename: isDevelopment ? '[name].bundle.js' : '[name].[hash].bundle.js',
   },
   module: {
-    rules: [ {
+    rules: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
       loader: 'babel-loader',
@@ -50,30 +50,30 @@ module.exports = {
           'syntax-dynamic-import',
         ].concat(isDevelopment ? [
           ['react-transform', {
-            'transforms': [ {
-              'transform': 'react-transform-hmr',
-              'imports': [ 'react', ],
-              'locals': [ 'module', ],
-            }, ],
-          }, ],
+            transforms: [{
+              transform: 'react-transform-hmr',
+              imports: ['react'],
+              locals: ['module'],
+            }],
+          }],
         ] : [
-        ]
-        ),
+        ]),
       },
-    }, ],
+    }],
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.NamedModulesPlugin(),
     function StatsPlugin() {
-      this.plugin('done', (stats) =>
-        require('fs').writeFileSync(path.join(__dirname, '../dist', 'stats.generated.js'), // eslint-disable-line no-sync
-          `module.exports=${JSON.stringify(stats.toJson().assetsByChunkName)};\n`)
-      );
+      this.plugin('done', stats =>
+        require('fs').writeFileSync( // eslint-disable-line no-sync, global-require
+          path.join(__dirname, '../dist', 'stats.generated.js'),
+          `module.exports=${JSON.stringify(stats.toJson().assetsByChunkName)};\n`
+        ));
     },
   ].concat(isDevelopment ? [
+    new webpack.HotModuleReplacementPlugin(),
   ] : [
     new CommonsChunkPlugin({
       name: 'common',

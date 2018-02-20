@@ -11,6 +11,12 @@ let render = require(serverPath);
 let serverCompiler;
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isDevelopment = nodeEnv === 'development';
+const apicache = require('apicache');
+const cache = apicache.options({
+  appendKey: req => req.get('Authorization'),
+  defaultDuration: 1000,
+  headerBlacklist: ['Authorization', 'authorization'],
+}).middleware;
 
 app.set('env', nodeEnv);
 app.use(cookieParser('change secret value'));
@@ -44,7 +50,7 @@ if (isDevelopment) {
 } else {
   app.use('/static', express.static('dist'));
   app.use('/api', api);
-  app.use('/', render);
+  app.use('/', cache(1000), render);
 }
 
 app.listen(port, () => {

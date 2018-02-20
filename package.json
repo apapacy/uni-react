@@ -21,6 +21,7 @@
   "homepage": "https://github.com/apapacy/iso-react#readme",
   "dependencies": {
     "animated": "^0.2.1",
+    "apicache": "^1.2.0",
     "axios": "^0.17.1",
     "babel": "^6.23.0",
     "babel-eslint": "^8.2.2",
@@ -37,6 +38,7 @@
     "express": "^4.16.2",
     "history": "^4.7.2",
     "loadable-components": "^1.1.1",
+    "pm2": "^2.10.1",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dev-middleware": "^2.1.9",
