@@ -8,13 +8,8 @@ class Login extends React.PureComponent {
     if (user && user.id) {
       return;
     }
-    const action = me({ req });
-
-    if (req) {
-      await store.dispatch(action);
-    } else {
-      await dispatch(action);
-    }
+    const execute = dispatch || store.dispatch;
+    await execute(me({ req }));
   }
 
   constructor(props) {

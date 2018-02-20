@@ -8,13 +8,8 @@ class Settings extends React.Component {
     if (user && user.id) {
       return;
     }
-    const action = me({ req });
-
-    if (req) {
-      await store.dispatch(action);
-    } else {
-      dispatch(action);
-    }
+    const execute = dispatch || store.dispatch;
+    await execute(me({ req }));
   }
 
   constructor(props) {
@@ -44,9 +39,9 @@ class Settings extends React.Component {
     if (this.props.user && this.props.user.transition) {
       return;
     }
-    const { bio, email, image, username, password, } = this.state;
+    const { bio, email, image, username, password } = this.state;
 
-    await this.props.dispatch(save({ bio, email, image, username, password, }));
+    await this.props.dispatch(save({ bio, email, image, username, password }));
   }
 
   handleChange(event) {

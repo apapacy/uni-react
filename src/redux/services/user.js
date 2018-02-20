@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { request, setJWT, } from '../agent';
-import { parseError, } from '../utils';
+import { request, setJWT } from '../agent';
+import { parseError } from '../utils';
 
 const LOGIN_REQUEST = Symbol('USER_LOGIN_REQUEST');
 const LOGIN_SUCCESS = Symbol('USER_LOGIN_SUCCESS');
@@ -18,23 +18,23 @@ const initialState = {};
 export default function userReduser(state = initialState, action) {
   switch (action.type) {
     case LOGIN_REQUEST:
-      return { transition: true, };
+      return { transition: true };
     case LOGIN_SUCCESS:
-      return { ...action.payload.user, transition: false, };
+      return { ...action.payload.user, transition: false };
     case LOGIN_FAILURE:
-      return { error: action.error, transition: false, };
+      return { error: action.error, transition: false };
     case USER_REQUEST:
-      return { ...state, transition: true, };
+      return { ...state, transition: true };
     case USER_SUCCESS:
-      return { ...action.payload.user, transition: false, };
+      return { ...action.payload.user, transition: false };
     case USER_FAILURE:
-      return { ...state, error: action.error, transition: false, };
+      return { ...state, error: action.error, transition: false };
     case SAVE_REQUEST:
-      return { ...state, transition: true, };
+      return { ...state, transition: true };
     case SAVE_SUCCESS:
-      return { ...action.payload.user, transition: false, };
+      return { ...action.payload.user, transition: false };
     case SAVE_FAILURE:
-      return { ...state, error: action.error, transition: false, };
+      return { ...state, error: action.error, transition: false };
     case CLEAR_ERRORS: // eslint-disable-line no-case-declarations
       const { error, ...nextState } = state; // eslint-disable-line no-case-declarations, no-unused-vars
 
@@ -44,74 +44,66 @@ export default function userReduser(state = initialState, action) {
   }
 }
 
-export function login({ email, password, }) {
-  return dispatch => {
-    dispatch({ type: LOGIN_REQUEST, });
-    return request(void 0, {
+export function login({ email, password }) {
+  return (dispatch) => {
+    dispatch({ type: LOGIN_REQUEST });
+
+    return request(undefined, {
       method: 'post',
       url: '/users/login',
-      data: { user: { email, password, }, },
-      withCredentials: true,
+      data: { user: { email, password } },
     }).then(
-      data => {
-        setJWT(data.data.user.token);
-        axios.post('/api/token', { token: data.data.user.token, });
-        return dispatch({ type: LOGIN_SUCCESS, payload: data.data, });
+      (response) => {
+        setJWT(response.data.user.token);
+        axios.post('/api/token', { token: response.data.user.token });
+        dispatch({ type: LOGIN_SUCCESS, payload: response.data });
       },
-      error => {
-        setJWT(void 0);
-        axios.post('/api/token', { token: '', });
-        return dispatch({ type: LOGIN_FAILURE, error: parseError(error), });
-      }
+      (error) => {
+        setJWT(undefined);
+        axios.post('/api/token', { token: '' });
+        dispatch({ type: LOGIN_FAILURE, error: parseError(error) });
+      },
     );
   };
 }
 
-export function me({ req, }) {
-  return dispatch => {
-    dispatch({ type: USER_REQUEST, });
+export function me({ req }) {
+  return (dispatch) => {
+    dispatch({ type: USER_REQUEST });
+
     return request(req, {
       method: 'get',
       url: '/user',
-      withCredentials: true,
     }).then(
-      data => {
-        return dispatch({ type: USER_SUCCESS, payload: data.data, });
-      },
-      error => {
-        return dispatch({ type: USER_FAILURE,  error: parseError(error), });
-      }
+      response => dispatch({ type: USER_SUCCESS, payload: response.data }),
+      error => dispatch({ type: USER_FAILURE, error: parseError(error) }),
     );
   };
 }
 
-export function save({ bio, email, image, username, password, }) {
+export function save({ bio, email, image, username, password }) {
   if (!email || !username) {
-    return { type: SAVE_FAILURE, error: { message: 'Empty username or email', }, };
+    return { type: SAVE_FAILURE, error: { message: 'Empty username or email' } };
   }
-  const user = { bio, email, image, username, };
+  const user = { bio, email, image, username };
 
   if (password) {
     user.password = password;
   }
-  return dispatch => {
-    dispatch({ type: SAVE_REQUEST, });
-    return request(void 0, {
+  return (dispatch) => {
+    dispatch({ type: SAVE_REQUEST });
+    
+    return request(undefined, {
       method: 'put',
       url: '/user',
-      data: { user, },
-      withCredentials: true,
+      data: { user },
     }).then(
-      data => {
-        return dispatch({ type: SAVE_SUCCESS, payload: data.data, });
-      },
-      error => {
-        return dispatch({ type: SAVE_FAILURE, error: parseError(error), });
-      }
+      response => dispatch({ type: SAVE_SUCCESS, payload: response.data }),
+      error => dispatch({ type: SAVE_FAILURE, error: parseError(error) }),
     );
   };
 }
 
 export function clearErrors() {
-  return { type: CLEAR_ERRORS, };
+  return { type: CLEAR_ERRORS };
 }

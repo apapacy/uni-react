@@ -1,5 +1,5 @@
-import { request, } from '../agent';
-import { parseError, } from '../utils';
+import { request } from '../agent';
+import { parseError } from '../utils';
 
 const ARTICLES_REQUEST = Symbol('ARTICLES_REQUEST');
 const ARTICLES_SUCCESS = Symbol('ARTICLES_SUCCESS');
@@ -17,11 +17,11 @@ const initialState = {
 export default function userReduser(state = initialState, action) {
   switch (action.type) {
     case ARTICLES_REQUEST:
-      return { transition: true, };
+      return { transition: true };
     case ARTICLES_SUCCESS:
-      return { ...action.payload, transition: false, };
+      return { ...action.payload, transition: false };
     case ARTICLES_FAILURE:
-      return { error: action.error, transition: false, };
+      return { error: action.error, transition: false };
     case CLEAR_ERRORS: // eslint-disable-line no-case-declarations
       const { error, ...nextState } = state; // eslint-disable-line no-case-declarations, no-unused-vars
 
@@ -31,7 +31,7 @@ export default function userReduser(state = initialState, action) {
   }
 }
 
-export function feed({ req, filter, author, page, }) {
+export function feed({ req, filter, author, page }) {
   let limit;
   let offset;
 
@@ -45,29 +45,24 @@ export function feed({ req, filter, author, page, }) {
   } else {
     offset = (page - 1) * limit;
   }
-  const params = { limit, offset, };
+  const params = { limit, offset };
 
   if (author) {
     params.author = author;
   }
-  return dispatch => {
-    dispatch({ type: ARTICLES_REQUEST, });
+  return (dispatch) => {
+    dispatch({ type: ARTICLES_REQUEST });
     return request(req, {
       method: 'get',
       url: filter === 'feed' ? '/articles/feed' : '/articles',
       params,
-      withCredentials: true,
     }).then(
-      data => {
-        return dispatch({ type: ARTICLES_SUCCESS, payload: data.data, });
-      },
-      error => {
-        return dispatch({ type: ARTICLES_FAILURE, error: parseError(error), });
-      }
+      response => dispatch({ type: ARTICLES_SUCCESS, payload: response.data }),
+      error => dispatch({ type: ARTICLES_FAILURE, error: parseError(error) }),
     );
   };
 }
 
 export function clearErrors() {
-  return { type: CLEAR_ERRORS, };
+  return { type: CLEAR_ERRORS };
 }
