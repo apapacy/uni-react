@@ -1,34 +1,49 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Link from '../asyncLink'; // eslint-disable-line
+import MenuItem from './menuItem';
 
-const Layout = ({ children, user }) => ( // eslint-disable-line react/prop-types
+const Layout = ({ children, user, location }) => ( // eslint-disable-line react/prop-types
   <div>
     <nav className="navbar navbar-light">
       <div className="container">
-        <Link className="navbar-brand" href="/" to="/">conduit</Link>
+        <Link className="navbar-brand" to="/">conduit</Link>
         <ul className="nav navbar-nav pull-xs-right">
-          <li className="nav-item">
-            {/* Add "active" class when you're on that page" */}
-            {
-              user && user.id
-              ? <Link className="nav-link active" to="/feed">Home</Link>
-              : <Link className="nav-link active" to="/">Home</Link>
-            }
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/new-post">
-              <i className="ion-compose" />&nbsp;New Post
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/settings">
-              <i className="ion-gear-a" />&nbsp;Settings
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/sign-up">Sign up</Link>
-          </li>
+          {
+            !user || !user.id
+              ?
+                [
+                  <MenuItem pathname={location.pathname} to="/" key="home">
+                    Home
+                  </MenuItem>,
+                  <MenuItem pathname={location.pathname} to="/sign-in" key="sign-in">
+                    Sign in
+                  </MenuItem>,
+                  <MenuItem pathname={location.pathname} to="/sign-up" key="sign-up">
+                    Sign up
+                  </MenuItem>,
+                ]
+              :
+                [
+                  <MenuItem to="/feed" pathname={location.pathname} key="feed">
+                    Home
+                  </MenuItem>,
+                  <MenuItem to="/new-post" pathname={location.pathname} key="new-post">
+                    <i className="ion-compose" />&nbsp;New Post
+                  </MenuItem>,
+                  <MenuItem to="/settings" pathname={location.pathname} key="settings">
+                    <i className="ion-gear-a" />&nbsp;Settings
+                  </MenuItem>,
+                  <MenuItem to="/log-out" pathname={location.pathname} key="log-out">
+                    Sign out
+                  </MenuItem>,
+                  <MenuItem to="/author/apapacy" pathname={location.pathname} key="author">
+                    <img alt="author" src={user.image} className="user-pic" />
+                    {user.username}
+                  </MenuItem>,
+                ]
+          }
         </ul>
       </div>
     </nav>
@@ -44,4 +59,4 @@ const Layout = ({ children, user }) => ( // eslint-disable-line react/prop-types
   </div>
 );
 
-export default connect(state => ({ user: state.user }))(Layout);
+export default withRouter(connect(state => ({ user: state.user }))(Layout));

@@ -50,4 +50,4 @@ class Editor extends React.PureComponent {
   }
 }
 
-export default connect()(Editor);
+export default connect(state => ({ user: state.user }))(Editor);
