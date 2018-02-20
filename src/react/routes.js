@@ -20,7 +20,7 @@ module.exports = [
     exact: true,
     componentName: 'pages/editor',
   }, {
-    path: '/(sign-up|sign-in)',
+    path: '/(sign-up|sign-in|log-out)',
     exact: true,
     componentName: 'pages/login',
   }, {

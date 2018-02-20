@@ -37,6 +37,7 @@
     "express": "^4.16.2",
     "history": "^4.7.2",
     "loadable-components": "^1.1.1",
+    "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dev-middleware": "^2.1.9",
     "react-dom": "^16.2.0",

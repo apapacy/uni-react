@@ -2,16 +2,22 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { login, me } from '../../redux/services/user';
+
+import { login, me, logout } from '../../redux/services/user';
 import ErrorsList from '../components/errorsList';
 
 class Login extends React.PureComponent {
-  static async getInitialProps({ req, store, dispatch, user }) {
-    if (user && user.id) {
-      return;
-    }
+  static async getInitialProps({ req, res, store, dispatch, match, user }) {
     const execute = dispatch || store.dispatch;
-    await execute(me({ req }));
+    if (match.params[0] === 'log-out') {
+      if (req) {
+        res.cookie('token', '', { signed: false });
+      } else {
+        await dispatch(logout());
+      }
+    } else if (!user || !user.id) {
+      await execute(me({ req }));
+    }
   }
 
   constructor(props) {
@@ -31,6 +37,7 @@ class Login extends React.PureComponent {
     await this.props.dispatch(login({ email: this.emailInput.value, password: this.passwordInput.value }));
     if (this.props.user && this.props.user.id) {
       this.passwordInput.value = '';
+      this.props.history.push('/feed');
     }
   }
 
@@ -94,7 +101,11 @@ class Login extends React.PureComponent {
                   />
                 </fieldset>
                 <button className="btn btn-lg btn-primary pull-xs-right">
-                  Sign up
+                  {
+                    this.isSignUp()
+                      ? 'Sign up'
+                      : 'Sign in'
+                  }
                 </button>
               </form>
             </div>

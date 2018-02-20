@@ -15,19 +15,19 @@ const Layout = ({ children, user, location }) => ( // eslint-disable-line react/
               ?
                 [
                   <MenuItem pathname={location.pathname} to="/" key="home">
-                    Home
+                    <i className="ion-home" />&nbsp;Home
                   </MenuItem>,
                   <MenuItem pathname={location.pathname} to="/sign-in" key="sign-in">
-                    Sign in
+                    <i className="ion-log-in" />&nbsp;Sign in
                   </MenuItem>,
                   <MenuItem pathname={location.pathname} to="/sign-up" key="sign-up">
-                    Sign up
+                    <i className="ion-person-add" />&nbsp;Sign up
                   </MenuItem>,
                 ]
               :
                 [
                   <MenuItem to="/feed" pathname={location.pathname} key="feed">
-                    Home
+                    <i className="ion-home" />&nbsp;Home
                   </MenuItem>,
                   <MenuItem to="/new-post" pathname={location.pathname} key="new-post">
                     <i className="ion-compose" />&nbsp;New Post
@@ -36,7 +36,7 @@ const Layout = ({ children, user, location }) => ( // eslint-disable-line react/
                     <i className="ion-gear-a" />&nbsp;Settings
                   </MenuItem>,
                   <MenuItem to="/log-out" pathname={location.pathname} key="log-out">
-                    Sign out
+                    <i className="ion-log-out" />&nbsp;Sign out
                   </MenuItem>,
                   <MenuItem to="/author/apapacy" pathname={location.pathname} key="author">
                     <img alt="author" src={user.image} className="user-pic" />

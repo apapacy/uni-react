@@ -5,6 +5,9 @@ import { parseError } from '../utils';
 const LOGIN_REQUEST = Symbol('USER_LOGIN_REQUEST');
 const LOGIN_SUCCESS = Symbol('USER_LOGIN_SUCCESS');
 const LOGIN_FAILURE = Symbol('USER_LOGIN_FAILURE');
+const LOGOUT_REQUEST = Symbol('USER_LOGOUT_REQUEST');
+const LOGOUT_SUCCESS = Symbol('USER_LOGOUT_SUCCESS');
+const LOGOUT_FAILURE = Symbol('USER_LOGOUT_FAILURE');
 const USER_REQUEST = Symbol('USER_REQUEST');
 const USER_SUCCESS = Symbol('USER_SUCCESS');
 const USER_FAILURE = Symbol('USER_FAILURE');
@@ -23,6 +26,12 @@ export default function userReduser(state = initialState, action) {
       return { ...action.payload.user, transition: false };
     case LOGIN_FAILURE:
       return { error: action.error, transition: false };
+    case LOGOUT_REQUEST:
+      return { ...state, transition: true };
+    case LOGOUT_SUCCESS:
+      return { transition: false };
+    case LOGOUT_FAILURE:
+      return { ...state, error: action.error, transition: false };
     case USER_REQUEST:
       return { ...state, transition: true };
     case USER_SUCCESS:
@@ -103,6 +112,24 @@ export function save({ bio, email, image, username, password }) {
     );
   };
 }
+
+export function logout() {
+  return (dispatch) => {
+    dispatch({ type: LOGOUT_REQUEST });
+
+    return axios.post('/api/token', { token: '' })
+      .then(
+        () => {
+          setJWT(undefined);
+          dispatch({ type: LOGOUT_SUCCESS });
+        },
+        (error) => {
+          dispatch({ type: LOGOUT_FAILURE, error: parseError(error) });
+        },
+      );
+  };
+}
+
 
 export function clearErrors() {
   return { type: CLEAR_ERRORS };
