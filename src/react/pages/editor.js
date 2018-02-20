@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { me } from '../../redux/services/user';
+import { me, clearErrors } from '../../redux/services/user';
 
 
 class Editor extends React.PureComponent {
@@ -14,6 +14,10 @@ class Editor extends React.PureComponent {
 
   async componentDidMount() {
     await Editor.getInitialProps(this.props);
+  }
+
+  async componentWillUnmount() {
+    this.props.dispatch(clearErrors());
   }
 
   render() {

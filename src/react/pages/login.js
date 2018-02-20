@@ -3,12 +3,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { login, me, logout } from '../../redux/services/user';
+import { login, logout } from '../../redux/services/user';
 import ErrorsList from '../components/errorsList';
 
 class Login extends React.PureComponent {
   static async getInitialProps({ req, res, store, dispatch, match }) {
-    const execute = dispatch || store.dispatch;
     if (match.params[0] === 'sign-out') {
       if (req) {
         res.cookie('token', '', { signed: false });
