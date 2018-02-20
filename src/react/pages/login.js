@@ -7,11 +7,11 @@ import { login, logout } from '../../redux/services/user';
 import ErrorsList from '../components/errorsList';
 
 class Login extends React.PureComponent {
-  static async getInitialProps({ req, res, store, dispatch, match }) {
+  static async getInitialProps({ req, res, dispatch, match }) {
     if (match.params[0] === 'sign-out') {
-      if (req) {
+      if (req) { // on SSR
         res.cookie('token', '', { signed: false });
-      } else {
+      } else { // on CSR
         await dispatch(logout());
       }
     }
@@ -24,6 +24,9 @@ class Login extends React.PureComponent {
 
   async componentDidMount() {
     await Login.getInitialProps(this.props);
+    if (this.props.match.params[0] === 'sign-out') {
+      this.props.history.replace('/sign-in');
+    }
   }
 
   async handleSubmit(event) {
@@ -122,6 +125,10 @@ Login.propTypes = {
     transition: PropTypes.bool,
   }).isRequired,
   match: PropTypes.shape({ params: PropTypes.object }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+    replace: PropTypes.func,
+  }).isRequired,
 };
 
 export default connect(state => ({ user: state.user }))(Login);
