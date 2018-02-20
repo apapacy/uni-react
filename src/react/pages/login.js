@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { login, me } from '../../redux/services/user';
 import ErrorsList from '../components/errorsList';
 
@@ -17,6 +18,10 @@ class Login extends React.PureComponent {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  async componentDidMount() {
+    await Login.getInitialProps(this.props);
+  }
+
   async handleSubmit(event) {
     event.preventDefault();
     if (this.props.user && this.props.user.transition) {
@@ -28,27 +33,47 @@ class Login extends React.PureComponent {
     }
   }
 
+  isSignUp() {
+    return this.props.match && this.props.match.params && this.props.match.params[0] === 'sign-up';
+  }
+  
   render() {
     return (
       <div className="auth-page">
         <div className="container page">
           <div className="row">
             <div className="col-md-6 offset-md-3 col-xs-12">
-              <h1 className="text-xs-center">Sign up</h1>
+              <h1 className="text-xs-center">
+                {
+                  this.isSignUp()
+                    ? 'Sign up'
+                    : 'Sign in'
+                }
+              </h1>
               <p className="text-xs-center">
-                <a href="/">Have an account?</a>
+                {
+                  this.isSignUp()
+                    ? <Link to="/sign-in">Have an account?</Link>
+                    : <Link to="/sign-up">Need an account?</Link>
+                }
               </p>
               <ErrorsList error={this.props.user.error} />
               <form onSubmit={this.handleSubmit}>
-                <fieldset className="form-group">
-                  <input
-                    ref={(input) => { this.nameInput = input; }}
-                    className="form-control form-control-lg"
-                    type="text"
-                    placeholder="Your Name"
-                    autoComplete="off"
-                  />
-                </fieldset>
+                {
+                  this.isSignUp()
+                    ?
+                      <fieldset className="form-group">
+                        <input
+                          ref={(input) => { this.nameInput = input; }}
+                          className="form-control form-control-lg"
+                          type="text"
+                          placeholder="Your Name"
+                          autoComplete="off"
+                        />
+                      </fieldset>
+                    :
+                      null
+                }
                 <fieldset className="form-group">
                   <input
                     ref={(input) => { this.emailInput = input; }}
