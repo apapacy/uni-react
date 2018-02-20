@@ -9,7 +9,7 @@ import ErrorsList from '../components/errorsList';
 class Login extends React.PureComponent {
   static async getInitialProps({ req, res, store, dispatch, match, user }) {
     const execute = dispatch || store.dispatch;
-    if (match.params[0] === 'log-out') {
+    if (match.params[0] === 'sign-out') {
       if (req) {
         res.cookie('token', '', { signed: false });
       } else {

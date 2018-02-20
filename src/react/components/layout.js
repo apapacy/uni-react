@@ -35,7 +35,7 @@ const Layout = ({ children, user, location }) => ( // eslint-disable-line react/
                   <MenuItem to="/settings" pathname={location.pathname} key="settings">
                     <i className="ion-gear-a" />&nbsp;Settings
                   </MenuItem>,
-                  <MenuItem to="/log-out" pathname={location.pathname} key="log-out">
+                  <MenuItem to="/sign-out" pathname={location.pathname} key="log-out">
                     <i className="ion-log-out" />&nbsp;Sign out
                   </MenuItem>,
                   <MenuItem to="/author/apapacy" pathname={location.pathname} key="author">
