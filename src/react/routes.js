@@ -4,6 +4,18 @@ module.exports = [
     exact: true,
     componentName: 'pages/home',
   }, {
+    path: '/feed',
+    exact: true,
+    componentName: 'pages/home',
+  }, {
+    path: '/author/:author',
+    exact: true,
+    componentName: 'pages/home',
+  }, {
+    path: '/favorited/:author',
+    exact: true,
+    componentName: 'pages/home',
+  }, {
     path: '/new-post',
     exact: true,
     componentName: 'pages/editor',

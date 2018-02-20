@@ -1,4 +1,4 @@
-import { Link, matchPath, } from 'react-router-dom';
+import { Link, matchPath } from 'react-router-dom';
 import routes from './routes';
 
 function isModifiedEvent(event) {
@@ -6,7 +6,7 @@ function isModifiedEvent(event) {
 }
 
 class AsyncLink extends Link {
-  handleClick = (event) => {
+  handleClick(event){
     if (this.props.onClick) this.props.onClick(event);
 
     if (
