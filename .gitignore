@@ -3,3 +3,5 @@
 /dist
 /src/server.bundle.js
 /src/render.bundle.js
+.vscode
+.idea
