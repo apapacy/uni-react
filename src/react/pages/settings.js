@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { me, save, clearErrors } from '../../redux/services/user';
 import ErrorsList from '../components/errorsList';
@@ -129,5 +130,15 @@ class Settings extends React.Component {
     );
   }
 }
+
+Settings.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    username: PropTypes.string,
+    error: PropTypes.object,
+    transition: PropTypes.bool,
+  }).isRequired,
+};
 
 export default connect(state => ({ user: state.user }))(Settings);
