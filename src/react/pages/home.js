@@ -1,8 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import _ from 'lodash';
 import { me, clearErrors } from '../../redux/services/user';
 import { feed } from '../../redux/services/articles';
 import ArticlePreview from '../components/articlePreview';
+
 
 class Home extends React.PureComponent {
   static async getInitialProps({ req, store, dispatch, user }) {
@@ -42,13 +45,26 @@ class Home extends React.PureComponent {
                 </li>
               </ul>
             </div>
-            
             {
               this.props.articles.articles.map(article => <ArticlePreview {...article} key={article.slug} />)
-            }            
+            }
+            {
+              this.props.articles.articlesCount && this.props.articles.pageLength && this.props.articles.articlesCount > this.props.articles.pageLength
+                ?
+                <nav>
+                  <ul className="pagination">
+                    {
+                      _.range(1, 1 + Math.floor(this.props.articles.articlesCount / this.props.articles.pageLength)).map(index =>
+                        <li className={`page-item${index===this.props.articles.page ? ' active' : ''}`} key={index}><Link className="page-link" to="/">{index}</Link></li>                      
+                      )
 
+                    }
+                  </ul>
+                </nav>
+              :
+                null
+            }
           </div>
-
           <div className='col-md-3'>
             <div className='sidebar'>
               <p>Popular Tags</p>

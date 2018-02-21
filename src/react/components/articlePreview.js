@@ -17,30 +17,30 @@ const ArticlePreview = (props) => {
   }
   return (
     <div className="article-preview">
-    <div className="article-meta">
-    <Link to={`/author/${props.author.username}`}><img alt="☺" src={props.author.image} /></Link>
-    <div className="info">
-      <Link to={`/author/${props.author.username}`} className="author">{props.author.username}</Link>
-    <span className="date">{moment(props.updatedAt).format('DD MMMM YYYY h:mm')}</span>
-    </div>
-    <button className={`btn btn-${props.favorited ? '' : 'outline-'}primary btn-sm pull-xs-right`} onClick={favoritedOnClick}>
-        <i className="ion-heart" />&nbsp;{props.favoritesCount}
-    </button>
-    </div>
-    <Link to={`/article/${props.slug}`} className="preview-link">
-    <h1>{props.title}</h1>
-    <p>{props.description}</p>
-    <span>Read more...</span>
-    { props.tagList && props.tagList.length 
-        ?
-        <ul className="tag-list">
+      <div className="article-meta">
+        <Link to={`/author/${props.author.username}`}><img alt="☺" src={props.author.image} /></Link>
+        <div className="info">
+          <Link to={`/author/${props.author.username}`} className="author">{props.author.username}</Link>
+          <span className="date">{moment(props.updatedAt).format('DD MMMM YYYY h:mm')}</span>
+        </div>
+        <button className={`btn btn-${props.favorited ? '' : 'outline-'}primary btn-sm pull-xs-right`} onClick={favoritedOnClick}>
+          <i className="ion-heart" />&nbsp;{props.favoritesCount}
+        </button>
+      </div>
+      <Link to={`/article/${props.slug}`} className="preview-link">
+        <h1>{props.title}</h1>
+        <p>{props.description}</p>
+        <span>Read more...</span>
+        {props.tagList && props.tagList.length
+          ?
+          <ul className="tag-list">
             {
               props.tagList.map(tag => <li className="tag-default tag-pill tag-outline" onClick={tagOnClick} key={tag} data-tag={tag}>{tag}</li>)
             }
-        </ul>
-        : null
-    }
-    </Link>
+          </ul>
+          : null
+        }
+      </Link>
     </div>
   );
 }

@@ -38,6 +38,7 @@
     "express": "^4.16.2",
     "history": "^4.7.2",
     "loadable-components": "^1.1.1",
+    "lodash": "^4.17.5",
     "moment": "^2.20.1",
     "pm2": "^2.10.1",
     "prop-types": "^15.6.0",

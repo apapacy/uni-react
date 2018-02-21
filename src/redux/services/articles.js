@@ -9,12 +9,14 @@ const ARTICLE_FAVORITE_REQUEST = Symbol('ARTICLE_FAVORITE_REQUEST');
 const ARTICLE_FAVORITE_SUCCESS = Symbol('ARTICLE_FAVORITE_SUCCESS');
 const ARTICLE_FAVORITE_FAILURE = Symbol('ARTICLE_FAVORITE_FAIULURE');
 
-const GLOBAL_FEED_COUNT = 10000;
+const GLOBAL_FEED_COUNT = 10;
 const PERSONAL_FEED_COUNT = 5;
 
 const initialState = {
   articles: [],
   articlesCount: 0,
+  page: 1,
+  pageLength: 0,
 };
 
 export default function userReduser(state = initialState, action) {
@@ -22,7 +24,7 @@ export default function userReduser(state = initialState, action) {
     case ARTICLES_REQUEST:
       return { ...state, transition: true };
     case ARTICLES_SUCCESS:
-      return { ...action.payload, transition: false };
+      return { ...action.payload, pageLength: action.pageLength, page: action.page, transition: false };
     case ARTICLES_FAILURE:
       return { ...initialState, error: action.error, transition: false };
     case ARTICLE_FAVORITE_SUCCESS:
@@ -68,7 +70,7 @@ export function feed({ req, filter, author, page }) {
       url: filter === 'feed' ? '/articles/feed' : '/articles',
       params,
     }).then(
-      response => dispatch({ type: ARTICLES_SUCCESS, payload: response.data }),
+      response => dispatch({ type: ARTICLES_SUCCESS, payload: response.data, pageLength: limit, page: page || 1 }),
       error => dispatch({ type: ARTICLES_FAILURE, error: parseError(error) }),
     );
   };
