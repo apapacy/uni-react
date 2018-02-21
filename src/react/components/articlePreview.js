@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Link from '../asyncLink'; // eslint-disable-line
 import { favorite } from '../../redux/services/articles';
 
@@ -10,10 +11,6 @@ const ArticlePreview = (props) => {
     event.preventDefault();
     props.dispatch(favorite({ slug: props.slug, method: props.favorited ? 'delete' : 'post' }));
     event.target.blur();
-  }
-  function tagOnClick(event) {
-    event.preventDefault();
-    props.history.push(`/tag/${event.target.getAttribute('data-tag')}`);
   }
   return (
     <div className="article-preview">
@@ -33,16 +30,33 @@ const ArticlePreview = (props) => {
         <span>Read more...</span>
         {props.tagList && props.tagList.length
           ?
-          <ul className="tag-list">
-            {
-              props.tagList.map(tag => <li className="tag-default tag-pill tag-outline" onClick={tagOnClick} key={tag} data-tag={tag}>{tag}</li>)
-            }
-          </ul>
+            <ul className="tag-list">
+              {
+                props.tagList.map(tag => (
+                  <li className="tag-default tag-pill tag-outline" key={tag}>{tag}</li>
+                ))
+              }
+            </ul>
           : null
         }
       </Link>
     </div>
   );
 }
+
+ArticlePreview.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  favorited: PropTypes.bool.isRequired,
+  slug: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  favoritesCount: PropTypes.number.isRequired,
+  updatedAt: PropTypes.string.isRequired,
+  author: PropTypes.shape({
+    username: PropTypes.string,
+    image: PropTypes.string,
+  }).isRequired,
+  tagList: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
 
 export default withRouter(connect()(ArticlePreview));
