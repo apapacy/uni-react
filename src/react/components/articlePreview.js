@@ -18,7 +18,7 @@ const ArticlePreview = (props) => {
         <Link to={`/author/${props.author.username}`}><img alt="☺" src={props.author.image} /></Link>
         <div className="info">
           <Link to={`/author/${props.author.username}`} className="author">{props.author.username}</Link>
-          <span className="date">{moment(props.updatedAt).format('DD MMMM YYYY h:mm')}</span>
+          <span className="date">{moment(props.updatedAt).format('ddd MMM DD YYYY')}</span>
         </div>
         <button className={`btn btn-${props.favorited ? '' : 'outline-'}primary btn-sm pull-xs-right`} onClick={favoritedOnClick}>
           <i className="ion-heart" />&nbsp;{props.favoritesCount}
