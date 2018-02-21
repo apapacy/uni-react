@@ -31,6 +31,7 @@ module.exports = (req, res, next) => {
           next,
           match,
           store,
+          dispatch: store.dispatch
         }));
       }
     }
