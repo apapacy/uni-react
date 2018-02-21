@@ -22,11 +22,11 @@ const initialState = {
 export default function userReduser(state = initialState, action) {
   switch (action.type) {
     case ARTICLES_REQUEST:
-      return { ...state, transition: true };
+      return { ...state };
     case ARTICLES_SUCCESS:
-      return { ...action.payload, pageLength: action.pageLength, page: action.page, transition: false };
+      return { ...action.payload, pageLength: action.pageLength, page: action.page };
     case ARTICLES_FAILURE:
-      return { ...initialState, error: action.error, transition: false };
+      return { ...initialState, error: action.error };
     case ARTICLE_FAVORITE_SUCCESS:
       return {
         ...state,
@@ -37,7 +37,8 @@ export default function userReduser(state = initialState, action) {
         )),
       };
     case CLEAR_ERRORS: // eslint-disable-line no-case-declarations
-      const { error, ...nextState } = state; // eslint-disable-line no-case-declarations, no-unused-vars
+      const { error, ...nextState } = state;
+      // eslint-disable-line no-case-declarations, no-unused-vars
       return nextState; // eslint-disable-line no-case-declarations
     default:
       return state;
@@ -70,7 +71,12 @@ export function feed({ req, filter, author, page }) {
       url: filter === 'feed' ? '/articles/feed' : '/articles',
       params,
     }).then(
-      response => dispatch({ type: ARTICLES_SUCCESS, payload: response.data, pageLength: limit, page: page || 1 }),
+      response => dispatch({
+        type: ARTICLES_SUCCESS,
+        payload: response.data,
+        pageLength: limit,
+        page: page || 1,
+      }),
       error => dispatch({ type: ARTICLES_FAILURE, error: parseError(error) }),
     );
   };
@@ -78,7 +84,7 @@ export function feed({ req, filter, author, page }) {
 
 export function favorite({ slug, method }) {
   if (method !== 'post' && method !== 'delete') {
-    return { type: ARTICLE_FAVORITE_FAILURE, error: { message: 'Only post or delete methos alowed' }};
+    return { type: ARTICLE_FAVORITE_FAILURE, error: { message: 'Only post or delete methos alowed' } };
   }
   return (dispatch) => {
     dispatch({ type: ARTICLE_FAVORITE_REQUEST });

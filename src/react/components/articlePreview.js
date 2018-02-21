@@ -42,7 +42,7 @@ const ArticlePreview = (props) => {
       </Link>
     </div>
   );
-}
+};
 
 ArticlePreview.propTypes = {
   dispatch: PropTypes.func.isRequired,

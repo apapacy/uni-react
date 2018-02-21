@@ -34,7 +34,10 @@ class Login extends React.PureComponent {
     if (this.props.user && this.props.user.transition) {
       return;
     }
-    await this.props.dispatch(login({ email: this.emailInput.value, password: this.passwordInput.value }));
+    await this.props.dispatch(login({
+      email: this.emailInput.value,
+      password: this.passwordInput.value,
+    }));
     if (this.props.user && this.props.user.id) {
       this.passwordInput.value = '';
       this.props.history.push('/feed');
@@ -44,7 +47,7 @@ class Login extends React.PureComponent {
   isSignUp() {
     return this.props.match && this.props.match.params && this.props.match.params[0] === 'sign-up';
   }
-  
+
   render() {
     return (
       <div className="auth-page">
