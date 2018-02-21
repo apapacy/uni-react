@@ -26,7 +26,7 @@ class Home extends React.PureComponent {
   render() {
     return (
       <div className="home-page">
-        <div className="banne">
+        <div className="banner">
           <div className="container">
             <h1 className="logo-font">conduit</h1>
             <p className="test">A place to share your knowledge.</p>

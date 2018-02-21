@@ -1,10 +1,9 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Link from '../asyncLink'; // eslint-disable-line
 import MenuItem from './menuItem';
 
-const Layout = ({ children, user, location }) => ( // eslint-disable-line react/prop-types
+const Layout = ({ children, user }) => ( // eslint-disable-line react/prop-types
   <div>
     <nav className="navbar navbar-light">
       <div className="container">
@@ -14,33 +13,33 @@ const Layout = ({ children, user, location }) => ( // eslint-disable-line react/
             !user || !user.id
               ?
                 [
-                  <MenuItem pathname={location.pathname} to="/" key="home">
+                  <MenuItem to="/" key="home">
                     <i className="ion-home" />&nbsp;Home
                   </MenuItem>,
-                  <MenuItem pathname={location.pathname} to="/sign-in" key="sign-in">
+                  <MenuItem to="/sign-in" key="sign-in">
                     <i className="ion-log-in" />&nbsp;Sign in
                   </MenuItem>,
-                  <MenuItem pathname={location.pathname} to="/sign-up" key="sign-up">
+                  <MenuItem to="/sign-up" key="sign-up">
                     <i className="ion-person-add" />&nbsp;Sign up
                   </MenuItem>,
                 ]
               :
                 [
-                  <MenuItem to="/feed" pathname={location.pathname} key="feed">
+                  <MenuItem to="/feed" key="feed">
                     <i className="ion-home" />&nbsp;Home
                   </MenuItem>,
-                  <MenuItem to="/new-post" pathname={location.pathname} key="new-post">
+                  <MenuItem to="/new-post" key="new-post">
                     <i className="ion-compose" />&nbsp;New Post
                   </MenuItem>,
-                  <MenuItem to="/settings" pathname={location.pathname} key="settings">
+                  <MenuItem to="/settings" key="settings">
                     <i className="ion-gear-a" />&nbsp;Settings
                   </MenuItem>,
-                  <MenuItem to="/sign-out" pathname={location.pathname} key="log-out">
-                    <i className="ion-log-out" />&nbsp;Sign out
-                  </MenuItem>,
-                  <MenuItem to="/author/apapacy" pathname={location.pathname} key="author">
+                  <MenuItem to="/author/apapacy" key="author">
                     <img alt="author" src={user.image} className="user-pic" />
                     {user.username}
+                  </MenuItem>,
+                  <MenuItem to="/sign-out" key="log-out">
+                    <i className="ion-log-out" />&nbsp;Sign out
                   </MenuItem>,
                 ]
           }
@@ -59,4 +58,4 @@ const Layout = ({ children, user, location }) => ( // eslint-disable-line react/
   </div>
 );
 
-export default withRouter(connect(state => ({ user: state.user }))(Layout));
+export default connect(state => ({ user: state.user }))(Layout);
