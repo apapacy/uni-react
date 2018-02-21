@@ -22,47 +22,49 @@ class Home extends React.PureComponent {
   async componentWillUnmount() {
     this.props.dispatch(clearErrors());
   }
-
+  
   render() {
-    return (<div className='home-page'>
-      <div className='banner'>
-        <div className='container'>
-          <h1 className='logo-font'>conduit</h1>
-          <p className='test'>A place to share your knowledge.</p>
+    return (<div className="home-page">
+      <div className="banne">
+        <div className="container">
+          <h1 className="logo-font">conduit</h1>
+          <p className="test">A place to share your knowledge.</p>
         </div>
       </div>
-      <div className='container page'>
-        <div className='row'>
-
-          <div className='col-md-9'>
-            <div className='feed-toggle'>
-              <ul className='nav nav-pills outline-active'>
-                <li className='nav-item'>
-                  <a className='nav-link disabled' href=''>Your Feed</a>
+      <div className="container page">
+        <div className="row">
+          <div className="col-md-9">
+            <div className="feed-toggle">
+              <ul className="nav nav-pills outline-active">
+                <li className="nav-item">
+                  <Link className={`nav-link${this.props.match.url === '/feed' ? ' active' : ''}`} to="/feed">Your Feed</Link>
                 </li>
-                <li className='nav-item'>
-                  <a className='nav-link active' href=''>Global Feed</a>
+                <li className="nav-item">
+                  <Link className={`nav-link${this.props.match.url === '/' ? ' active' : ''}`} to="/">Global Feed</Link>
                 </li>
               </ul>
             </div>
             {
-              this.props.articles.articles.map(article => <ArticlePreview {...article} key={article.slug} />)
+              this.props.articles.articles.map(article =>
+                <ArticlePreview {...article} key={article.slug} />)
             }
             {
-              this.props.articles.articlesCount && this.props.articles.pageLength && this.props.articles.articlesCount > this.props.articles.pageLength
+              this.props.articles.articlesCount && this.props.articles.pageLength 
+                && this.props.articles.articlesCount > this.props.articles.pageLength
                 ?
-                <nav>
-                  <ul className="pagination">
-                    {
-                      _.range(1, 1 + Math.floor(this.props.articles.articlesCount / this.props.articles.pageLength)).map(index =>
-                        <li className={`page-item${index===this.props.articles.page ? ' active' : ''}`} key={index}><Link className="page-link" to="/">{index}</Link></li>                      
-                      )
-
-                    }
-                  </ul>
-                </nav>
-              :
-                null
+                  <nav>
+                    <ul className="pagination">
+                      {
+                        _.range(1, 1 + Math.floor(this.props.articles.articlesCount /
+                          this.props.articles.pageLength)).map(index => (
+                            <li className={`page-item${index === this.props.articles.page ? ' active' : ''}`} key={index}>
+                              <Link className="page-link" to="/">{index}</Link>
+                            </li>))
+                      }
+                    </ul>
+                  </nav>
+                :
+                  null
             }
           </div>
           <div className='col-md-3'>
