@@ -1,8 +1,6 @@
 import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import _ from 'lodash';
-// import Link from '../asyncLink'; // eslint-disable-line
-// asyncLink contents dynamic import()
 
 function prepareLink(index, path) {
   const pager = '/page/:page';
@@ -18,7 +16,6 @@ function prepareLink(index, path) {
   return `${basePath}page/${index}`;
 }
 
-
 const Pagination = ({ count, pageLength, page, match }) => ( // eslint-disable-line react/prop-types
   count && pageLength && count > pageLength
     ?
@@ -32,11 +29,7 @@ const Pagination = ({ count, pageLength, page, match }) => ( // eslint-disable-l
           }
         </ul>
       </nav>
-    :
-    null
-
+    : null
 );
-
-
 
 export default withRouter(Pagination);

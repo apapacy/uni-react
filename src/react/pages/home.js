@@ -27,7 +27,9 @@ class Home extends React.PureComponent {
   }
 
   render() {
-    console.log(this.props)
+    const count = this.props.articles.articlesCount;
+    const { pageLength } = this.props.articles;
+    const page = Number(this.props.match.params.page) || 1;
     return (
       <div className="home-page">
         <div className="banner">
@@ -49,11 +51,7 @@ class Home extends React.PureComponent {
                 this.props.articles.articles.map(article =>
                   <ArticlePreview {...article} key={article.slug} />)
               }
-              <Pagination
-                count={this.props.articles.articlesCount}
-                pageLength={this.props.articles.pageLength}
-                page={Number(this.props.match.params.page) || 1}
-              />
+              <Pagination {...{ count, pageLength, page }} />
             </div>
             <div className="col-md-3">
               <div className="sidebar">
