@@ -2,19 +2,20 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { me, clearErrors } from '../../redux/services/user';
 import { feed } from '../../redux/services/articles';
 import ArticlePreview from '../components/articlePreview';
 import NavItem from '../components/navItem';
+import Pagination from '../components/pagination';
 
 
 class Home extends React.PureComponent {
-  static async getInitialProps({ req, dispatch, user }) {
+  static async getInitialProps({ req, dispatch, user, match }) {
     if (!user || !user.id) {
       await dispatch(me({ req }));
     }
-    await dispatch(feed({ req, filter0: 'feed' }));
+    const page = Number(match.params.page) || 1;
+    await dispatch(feed({ req, filter0: 'feed', page }));
   }
 
   async componentDidMount() {
@@ -26,6 +27,7 @@ class Home extends React.PureComponent {
   }
 
   render() {
+    console.log(this.props)
     return (
       <div className="home-page">
         <div className="banner">
@@ -47,24 +49,11 @@ class Home extends React.PureComponent {
                 this.props.articles.articles.map(article =>
                   <ArticlePreview {...article} key={article.slug} />)
               }
-              {
-                this.props.articles.articlesCount && this.props.articles.pageLength
-                  && this.props.articles.articlesCount > this.props.articles.pageLength
-                  ?
-                    <nav>
-                      <ul className="pagination">
-                        {
-                          _.range(1, 1 + Math.floor(this.props.articles.articlesCount /
-                            this.props.articles.pageLength)).map(index => (
-                              <li className={`page-item${index === this.props.articles.page ? ' active' : ''}`} key={index}>
-                                <Link className="page-link" to="/">{index}</Link>
-                              </li>))
-                        }
-                      </ul>
-                    </nav>
-                  :
-                    null
-              }
+              <Pagination
+                count={this.props.articles.articlesCount}
+                pageLength={this.props.articles.pageLength}
+                page={Number(this.props.match.params.page) || 1}
+              />
             </div>
             <div className="col-md-3">
               <div className="sidebar">
@@ -90,7 +79,10 @@ class Home extends React.PureComponent {
 
 Home.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  match: PropTypes.shape({ url: PropTypes.string }).isRequired,
+  match: PropTypes.shape({
+    url: PropTypes.string,
+    params: PropTypes.object,
+  }).isRequired,
   articles: PropTypes.shape({
     page: PropTypes.number,
     pageLength: PropTypes.number,

@@ -4,7 +4,15 @@ module.exports = [
     exact: true,
     componentName: 'pages/home',
   }, {
+    path: '/page/:page',
+    exact: true,
+    componentName: 'pages/home',
+  }, {
     path: '/feed',
+    exact: true,
+    componentName: 'pages/home',
+  }, {
+    path: '/feed/page/:page',
     exact: true,
     componentName: 'pages/home',
   }, {
