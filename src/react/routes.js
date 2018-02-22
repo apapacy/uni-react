@@ -16,19 +16,11 @@ module.exports = [
     exact: true,
     componentName: 'pages/home',
   }, {
-    path: '/author/:author',
+    path: '/(author|favorited)/:author',
     exact: true,
     componentName: 'pages/profile',
   }, {
-    path: '/author/:author/page/:page',
-    exact: true,
-    componentName: 'pages/profile',
-  }, {
-    path: '/favorited/:author',
-    exact: true,
-    componentName: 'pages/profile',
-  }, {
-    path: '/favorited/:author/page/:page',
+    path: '/(author|favorited)/:author/page/:page',
     exact: true,
     componentName: 'pages/profile',
   }, {

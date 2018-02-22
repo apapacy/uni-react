@@ -29,34 +29,31 @@ class Profile extends React.PureComponent {
   render() {
     const count = this.props.articles.articlesCount;
     const { pageLength } = this.props.articles;
-    const { page, author } = this.props.match.params;
+    const page = Number(this.props.match.params.page) || 1;
+    const { author } = this.props.match.params;
     return (
       <div className="profile-page">
-
         <div className="user-info">
           <div className="container">
             <div className="row">
-
               <div className="col-xs-12 col-md-10 offset-md-1">
-                <img src="http://i.imgur.com/Qr71crq.jpg" className="user-img" />
+                <img alt="User Name" src="http://i.imgur.com/Qr71crq.jpg" className="user-img" />
                 <h4>Eric Simons</h4>
                 <p>
-                  Cofounder @GoThinkster, lived in Aol's HQ for a few months, kinda looks like Peeta from the Hunger Games
+                  Cofounder @GoThinkster, lived in Aol&apos;s HQ for a few months,
+                  kinda looks like Peeta from the Hunger Games
                 </p>
                 <button className="btn btn-sm btn-outline-secondary action-btn">
-                  <i className="ion-plus-round"></i>
+                  <i className="ion-plus-round" />
                   &nbsp;
                   Follow Eric Simons
                 </button>
               </div>
-
             </div>
           </div>
         </div>
-
         <div className="container">
           <div className="row">
-
             <div className="col-xs-12 col-md-10 offset-md-1">
               <div className="articles-toggle">
                 <ul className="nav nav-pills outline-active">
@@ -68,18 +65,14 @@ class Profile extends React.PureComponent {
                   </li>
                 </ul>
               </div>
-
               {
                 this.props.articles.articles.map(article =>
                   <ArticlePreview {...article} key={article.slug} />)
               }
-              <Pagination {...{ count, pageLength, page: Number(page), author }} />
-
+              <Pagination {...{ count, pageLength, page, author }} />
             </div>
-
           </div>
         </div>
-
       </div>
     );
   }
