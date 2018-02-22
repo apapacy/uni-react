@@ -6,12 +6,15 @@ function prepareLink(index, path) {
   const pager = '/page/:page';
   let basePath;
   if (path.slice(-11) === pager) {
-    basePath = path.slice(0, -10); // end with slash
+    basePath = path.slice(0, -11) || '/'; // end with slash
   } else {
     basePath = path;
   }
   if (index === 1) {
     return basePath;
+  }
+  if (basePath.slice(-1) !== '/') {
+    basePath = `${basePath}/`;
   }
   return `${basePath}page/${index}`;
 }
