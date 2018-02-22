@@ -22,7 +22,7 @@ const Layout = ({ children, user }) => ( // eslint-disable-line react/prop-types
                   <MenuItem to="/settings" key="settings">
                   <i className="ion-gear-a" />&nbsp;Settings
                   </MenuItem>,
-                  <MenuItem to="/author/apapacy" key="author">
+                  <MenuItem to={`/author/${user.username}`} key="author">
                   <img alt="author" src={user.image} className="user-pic" />
                   {user.username}
                   </MenuItem>,

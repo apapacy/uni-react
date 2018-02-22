@@ -22,7 +22,7 @@ const initialState = {
 export default function userReduser(state = initialState, action) {
   switch (action.type) {
     case ARTICLES_REQUEST:
-      return { ...state };
+      return { ...initialState };
     case ARTICLES_SUCCESS:
       return { ...action.payload, pageLength: action.pageLength, page: action.page };
     case ARTICLES_FAILURE:
@@ -60,9 +60,8 @@ export function feed({ req, filter, author, page }) {
     offset = (page - 1) * limit;
   }
   const params = { limit, offset };
-
-  if (author) {
-    params.author = author;
+  if (filter === 'author' || filter === 'favorited' ) {
+    params[filter] = decodeURIComponent(author);
   }
   return (dispatch) => {
     dispatch({ type: ARTICLES_REQUEST });

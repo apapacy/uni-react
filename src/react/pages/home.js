@@ -15,7 +15,11 @@ class Home extends React.PureComponent {
       await dispatch(me({ req }));
     }
     const page = Number(match.params.page) || 1;
-    await dispatch(feed({ req, filter0: 'feed', page }));
+    if (match.path.slice(0, 5) === '/feed')  {
+      await dispatch(feed({ req, filter: 'feed', page }));
+    } else {
+      await dispatch(feed({ req, page }));    
+    }
   }
 
   async componentDidMount() {

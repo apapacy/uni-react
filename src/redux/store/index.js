@@ -10,8 +10,8 @@ export default function prepareStore(initialState) {
     store = compose(
       applyMiddleware(thunk),
       applyMiddleware(createLogger({})),
-    )(createStore)(rootReducer, initialState); 
-    
+    )(createStore)(rootReducer, initialState);
+
     module.hot.accept('../reducers', () => {
       const nextRootReducer = rootReducer;
 
@@ -19,8 +19,9 @@ export default function prepareStore(initialState) {
     });
   } else {
     store = compose(
-      applyMiddleware(thunk)
-    )(createStore)(rootReducer, initialState); 
+      applyMiddleware(thunk),
+      applyMiddleware(createLogger({})),
+    )(createStore)(rootReducer, initialState);
   }
 
   return store;

@@ -10,13 +10,19 @@ const PROFILE_FOLLOW_FAILURE = Symbol('PROFILE_FOLLOW_FAILURE');
 const CLEAR_ERRORS = Symbol('PROFILE_CLEAR_ERRORS');
 
 
-const initialState = {};
+const initialState = {
+  username: '',
+  bio: '',
+  image: '',
+  following: false,
+};
 
 export default function userReduser(state = initialState, action) {
   switch (action.type) {
     case PROFILE_REQUEST:
-      return { ...state };
+      return { ...initialState };
     case PROFILE_SUCCESS:
+      return { ...action.payload.profile };
     case PROFILE_FOLLOW_SUCCESS:
       return { ...action.payload.profile };
     case PROFILE_FAILURE:
@@ -30,12 +36,12 @@ export default function userReduser(state = initialState, action) {
   }
 }
 
-export function profile({ req, author }) {
+export function getProfile({ req, author }) {
   return (dispatch) => {
     dispatch({ type: PROFILE_REQUEST });
     return request(req, {
       method: 'get',
-      url: `/profiles/${author}`,
+      url: `/profiles/${decodeURIComponent(author)}`,
     }).then(
       response => dispatch({
         type: PROFILE_SUCCESS,
@@ -57,15 +63,13 @@ export function follow({author, method }) {
     dispatch({ type: PROFILE_FOLLOW_REQUEST });
     return request(undefined, {
       method,
-      url: `/profiles/${author}/follow`,
+      url: `/profiles/${decodeURIComponent(author)}/follow`,
     }).then(
       response => dispatch({ type: PROFILE_FOLLOW_SUCCESS, payload: response.data }),
       error => dispatch({ type: PROFILE_FOLLOW_FAILURE, error: parseError(error) }),
     );
   };
 }
-
-
 
 export function clearErrors() {
   return { type: CLEAR_ERRORS };

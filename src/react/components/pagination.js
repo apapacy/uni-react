@@ -41,7 +41,7 @@ const Pagination = ({ count, pageLength, page, match, author }) => ( // eslint-d
       <nav>
         <ul className="pagination">
           {
-            _.range(1, 1 + Math.floor(count / pageLength)).map(index => (
+            _.range(1, 1 + Math.ceil(count / pageLength)).map(index => (
               <li className={`page-item${index === page ? ' active' : ''}`} key={index}>
                 <Link className="page-link" to={prepareLink(match, index, author)}>
                   {index}

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { me, clearErrors } from '../../redux/services/user';
-import { profile, follow } from '../../redux/services/profile';
+import { getProfile, follow } from '../../redux/services/profile';
 import { feed } from '../../redux/services/articles';
 import ArticlePreview from '../components/articlePreview';
 import NavItem from '../components/navItem';
@@ -11,13 +11,17 @@ import Pagination from '../components/pagination';
 
 
 class Profile extends React.PureComponent {
-  static async getInitialProps({ req, dispatch, user, match }) {
+  static async getInitialProps({ req, dispatch, user, match, profile }) {
     if (!user || !user.id) {
       await dispatch(me({ req }));
     }
     const page = Number(match.params.page) || 1;
-    await dispatch(feed({ req, filter0: 'feed', page }));
-    await dispatch(profile({ req, author: match.params.author }));
+    const author = match.params.author;
+    const filter = match.params[0];
+    if (!profile || profile.username !== author) {
+      await dispatch(getProfile({ req, author }));
+    }
+    await dispatch(feed({ req, filter, author, page }));
   }
 
   componentDidMount() {
@@ -55,7 +59,7 @@ class Profile extends React.PureComponent {
           <div className="container">
             <div className="row">
               <div className="col-xs-12 col-md-10 offset-md-1">
-                <img alt="Author" src={this.props.profile.image} className="user-img" />
+                <img alt="" src={this.props.profile.image} className="user-img" />
                 <h4>{this.props.profile.username}</h4>
                 <p>{this.props.profile.bio}</p>
                 {
@@ -91,12 +95,8 @@ class Profile extends React.PureComponent {
             <div className="col-xs-12 col-md-10 offset-md-1">
               <div className="articles-toggle">
                 <ul className="nav nav-pills outline-active">
-                  <li className="nav-item">
-                    <a className="nav-link active" href="">My Articles</a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link" href="">Favorited Articles</a>
-                  </li>
+                  <NavItem to={`/author/${this.props.profile.username}`}>My Articles</NavItem>
+                  <NavItem to={`/favorited/${this.props.profile.username}`}>Favorited Articles</NavItem>
                 </ul>
               </div>
               {
