@@ -10,15 +10,19 @@ import Pagination from '../components/pagination';
 
 
 class Home extends React.PureComponent {
-  static async getInitialProps({ req, dispatch, user, match }) {
+  static async getInitialProps({ req, dispatch, user, match, articles }) {
     if (!user || !user.id) {
       await dispatch(me({ req }));
     }
     const page = Number(match.params.page) || 1;
+    let filter
     if (match.path.slice(0, 5) === '/feed')  {
-      await dispatch(feed({ req, filter: 'feed', page }));
+      filter = 'feed';
     } else {
-      await dispatch(feed({ req, page }));    
+      filter = undefined;
+    }
+    if (!articles || articles.filter !== filter || articles.page !== page) {
+      await dispatch(feed({ req, filter, page }));
     }
   }
 

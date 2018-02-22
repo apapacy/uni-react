@@ -8,10 +8,9 @@ import { feed } from '../../redux/services/articles';
 import ArticlePreview from '../components/articlePreview';
 import NavItem from '../components/navItem';
 import Pagination from '../components/pagination';
-
-
+let count = 0;
 class Profile extends React.PureComponent {
-  static async getInitialProps({ req, dispatch, user, match, profile }) {
+  static async getInitialProps({ req, dispatch, user, match, profile, articles }) {
     if (!user || !user.id) {
       await dispatch(me({ req }));
     }
@@ -21,7 +20,9 @@ class Profile extends React.PureComponent {
     if (!profile || profile.username !== author) {
       await dispatch(getProfile({ req, author }));
     }
-    await dispatch(feed({ req, filter, author, page }));
+    if (!profile || profile.username !== author || !articles || articles.filter !== filter) {
+      await dispatch(feed({ req, filter, author, page }));
+    }
   }
 
   componentDidMount() {

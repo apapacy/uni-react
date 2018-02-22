@@ -17,6 +17,7 @@ const initialState = {
   articlesCount: 0,
   page: 1,
   pageLength: 0,
+  filter: '',
 };
 
 export default function userReduser(state = initialState, action) {
@@ -24,7 +25,12 @@ export default function userReduser(state = initialState, action) {
     case ARTICLES_REQUEST:
       return { ...initialState };
     case ARTICLES_SUCCESS:
-      return { ...action.payload, pageLength: action.pageLength, page: action.page };
+      return {
+        ...action.payload,
+        pageLength: action.pageLength,
+        page: action.page,
+        filter: action.filter,
+      };
     case ARTICLES_FAILURE:
       return { ...initialState, error: action.error };
     case ARTICLE_FAVORITE_SUCCESS:
@@ -75,6 +81,7 @@ export function feed({ req, filter, author, page }) {
         payload: response.data,
         pageLength: limit,
         page: page || 1,
+        filter,
       }),
       error => dispatch({ type: ARTICLES_FAILURE, error: parseError(error) }),
     );
