@@ -45,7 +45,8 @@ export default function userReduser(state = initialState, action) {
     case SAVE_FAILURE:
       return { ...state, error: action.error, transition: false };
     case CLEAR_ERRORS: // eslint-disable-line no-case-declarations
-      const { error, ...nextState } = state; // eslint-disable-line no-case-declarations, no-unused-vars
+      const { error, ...nextState } = state;
+      // eslint-disable-line no-case-declarations, no-unused-vars
 
       return nextState; // eslint-disable-line no-case-declarations
     default:
@@ -101,7 +102,7 @@ export function save({ bio, email, image, username, password }) {
   }
   return (dispatch) => {
     dispatch({ type: SAVE_REQUEST });
-    
+
     return request(undefined, {
       method: 'put',
       url: '/user',

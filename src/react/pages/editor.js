@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { me, clearErrors } from '../../redux/services/user';
 
 
 class Editor extends React.PureComponent {
-  static async getInitialProps({ req, store, dispatch, user }) {
+  static async getInitialProps({ req, dispatch, user }) {
     if (user && user.id) {
       return;
     }
-    const execute = dispatch || store.dispatch;
-    await execute(me({ req }));
+    await dispatch(me({ req }));
   }
 
   async componentDidMount() {
@@ -29,20 +29,39 @@ class Editor extends React.PureComponent {
               <form>
                 <fieldset>
                   <fieldset className="form-group">
-                    <input type="text" className="form-control form-control-lg" placeholder="Article Title" />
+                    <input
+                      type="text"
+                      className="form-control form-control-lg"
+                      placeholder="Article Title"
+                    />
                   </fieldset>
                   <fieldset className="form-group">
-                    <input type="text" className="form-control" placeholder="What's this article about?" />
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="What's this article about?"
+                    />
                   </fieldset>
                   <fieldset className="form-group">
-                    <textarea className="form-control" rows="8" placeholder="Write your article (in markdown)" />
+                    <textarea
+                      className="form-control"
+                      rows="8"
+                      placeholder="Write your article (in markdown)"
+                    />
                   </fieldset>
                   <fieldset className="form-group">
-                    <input type="text" className="form-control" placeholder="Enter tags" />
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Enter tags"
+                    />
                     <div className="tag-list" />
                   </fieldset>
-                  <button className="btn btn-lg pull-xs-right btn-primary" type="button">
-                    Publish Article
+                  <button
+                    className="btn btn-lg pull-xs-right btn-primary"
+                    type="button"
+                  >
+                      Publish Article
                   </button>
                 </fieldset>
               </form>
@@ -53,5 +72,7 @@ class Editor extends React.PureComponent {
     );
   }
 }
+
+Editor.propTypes = { dispatch: PropTypes.func.isRequired };
 
 export default connect(state => ({ user: state.user }))(Editor);

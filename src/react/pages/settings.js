@@ -5,12 +5,11 @@ import { me, save, clearErrors } from '../../redux/services/user';
 import ErrorsList from '../components/errorsList';
 
 class Settings extends React.Component {
-  static async getInitialProps({ req, store, dispatch, user }) {
+  static async getInitialProps({ req, dispatch, user }) {
     if (user && user.id) {
       return;
     }
-    const execute = dispatch || store.dispatch;
-    await execute(me({ req }));
+    await dispatch(me({ req }));
   }
 
   constructor(props) {

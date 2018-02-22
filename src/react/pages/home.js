@@ -1,18 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { me, clearErrors } from '../../redux/services/user';
 import { feed } from '../../redux/services/articles';
 import ArticlePreview from '../components/articlePreview';
+import NavItem from '../components/navItem';
 
 
 class Home extends React.PureComponent {
-  static async getInitialProps({ req, store, dispatch, user }) {
+  static async getInitialProps({ req, dispatch, user }) {
     if (!user || !user.id) {
       await dispatch(me({ req }));
     }
-    await dispatch(feed({ req, filter0: 'feed' }))
+    await dispatch(feed({ req, filter0: 'feed' }));
   }
 
   async componentDidMount() {
@@ -37,12 +39,8 @@ class Home extends React.PureComponent {
             <div className="col-md-9">
               <div className="feed-toggle">
                 <ul className="nav nav-pills outline-active">
-                  <li className="nav-item">
-                    <Link className={`nav-link${this.props.match.url === '/feed' ? ' active' : ''}`} to="/feed">Your Feed</Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className={`nav-link${this.props.match.url === '/' ? ' active' : ''}`} to="/">Global Feed</Link>
-                  </li>
+                  <NavItem to="/feed">Your Feed</NavItem>
+                  <NavItem to="/">Global Feed</NavItem>
                 </ul>
               </div>
               {
@@ -68,18 +66,18 @@ class Home extends React.PureComponent {
                     null
               }
             </div>
-            <div className='col-md-3'>
-              <div className='sidebar'>
+            <div className="col-md-3">
+              <div className="sidebar">
                 <p>Popular Tags</p>
-                <div className='tag-list'>
-                  <a href='' className='tag-pill tag-default'>programming</a>
-                  <a href='' className='tag-pill tag-default'>javascript</a>
-                  <a href='' className='tag-pill tag-default'>emberjs</a>
-                  <a href='' className='tag-pill tag-default'>angularjs</a>
-                  <a href='' className='tag-pill tag-default'>react</a>
-                  <a href='' className='tag-pill tag-default'>mean</a>
-                  <a href='' className='tag-pill tag-default'>node</a>
-                  <a href='' className='tag-pill tag-default'>rails</a>
+                <div className="tag-list">
+                  <a href="/" className="tag-pill tag-default">programming</a>
+                  <a href="/" className="tag-pill tag-default">javascript</a>
+                  <a href="/" className="tag-pill tag-default">emberjs</a>
+                  <a href="/" className="tag-pill tag-default">angularjs</a>
+                  <a href="/" className="tag-pill tag-default">react</a>
+                  <a href="/" className="tag-pill tag-default">mean</a>
+                  <a href="/" className="tag-pill tag-default">node</a>
+                  <a href="/" className="tag-pill tag-default">rails</a>
                 </div>
               </div>
             </div>
@@ -90,4 +88,15 @@ class Home extends React.PureComponent {
   }
 }
 
-export default connect(state => ({ user: state.user, articles: state.articles, }))(Home);
+Home.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  match: PropTypes.shape({ url: PropTypes.string }).isRequired,
+  articles: PropTypes.shape({
+    page: PropTypes.number,
+    pageLength: PropTypes.number,
+    articlesCount: PropTypes.number,
+    articles: PropTypes.arrayOf(PropTypes.shape({ slug: PropTypes.string })),
+  }).isRequired,
+};
+
+export default connect(state => ({ user: state.user, articles: state.articles }))(Home);
