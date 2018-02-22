@@ -2,24 +2,25 @@ import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import _ from 'lodash';
 
-function prepareLink(index, path) {
-  const pager = '/page/:page';
-  let basePath;
-  if (path.slice(-11) === pager) {
-    basePath = path.slice(0, -11) || '/'; // end with slash
-  } else {
-    basePath = path;
-  }
-  if (index === 1) {
+function prepareLink(path, page, author) {
+  let basePath = path.split(':')[0];
+  [basePath] = basePath.split('/page/');
+  if (page === 1) {
+    if (author) {
+      return `${basePath}${author}`;
+    }
     return basePath;
   }
   if (basePath.slice(-1) !== '/') {
     basePath = `${basePath}/`;
   }
-  return `${basePath}page/${index}`;
+  if (author) {
+    return `${basePath}${author}/page/${page}`;
+  }
+  return `${basePath}page/${page}`;
 }
 
-const Pagination = ({ count, pageLength, page, match }) => ( // eslint-disable-line react/prop-types
+const Pagination = ({ count, pageLength, page, match, author }) => ( // eslint-disable-line
   count && pageLength && count > pageLength
     ?
       <nav>
@@ -27,7 +28,9 @@ const Pagination = ({ count, pageLength, page, match }) => ( // eslint-disable-l
           {
             _.range(1, 1 + Math.floor(count / pageLength)).map(index => (
               <li className={`page-item${index === page ? ' active' : ''}`} key={index}>
-                <Link className="page-link" to={prepareLink(index, match.path)}>{index}</Link>
+                <Link className="page-link" to={prepareLink(match.path, index, author)}>
+                  {index}
+                </Link>
               </li>))
           }
         </ul>
