@@ -7,11 +7,30 @@ const Layout = ({ children, user }) => ( // eslint-disable-line react/prop-types
   <div>
     <nav className="navbar navbar-light">
       <div className="container">
-        <Link className="navbar-brand" to="/">conduit</Link>
+        <Link className="navbar-brand" to={user && user.id ? '/feed' : '/'}>conduit</Link>
         <ul className="nav navbar-nav pull-xs-right">
           {
-            !user || !user.id
+            user && user.id
               ?
+                [
+                  <MenuItem to="/feed" key="feed">
+                  <i className="ion-home" />&nbsp;Home
+                  </MenuItem>,
+                  <MenuItem to="/new-post" key="new-post">
+                  <i className="ion-compose" />&nbsp;New Post
+                  </MenuItem>,
+                  <MenuItem to="/settings" key="settings">
+                  <i className="ion-gear-a" />&nbsp;Settings
+                  </MenuItem>,
+                  <MenuItem to="/author/apapacy" key="author">
+                  <img alt="author" src={user.image} className="user-pic" />
+                  {user.username}
+                  </MenuItem>,
+                  <MenuItem to="/sign-out" key="log-out">
+                  <i className="ion-log-out" />&nbsp;Sign out
+                  </MenuItem>,
+                ]
+              :
                 [
                   <MenuItem to="/" key="home">
                     <i className="ion-home" />&nbsp;Home
@@ -21,25 +40,6 @@ const Layout = ({ children, user }) => ( // eslint-disable-line react/prop-types
                   </MenuItem>,
                   <MenuItem to="/sign-up" key="sign-up">
                     <i className="ion-person-add" />&nbsp;Sign up
-                  </MenuItem>,
-                ]
-              :
-                [
-                  <MenuItem to="/feed" key="feed">
-                    <i className="ion-home" />&nbsp;Home
-                  </MenuItem>,
-                  <MenuItem to="/new-post" key="new-post">
-                    <i className="ion-compose" />&nbsp;New Post
-                  </MenuItem>,
-                  <MenuItem to="/settings" key="settings">
-                    <i className="ion-gear-a" />&nbsp;Settings
-                  </MenuItem>,
-                  <MenuItem to="/author/apapacy" key="author">
-                    <img alt="author" src={user.image} className="user-pic" />
-                    {user.username}
-                  </MenuItem>,
-                  <MenuItem to="/sign-out" key="log-out">
-                    <i className="ion-log-out" />&nbsp;Sign out
                   </MenuItem>,
                 ]
           }

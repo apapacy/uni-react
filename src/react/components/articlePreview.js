@@ -9,7 +9,9 @@ import { favorite } from '../../redux/services/articles';
 const ArticlePreview = (props) => {
   function favoritedOnClick(event) {
     event.preventDefault();
-    props.dispatch(favorite({ slug: props.slug, method: props.favorited ? 'delete' : 'post' }));
+    if (props.user && props.user.id && props.user.username !== props.author.username) {
+      props.dispatch(favorite({ slug: props.slug, method: props.favorited ? 'delete' : 'post' }));
+    }
     event.target.blur();
   }
   return (

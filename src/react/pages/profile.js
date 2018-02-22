@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { me, clearErrors } from '../../redux/services/user';
+import { profile, follow } from '../../redux/services/profile';
 import { feed } from '../../redux/services/articles';
 import ArticlePreview from '../components/articlePreview';
 import NavItem from '../components/navItem';
@@ -16,14 +17,31 @@ class Profile extends React.PureComponent {
     }
     const page = Number(match.params.page) || 1;
     await dispatch(feed({ req, filter0: 'feed', page }));
+    await dispatch(profile({ req, author: match.params.author }));
   }
 
-  async componentDidMount() {
-    await Profile.getInitialProps(this.props);
+  componentDidMount() {
+    return Profile.getInitialProps(this.props);
   }
 
-  async componentWillUnmount() {
+  componentWillUnmount() {
     this.props.dispatch(clearErrors());
+  }
+
+  follow = (event) => {
+    this.props.dispatch(follow({
+      author: this.props.profile.username,
+      method: 'post',
+    }));
+    event.target.blur();
+  }
+
+  unfollow = (event) => {
+    this.props.dispatch(follow({
+      author: this.props.profile.username,
+      method: 'delete',
+    }));
+    event.target.blur();
   }
 
   render() {
@@ -37,17 +55,33 @@ class Profile extends React.PureComponent {
           <div className="container">
             <div className="row">
               <div className="col-xs-12 col-md-10 offset-md-1">
-                <img alt="User Name" src="http://i.imgur.com/Qr71crq.jpg" className="user-img" />
-                <h4>Eric Simons</h4>
-                <p>
-                  Cofounder @GoThinkster, lived in Aol&apos;s HQ for a few months,
-                  kinda looks like Peeta from the Hunger Games
-                </p>
-                <button className="btn btn-sm btn-outline-secondary action-btn">
-                  <i className="ion-plus-round" />
-                  &nbsp;
-                  Follow Eric Simons
-                </button>
+                <img alt="Author" src={this.props.profile.image} className="user-img" />
+                <h4>{this.props.profile.username}</h4>
+                <p>{this.props.profile.bio}</p>
+                {
+                  this.props.user.username !== this.props.profile.username
+                    ?
+                      this.props.profile.following
+                        ?
+                          <button
+                            className="btn btn-sm btn-outline-secondary action-btn"
+                            onClick={this.unfollow}
+                          >
+                            <i className="ion-minus-round" />
+                            &nbsp;
+                            Unfollow {this.props.profile.username}
+                          </button>
+                        :
+                          <button
+                            className="btn btn-sm btn-outline-secondary action-btn"
+                            onClick={this.follow}
+                          >
+                            <i className="ion-plus-round" />
+                            &nbsp;
+                            Follow {this.props.profile.username}
+                          </button>
+                    : null
+                }
               </div>
             </div>
           </div>
@@ -67,7 +101,7 @@ class Profile extends React.PureComponent {
               </div>
               {
                 this.props.articles.articles.map(article =>
-                  <ArticlePreview {...article} key={article.slug} />)
+                  <ArticlePreview {...article} user={this.props.user} key={article.slug} />)
               }
               <Pagination {...{ count, pageLength, page, author }} />
             </div>
@@ -92,4 +126,8 @@ Profile.propTypes = {
   }).isRequired,
 };
 
-export default connect(state => ({ user: state.user, articles: state.articles }))(Profile);
+export default connect(state => ({
+  user: state.user,
+  articles: state.articles,
+  profile: state.profile,
+ }))(Profile);

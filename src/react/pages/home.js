@@ -49,7 +49,7 @@ class Home extends React.PureComponent {
               </div>
               {
                 this.props.articles.articles.map(article =>
-                  <ArticlePreview {...article} key={article.slug} />)
+                  <ArticlePreview {...article} user={this.props.user} key={article.slug} />)
               }
               <Pagination {...{ count, pageLength, page }} />
             </div>
