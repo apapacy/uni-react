@@ -75,6 +75,9 @@ class Editor extends React.PureComponent {
   }
 }
 
-Editor.propTypes = { dispatch: PropTypes.func.isRequired };
+Editor.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  hydrated: PropTypes.bool.isRequired,
+};
 
 export default connect(state => ({ user: state.user, hydrated: state.hydrated }))(Editor);

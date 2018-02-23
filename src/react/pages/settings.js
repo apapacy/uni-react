@@ -134,6 +134,7 @@ class Settings extends React.Component {
 
 Settings.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  hydrated: PropTypes.bool.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number,
     username: PropTypes.string,

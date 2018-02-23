@@ -8,7 +8,8 @@ import { feed } from '../../redux/services/articles';
 import ArticlePreview from '../components/articlePreview';
 import NavItem from '../components/navItem';
 import Pagination from '../components/pagination';
-let count = 0;
+
+
 class Profile extends React.PureComponent {
   static async getInitialProps({ req, dispatch, user, match, profile, articles }) {
     const promises = [];
@@ -119,6 +120,13 @@ Profile.propTypes = {
     url: PropTypes.string,
     params: PropTypes.object,
   }).isRequired,
+  hydrated: PropTypes.bool.isRequired,
+  profile: PropTypes.shape({
+    username: PropTypes.string,
+    image: PropTypes.string,
+    bio: PropTypes.string,
+    following: PropTypes.bool,
+  }).isRequired,
   articles: PropTypes.shape({
     page: PropTypes.number,
     pageLength: PropTypes.number,
@@ -132,4 +140,4 @@ export default connect(state => ({
   articles: state.articles,
   profile: state.profile,
   hydrated: state.hydrated,
- }))(Profile);
+}))(Profile);

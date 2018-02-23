@@ -104,5 +104,5 @@ Home.propTypes = {
 export default connect(state => ({
   user: state.user,
   articles: state.articles,
-  hydrated: state.hydrated
+  hydrated: state.hydrated,
 }))(Home);
