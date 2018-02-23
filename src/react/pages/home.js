@@ -11,8 +11,9 @@ import Pagination from '../components/pagination';
 
 class Home extends React.PureComponent {
   static async getInitialProps({ req, dispatch, user, match, articles }) {
+    const promises = [];
     if (!user || !user.id) {
-      await dispatch(me({ req }));
+      promises.push(dispatch(me({ req })));
     }
     const page = Number(match.params.page) || 1;
     let filter
@@ -22,8 +23,9 @@ class Home extends React.PureComponent {
       filter = undefined;
     }
     if (!articles || articles.filter !== filter || articles.page !== page) {
-      await dispatch(feed({ req, filter, page }));
+      promises.push(dispatch(feed({ req, filter, page })));
     }
+    await Promise.all(promises);
   }
 
   async componentDidMount() {
@@ -51,7 +53,11 @@ class Home extends React.PureComponent {
             <div className="col-md-9">
               <div className="feed-toggle">
                 <ul className="nav nav-pills outline-active">
-                  <NavItem to="/feed">Your Feed</NavItem>
+                  {
+                    this.props.user && this.props.user.id
+                      ? <NavItem to="/feed">Your Feed</NavItem>
+                      : null
+                  }
                   <NavItem to="/">Global Feed</NavItem>
                 </ul>
               </div>

@@ -20,7 +20,6 @@ export default function prepareStore(initialState) {
   } else {
     store = compose(
       applyMiddleware(thunk),
-      applyMiddleware(createLogger({})),
     )(createStore)(rootReducer, initialState);
   }
 

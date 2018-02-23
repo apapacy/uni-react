@@ -11,18 +11,21 @@ import Pagination from '../components/pagination';
 let count = 0;
 class Profile extends React.PureComponent {
   static async getInitialProps({ req, dispatch, user, match, profile, articles }) {
+    const promises = [];
     if (!user || !user.id) {
-      await dispatch(me({ req }));
+      promises.push(dispatch(me({ req })));
     }
     const page = Number(match.params.page) || 1;
     const author = match.params.author;
     const filter = match.params[0];
     if (!profile || profile.username !== author) {
-      await dispatch(getProfile({ req, author }));
+      promises.push(dispatch(getProfile({ req, author })))
     }
-    if (!profile || profile.username !== author || !articles || articles.filter !== filter) {
-      await dispatch(feed({ req, filter, author, page }));
+    if (!profile || profile.username !== author
+        || !articles || articles.filter !== filter || articles.page !== page) {
+          promises.push(dispatch(feed({ req, filter, author, page })))
     }
+    await Promise.all(promises);
   }
 
   componentDidMount() {
@@ -64,7 +67,7 @@ class Profile extends React.PureComponent {
                 <h4>{this.props.profile.username}</h4>
                 <p>{this.props.profile.bio}</p>
                 {
-                  this.props.user.username !== this.props.profile.username
+                  this.props.user && this.props.user.id && this.props.user.username !== this.props.profile.username 
                     ?
                       this.props.profile.following
                         ?
