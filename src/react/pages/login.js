@@ -23,7 +23,9 @@ class Login extends React.PureComponent {
   }
 
   async componentDidMount() {
-    await Login.getInitialProps(this.props);
+    if (this.props.hydrated) {
+      await Login.getInitialProps(this.props);
+    }
     if (this.props.match.params[0] === 'sign-out') {
       this.props.history.replace('/sign-in');
     }
@@ -142,4 +144,4 @@ Login.propTypes = {
   }).isRequired,
 };
 
-export default connect(state => ({ user: state.user }))(Login);
+export default connect(state => ({ user: state.user, hydrated: state.hydrated }))(Login);

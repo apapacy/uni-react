@@ -23,7 +23,9 @@ class Settings extends React.Component {
   }
 
   async componentWillMount() {
-    await Settings.getInitialProps(this.props);
+    if (this.props.hydrated) {
+      await Settings.getInitialProps(this.props);
+    }
     this.setState({
       ...this.props.user,
       password: '',
@@ -140,4 +142,4 @@ Settings.propTypes = {
   }).isRequired,
 };
 
-export default connect(state => ({ user: state.user }))(Settings);
+export default connect(state => ({ user: state.user, hydrated: state.hydrated }))(Settings);

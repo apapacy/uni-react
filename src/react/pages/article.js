@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import ReactMarkdown from 'react-markdown';
 import { me } from '../../redux/services/user';
-import { article, clearErrors } from '../../redux/services/article';
+import { article } from '../../redux/services/article';
 import Link from '../asyncLink';
 
 class Article extends React.PureComponent {
@@ -49,13 +50,12 @@ class Article extends React.PureComponent {
                 <span className="counter">({this.props.article.favoritesCount})</span>
               </button>
             </div>
-
           </div>
         </div>
         <div className="container page">
           <div className="row article-content">
             <div className="col-md-12">
-              {this.props.article.body}
+              <ReactMarkdown>{this.props.article.body}</ReactMarkdown>
             </div>
           </div>
           <hr />

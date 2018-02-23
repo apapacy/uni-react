@@ -24,17 +24,16 @@ class Profile extends React.PureComponent {
   }
 
   componentDidMount() {
-    if (!this.props.hydrated) {
-      return
+    if (this.props.hydrated) {
+      Profile.getInitialProps(this.props);
     }
-    return Profile.getInitialProps(this.props);
   }
 
   componentWillUnmount() {
     this.props.dispatch(clearErrors());
   }
 
-  follow = (event) => {
+  follow(event) {
     this.props.dispatch(follow({
       author: this.props.profile.username,
       method: 'post',
@@ -42,7 +41,7 @@ class Profile extends React.PureComponent {
     event.target.blur();
   }
 
-  unfollow = (event) => {
+  unfollow(event) {
     this.props.dispatch(follow({
       author: this.props.profile.username,
       method: 'delete',
@@ -71,7 +70,7 @@ class Profile extends React.PureComponent {
                         ?
                           <button
                             className="btn btn-sm btn-outline-secondary action-btn"
-                            onClick={this.unfollow}
+                            onClick={this.unfollow.bind(this)}
                           >
                             <i className="ion-minus-round" />
                             &nbsp;
@@ -80,7 +79,7 @@ class Profile extends React.PureComponent {
                         :
                           <button
                             className="btn btn-sm btn-outline-secondary action-btn"
-                            onClick={this.follow}
+                            onClick={this.follow.bind(this)}
                           >
                             <i className="ion-plus-round" />
                             &nbsp;

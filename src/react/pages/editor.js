@@ -13,7 +13,9 @@ class Editor extends React.PureComponent {
   }
 
   async componentDidMount() {
-    await Editor.getInitialProps(this.props);
+    if (this.props.hydrated) {
+      await Editor.getInitialProps(this.props);
+    }
   }
 
   async componentWillUnmount() {
@@ -75,4 +77,4 @@ class Editor extends React.PureComponent {
 
 Editor.propTypes = { dispatch: PropTypes.func.isRequired };
 
-export default connect(state => ({ user: state.user }))(Editor);
+export default connect(state => ({ user: state.user, hydrated: state.hydrated }))(Editor);
