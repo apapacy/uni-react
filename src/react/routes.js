@@ -40,6 +40,10 @@ module.exports = [
     exact: true,
     componentName: 'components/user',
   }, {
+    path: '/([^/]*-[^/]+)',
+    exact: true,
+    componentName: 'pages/article',
+  }, {
     path: '*',
     exact: false,
     componentName: 'components/notFound',
