@@ -24,3 +24,6 @@ npm start
 
 - [Хабр 1] (https://habrahabr.ru/post/349064/)
 - [Хабр 2] (https://habrahabr.ru/post/349136/)
+
+
+sudo dpkg-reconfigure locales
