@@ -49,13 +49,13 @@ export function getProfile({ req, author }) {
       }),
       error => dispatch({
         type: PROFILE_FAILURE,
-        error: parseError(error)
+        error: parseError(error),
       }),
     );
   };
 }
 
-export function follow({author, method }) {
+export function follow({ author, method }) {
   if (method !== 'post' && method !== 'delete') {
     return { type: PROFILE_FOLLOW_FAILURE, error: { message: 'Only post or delete methos alowed' } };
   }

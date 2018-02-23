@@ -66,7 +66,7 @@ export function feed({ req, filter, author, page }) {
     offset = (page - 1) * limit;
   }
   const params = { limit, offset };
-  if (filter === 'author' || filter === 'favorited' ) {
+  if (filter === 'author' || filter === 'favorited') {
     params[filter] = decodeURIComponent(author);
   }
   return (dispatch) => {

@@ -20,9 +20,7 @@ export default function userReduser(state = initialState, action) {
     case ARTICLE_REQUEST:
       return { ...initialState };
     case ARTICLE_SUCCESS:
-      return {
-        ...action.payload.article,
-      };
+      return { ...action.payload.article };
     case ARTICLE_FAILURE:
       return { ...initialState, error: action.error };
     case CLEAR_ERRORS: // eslint-disable-line no-case-declarations
@@ -45,7 +43,7 @@ export function article({ req, slug }) {
         type: ARTICLE_SUCCESS,
         payload: response.data,
       }),
-      error => dispatch({ type: ARTICLES_FAILURE, error: parseError(error) }),
+      error => dispatch({ type: ARTICLE_FAILURE, error: parseError(error) }),
     );
   };
 }
