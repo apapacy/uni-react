@@ -52,7 +52,7 @@ ArticlePreview.propTypes = {
   favorited: PropTypes.bool.isRequired,
   slug: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  description: PropTypes.string,
+  description: PropTypes.string.isRequired,
   favoritesCount: PropTypes.number.isRequired,
   updatedAt: PropTypes.string.isRequired,
   author: PropTypes.shape({
