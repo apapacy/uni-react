@@ -12,23 +12,21 @@ let count = 0;
 class Profile extends React.PureComponent {
   static async getInitialProps({ req, dispatch, user, match, profile, articles }) {
     const promises = [];
-    if (!user || !user.id) {
-      promises.push(dispatch(me({ req })));
-    }
+    promises.push(dispatch(me({ req })));
     const page = Number(match.params.page) || 1;
     const author = match.params.author;
     const filter = match.params[0];
     if (!profile || profile.username !== author) {
       promises.push(dispatch(getProfile({ req, author })))
     }
-    if (!profile || profile.username !== author
-        || !articles || articles.filter !== filter || articles.page !== page) {
-          promises.push(dispatch(feed({ req, filter, author, page })))
-    }
+    promises.push(dispatch(feed({ req, filter, author, page })));
     await Promise.all(promises);
   }
 
   componentDidMount() {
+    if (!this.props.hydrated.state) {
+      return
+    }
     return Profile.getInitialProps(this.props);
   }
 
@@ -67,7 +65,7 @@ class Profile extends React.PureComponent {
                 <h4>{this.props.profile.username}</h4>
                 <p>{this.props.profile.bio}</p>
                 {
-                  this.props.user && this.props.user.id && this.props.user.username !== this.props.profile.username 
+                  this.props.user && this.props.user.id && this.props.user.username !== this.props.profile.username
                     ?
                       this.props.profile.following
                         ?
@@ -134,4 +132,5 @@ export default connect(state => ({
   user: state.user,
   articles: state.articles,
   profile: state.profile,
+  hydrated: state.hydrated,
  }))(Profile);

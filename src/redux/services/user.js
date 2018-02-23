@@ -2,6 +2,9 @@ import axios from 'axios';
 import { request, setJWT } from '../agent';
 import { parseError } from '../utils';
 
+const SIGNUP_REQUEST = Symbol('USER_SIGNUP_REQUEST');
+const SIGNUP_SUCCESS = Symbol('USER_SIGNUP_SUCCESS');
+const SIGNUP_FAILURE = Symbol('USER_SIGNUP_FAILURE');
 const LOGIN_REQUEST = Symbol('USER_LOGIN_REQUEST');
 const LOGIN_SUCCESS = Symbol('USER_LOGIN_SUCCESS');
 const LOGIN_FAILURE = Symbol('USER_LOGIN_FAILURE');
@@ -20,6 +23,12 @@ const initialState = {};
 
 export default function userReduser(state = initialState, action) {
   switch (action.type) {
+    case SIGNUP_REQUEST:
+      return { transition: true };
+    case SIGNUP_SUCCESS:
+      return { ...action.payload.user, transition: false };
+    case SIGNUP_FAILURE:
+      return { error: action.error, transition: false };
     case LOGIN_REQUEST:
       return { transition: true };
     case LOGIN_SUCCESS:
@@ -52,6 +61,30 @@ export default function userReduser(state = initialState, action) {
     default:
       return state;
   }
+}
+
+
+export function signup({ username, email, password }) {
+  return (dispatch) => {
+    dispatch({ type: LOGIN_REQUEST });
+
+    return request(undefined, {
+      method: 'post',
+      url: '/users',
+      data: { user: { username, email, password } },
+    }).then(
+      (response) => {
+        setJWT(response.data.user.token);
+        axios.post('/api/token', { token: response.data.user.token });
+        dispatch({ type: LOGIN_SUCCESS, payload: response.data });
+      },
+      (error) => {
+        setJWT(undefined);
+        axios.post('/api/token', { token: '' });
+        dispatch({ type: LOGIN_FAILURE, error: parseError(error) });
+      },
+    );
+  };
 }
 
 export function login({ email, password }) {

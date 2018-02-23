@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { login, logout } from '../../redux/services/user';
+import { login, logout, signup } from '../../redux/services/user';
 import ErrorsList from '../components/errorsList';
 
 class Login extends React.PureComponent {
@@ -34,10 +34,18 @@ class Login extends React.PureComponent {
     if (this.props.user && this.props.user.transition) {
       return;
     }
-    await this.props.dispatch(login({
-      email: this.emailInput.value,
-      password: this.passwordInput.value,
-    }));
+    if (this.isSignUp()) {
+      await this.props.dispatch(signup({
+        username: this.usernameInput.value,
+        email: this.emailInput.value,
+        password: this.passwordInput.value,
+      }));
+    } else {
+      await this.props.dispatch(login({
+        email: this.emailInput.value,
+        password: this.passwordInput.value,
+      }));
+    }
     if (this.props.user && this.props.user.id) {
       this.passwordInput.value = '';
       this.props.history.push('/feed');
@@ -75,7 +83,7 @@ class Login extends React.PureComponent {
                     ?
                       <fieldset className="form-group">
                         <input
-                          ref={(input) => { this.nameInput = input; }}
+                          ref={(input) => { this.usernameInput = input; }}
                           className="form-control form-control-lg"
                           type="text"
                           placeholder="Your Name"

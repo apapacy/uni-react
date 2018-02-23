@@ -10,11 +10,9 @@ import Pagination from '../components/pagination';
 
 
 class Home extends React.PureComponent {
-  static async getInitialProps({ req, dispatch, user, match, articles }) {
+  static async getInitialProps({ req, dispatch, user, match, articles, hydrated }) {
     const promises = [];
-    if (!user || !user.id) {
-      promises.push(dispatch(me({ req })));
-    }
+    promises.push(dispatch(me({ req })));
     const page = Number(match.params.page) || 1;
     let filter
     if (match.path.slice(0, 5) === '/feed')  {
@@ -22,13 +20,14 @@ class Home extends React.PureComponent {
     } else {
       filter = undefined;
     }
-    if (!articles || articles.filter !== filter || articles.page !== page) {
-      promises.push(dispatch(feed({ req, filter, page })));
-    }
+    promises.push(dispatch(feed({ req, filter, page })));
     await Promise.all(promises);
   }
 
   async componentDidMount() {
+    if (!this.props.hydrated.state) {
+      return
+    }
     await Home.getInitialProps(this.props);
   }
 
@@ -103,4 +102,8 @@ Home.propTypes = {
   }).isRequired,
 };
 
-export default connect(state => ({ user: state.user, articles: state.articles }))(Home);
+export default connect(state => ({
+  user: state.user,
+  articles: state.articles,
+  hydrated: state.hydrated
+}))(Home);
