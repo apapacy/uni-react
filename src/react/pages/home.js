@@ -25,7 +25,7 @@ class Home extends React.PureComponent {
   }
 
   async componentDidMount() {
-    if (!this.props.hydrated.state) {
+    if (!this.props.hydrated) {
       return
     }
     await Home.getInitialProps(this.props);

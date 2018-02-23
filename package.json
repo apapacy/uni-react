@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "hot": "rm -rf ./dist && mkdir ./dist && NODE_ENV=development webpack -d --config=./webpack/config.server.js && NODE_ENV=development webpack -d --config=./webpack/config.client.js && node ./server",
     "build": "rm -rf ./dist && mkdir ./dist && NODE_ENV=production  webpack --config=./webpack/config.server.js && NODE_ENV=production webpack -p --config=./webpack/config.client.js",
-    "start": "NODE_ENV=production node ./server"
+    "start": "NODE_ENV=production node ./server",
+    "eslint": "eslint src/*.js"
   },
   "repository": {
     "type": "git",
@@ -76,6 +77,8 @@
     "babel-preset-stage-0": "^6.24.1",
     "eslint": "^4.18.1",
     "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-babel": "^4.1.2",
+    "eslint-plugin-class-property": "^1.1.0",
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",

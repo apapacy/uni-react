@@ -7,11 +7,6 @@
             "ObjectPattern": { "multiline": true },
             "ImportDeclaration": { "multiline": true },
             "ExportDeclaration": { "multiline": true }
-        }],
-        "jsx-a11y/anchor-is-valid": [ "error", {
-            "components": [ "Link" ],
-            "specialLink": [ "to" ],
-            "aspects": [ ]
         }]
     }
 }

@@ -2,19 +2,17 @@
 const HYDRATED = Symbol('HYDRATED');
 
 
-const initialState = {
-  state: false,
-};
+const initialState = false;
 
 export default function userReduser(state = initialState, action) {
   switch (action.type) {
     case HYDRATED:
-      return { state: true };
+      return true;
     default:
       return state;
   }
 }
 
-export function hydrated() {
+export function setHydrated() {
   return { type: HYDRATED };
 }

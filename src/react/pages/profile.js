@@ -24,7 +24,7 @@ class Profile extends React.PureComponent {
   }
 
   componentDidMount() {
-    if (!this.props.hydrated.state) {
+    if (!this.props.hydrated) {
       return
     }
     return Profile.getInitialProps(this.props);
