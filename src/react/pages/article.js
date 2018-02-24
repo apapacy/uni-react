@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import { me } from '../../redux/services/user';
-import { article } from '../../redux/services/article';
+import { article, follow, favorite } from '../../redux/services/article';
 import Link from '../asyncLink';
 
 class Article extends React.PureComponent {
@@ -22,6 +22,38 @@ class Article extends React.PureComponent {
     // this.props.dispatch(clearErrors());
   }
 
+  follow(event) {
+    this.props.dispatch(follow({
+      author: this.props.article.author.username,
+      method: 'post',
+    }));
+    event.target.blur();
+  }
+
+  unfollow(event) {
+    this.props.dispatch(follow({
+      author: this.props.article.author.username,
+      method: 'delete',
+    }));
+    event.target.blur();
+  }
+
+  favorite(event) {
+    this.props.dispatch(favorite({
+      slug: this.props.article.slug,
+      method: 'post',
+    }));
+    event.target.blur();
+  }
+
+  unfavorite(event) {
+    this.props.dispatch(favorite({
+      slug: this.props.article.slug,
+      method: 'delete',
+    }));
+    event.target.blur();
+  }
+
   render() {
     return (
       <div className="article-page">
@@ -36,19 +68,41 @@ class Article extends React.PureComponent {
                 <Link to={`/author/${this.props.article.author.username}`} className="author">{this.props.article.author.username}</Link>
                 <span className="date">{this.props.article.updatedAt}</span>
               </div>
-              <button className="btn btn-sm btn-outline-secondary">
-                <i className="ion-plus-round" />
-                &nbsp;
-                Follow {this.props.article.author.username} <span className="counter" />
-              </button>
+              {
+                this.props.article.author.following
+                  ?
+                    <button className="btn btn-sm btn-secondary" onClick={this.unfollow.bind(this)}>
+                      <i className="ion-minus-round" />
+                      &nbsp;
+                      Unollow {this.props.article.author.username} <span className="counter" />
+                    </button>
+                  :
+                    <button className="btn btn-sm btn-outline-secondary" onClick={this.follow.bind(this)}>
+                      <i className="ion-plus-round" />
+                      &nbsp;
+                      Follow {this.props.article.author.username} <span className="counter" />
+                    </button>
+              }
               &nbsp;&nbsp;
-              <button className={`btn btn-sm btn-${this.props.article.favorited ? '' : 'outline-'}primary`}>
-                <i className="ion-heart" />
-                &nbsp;
-                {this.props.article.favorited ? 'Unfavorite Post' : 'Favorite Post'}
-                &nbsp;
-                <span className="counter">({this.props.article.favoritesCount})</span>
-              </button>
+              {
+                this.props.article.favorited
+                  ?
+                    <button className="btn btn-sm btn-primary" onClick={this.unfavorite.bind(this)}>
+                      <i className="ion-heart" />
+                      &nbsp;
+                      Unfavorite Post
+                      &nbsp;
+                      <span className="counter">({this.props.article.favoritesCount})</span>
+                    </button>
+                  :
+                    <button className="btn btn-sm btn-outline-primary" onClick={this.favorite.bind(this)}>
+                      <i className="ion-heart" />
+                      &nbsp;
+                      Favorite Post
+                      &nbsp;
+                      <span className="counter">({this.props.article.favoritesCount})</span>
+                    </button>
+              }
             </div>
           </div>
         </div>
@@ -70,19 +124,41 @@ class Article extends React.PureComponent {
                 </Link>
                 <span className="date">{this.props.article.updatedAt}</span>
               </div>
-              <button className="btn btn-sm btn-outline-secondary">
-                <i className="ion-plus-round" />
-                &nbsp;
-                Follow {this.props.article.author.username}<span className="counter" />
-              </button>
+              {
+                this.props.article.author.following
+                  ?
+                    <button className="btn btn-sm btn-secondary"  onClick={this.unfollow.bind(this)}>
+                      <i className="ion-minus-round" />
+                      &nbsp;
+                      Unfollow {this.props.article.author.username}<span className="counter" />
+                    </button>
+                  :
+                    <button className="btn btn-sm btn-outline-secondary"  onClick={this.follow.bind(this)}>
+                      <i className="ion-plus-round" />
+                      &nbsp;
+                      Follow {this.props.article.author.username}<span className="counter" />
+                    </button>              
+              }
               &nbsp;
-              <button className={`btn btn-sm btn-${this.props.article.favorited ? '' : 'outline-'}primary`}>
-                <i className="ion-heart" />
-                &nbsp;
-                {this.props.article.favorited ? 'Unfavorite Post' : 'Favorite Post'}
-                &nbsp;
-                <span className="counter">({this.props.article.favoritesCount})</span>
-              </button>
+              {
+                this.props.article.favorited
+                  ?
+                    <button className="btn btn-sm btn-primary" onClick={this.unfavorite.bind(this)}>
+                      <i className="ion-heart" />
+                      &nbsp;
+                      Unfavorite Post
+                      &nbsp;
+                      <span className="counter">({this.props.article.favoritesCount})</span>
+                    </button>
+                  :
+                    <button className="btn btn-sm btn-outline-primary" onClick={this.favorite.bind(this)}>
+                      <i className="ion-heart" />
+                      &nbsp;
+                      Favorite Post
+                      &nbsp;
+                      <span className="counter">({this.props.article.favoritesCount})</span>
+                    </button>
+              }
             </div>
           </div>
           <div className="row">

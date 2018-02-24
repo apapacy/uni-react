@@ -23,10 +23,10 @@ export default function userReduser(state = initialState, action) {
       return { ...initialState };
     case PROFILE_SUCCESS:
       return { ...action.payload.profile };
-    case PROFILE_FOLLOW_SUCCESS:
-      return { ...action.payload.profile };
     case PROFILE_FAILURE:
       return { ...initialState, error: action.error };
+    case PROFILE_FOLLOW_SUCCESS:
+      return { ...action.payload.profile };
     case CLEAR_ERRORS: // eslint-disable-line no-case-declarations
       const { error, ...nextState } = state;
       // eslint-disable-line no-case-declarations, no-unused-vars

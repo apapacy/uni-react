@@ -60,6 +60,10 @@ ArticlePreview.propTypes = {
     image: PropTypes.string,
   }).isRequired,
   tagList: PropTypes.arrayOf(PropTypes.string).isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string,
+    username: PropTypes.string,
+  }).isRequired,
 };
 
 export default withRouter(connect()(ArticlePreview));

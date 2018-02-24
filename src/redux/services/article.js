@@ -8,6 +8,13 @@ const CLEAR_ERRORS = Symbol('ARTICLE_CLEAR_ERRORS');
 const ARTICLE_COMMENTS_REQUEST = Symbol('ARTICLE_COMMENTS_REQUEST');
 const ARTICLE_COMMENTS_SUCCESS = Symbol('ARTICLE_COMMENTS_SUCCESS');
 const ARTICLE_COMMENTS_FAILURE = Symbol('ARTICLE_COMMENTS_FAIULURE');
+const ARTICLE_FOLLOW_REQUEST = Symbol('ARTICLE_FOLLOW_REQUEST');
+const ARTICLE_FOLLOW_SUCCESS = Symbol('ARTICLE_FOLLOW_SUCCESS');
+const ARTICLE_FOLLOW_FAILURE = Symbol('ARTICLE_FOLLOW_FAILURE');
+const ARTICLE_FAVORITE_REQUEST = Symbol('ARTICLE_FAVORITE_REQUEST');
+const ARTICLE_FAVORITE_SUCCESS = Symbol('ARTICLE_FAVORITE_SUCCESS');
+const ARTICLE_FAVORITE_FAILURE = Symbol('ARTICLE_FAVORITE_FAIULURE');
+
 
 
 const initialState = {
@@ -23,6 +30,10 @@ export default function userReduser(state = initialState, action) {
       return { ...action.payload.article };
     case ARTICLE_FAILURE:
       return { ...initialState, error: action.error };
+    case ARTICLE_FOLLOW_SUCCESS:
+      return { ...state, author: action.payload.profile };
+    case ARTICLE_FAVORITE_SUCCESS:
+      return { ...action.payload.article  }
     case CLEAR_ERRORS: // eslint-disable-line no-case-declarations
       const { error, ...nextState } = state;
       // eslint-disable-line no-case-declarations, no-unused-vars
@@ -47,6 +58,39 @@ export function article({ req, slug }) {
     );
   };
 }
+
+export function follow({ author, method }) {
+  if (method !== 'post' && method !== 'delete') {
+    return { type: PROFILE_FOLLOW_FAILURE, error: { message: 'Only post or delete methos alowed' } };
+  }
+  return (dispatch) => {
+    dispatch({ type: ARTICLE_FOLLOW_REQUEST });
+    return request(undefined, {
+      method,
+      url: `/profiles/${decodeURIComponent(author)}/follow`,
+    }).then(
+      response => dispatch({ type: ARTICLE_FOLLOW_SUCCESS, payload: response.data }),
+      error => dispatch({ type: ARTICLE_FOLLOW_FAILURE, error: parseError(error) }),
+    );
+  };
+}
+
+export function favorite({ slug, method }) {
+  if (method !== 'post' && method !== 'delete') {
+    return { type: ARTICLE_FAVORITE_FAILURE, error: { message: 'Only post or delete methos alowed' } };
+  }
+  return (dispatch) => {
+    dispatch({ type: ARTICLE_FAVORITE_REQUEST });
+    return request(undefined, {
+      method,
+      url: `/articles/${slug}/favorite`,
+    }).then(
+      response => dispatch({ type: ARTICLE_FAVORITE_SUCCESS, payload: response.data }),
+      error => dispatch({ type: ARTICLE_FAVORITE_FAILURE, error: parseError(error) }),
+    );
+  };
+}
+
 
 export function clearErrors() {
   return { type: CLEAR_ERRORS };
