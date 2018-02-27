@@ -67,7 +67,7 @@ export function feed({ req, filter, author, page }) {
   }
   const params = { limit, offset };
   if (filter === 'author' || filter === 'favorited') {
-    params[filter] = decodeURIComponent(author);
+    params[filter] = author;
   }
   return (dispatch) => {
     dispatch({ type: ARTICLES_REQUEST });

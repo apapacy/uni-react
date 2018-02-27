@@ -173,6 +173,8 @@ class Article extends React.PureComponent {
                       </div>
                       <div className="card-footer">
                         <img alt="" src={this.props.user.image} className="comment-author-img" />
+                        &nbsp;
+                        <Link to={`/author/${this.props.user.username}`}>{this.props.user.username}</Link>
                         <button className="btn btn-sm btn-primary">
                          Post Comment
                         </button>
@@ -190,11 +192,11 @@ class Article extends React.PureComponent {
                       </p>
                     </div>
                     <div className="card-footer">
-                      <a href="" className="comment-author">
+                      <Link to={`/author/${comment.author.username}`} className="comment-author">
                         <img alt="" src={comment.author.image} className="comment-author-img" />
-                      </a>
+                      </Link>
                       &nbsp;
-                      <a href="" className="comment-author">{comment.author.username}</a>
+                      <Link to={`/author/${comment.author.username}`} className="comment-author">{comment.author.username}</Link>
                       <span className="date-posted">{comment.updatedAt}</span>
                     </div>
                   </div>

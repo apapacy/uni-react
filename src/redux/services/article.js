@@ -89,7 +89,7 @@ export function follow({ author, method }) {
     dispatch({ type: ARTICLE_FOLLOW_REQUEST });
     return request(undefined, {
       method,
-      url: `/profiles/${decodeURIComponent(author)}/follow`,
+      url: `/profiles/${author}/follow`,
     }).then(
       response => dispatch({ type: ARTICLE_FOLLOW_SUCCESS, payload: response.data }),
       error => dispatch({ type: ARTICLE_FOLLOW_FAILURE, error: parseError(error) }),

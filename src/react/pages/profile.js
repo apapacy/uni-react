@@ -97,7 +97,7 @@ class Profile extends React.PureComponent {
             <div className="col-xs-12 col-md-10 offset-md-1">
               <div className="articles-toggle">
                 <ul className="nav nav-pills outline-active">
-                  <NavItem to={`/author/${this.props.profile.username}`}>My Articles</NavItem>
+                  <NavItem to={`/author/${this.props.profile.username}`} data-test={`/author/${this.props.profile.username}`}>My Articles</NavItem>
                   <NavItem to={`/favorited/${this.props.profile.username}`}>Favorited Articles</NavItem>
                 </ul>
               </div>

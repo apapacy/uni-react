@@ -41,7 +41,7 @@ export function getProfile({ req, author }) {
     dispatch({ type: PROFILE_REQUEST });
     return request(req, {
       method: 'get',
-      url: `/profiles/${decodeURIComponent(author)}`,
+      url: `/profiles/${author}`,
     }).then(
       response => dispatch({
         type: PROFILE_SUCCESS,
@@ -63,7 +63,7 @@ export function follow({ author, method }) {
     dispatch({ type: PROFILE_FOLLOW_REQUEST });
     return request(undefined, {
       method,
-      url: `/profiles/${decodeURIComponent(author)}/follow`,
+      url: `/profiles/${author}/follow`,
     }).then(
       response => dispatch({ type: PROFILE_FOLLOW_SUCCESS, payload: response.data }),
       error => dispatch({ type: PROFILE_FOLLOW_FAILURE, error: parseError(error) }),
