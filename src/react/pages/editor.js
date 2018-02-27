@@ -13,8 +13,8 @@ class Editor extends React.PureComponent {
   }
 
   async componentDidMount() {
-    if (this.props.hydrated) {
-      // await Editor.getInitialProps(this.props);
+    if (this.props.history.action === 'POP') {
+      await Editor.getInitialProps(this.props);
     }
   }
 

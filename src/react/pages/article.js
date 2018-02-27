@@ -14,8 +14,8 @@ class Article extends React.PureComponent {
   }
 
   async componentDidMount() {
-    if (this.props.hydrated) {
-      // await Article.getInitialProps(this.props);
+    if (this.props.history.action === 'POP') {
+      await Article.getInitialProps(this.props);
     }
   }
 

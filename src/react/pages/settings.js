@@ -23,8 +23,8 @@ class Settings extends React.Component {
   }
 
   async componentWillMount() {
-    if (this.props.hydrated) {
-      // await Settings.getInitialProps(this.props);
+    if (this.props.history.action === 'POP') {
+      await Settings.getInitialProps(this.props);
     }
     this.setState({
       ...this.props.user,

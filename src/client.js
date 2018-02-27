@@ -10,7 +10,7 @@ const preloadedState = window.__PRELOADED_STATE__; // eslint-disable-line
 delete window.__PRELOADED_STATE__; // eslint-disable-line
 const store = createStore(preloadedState);
 
-hydrate(
+const comp = hydrate(
   <Provider store={store}>
     <BrowserRouter>
       <AppRouter />

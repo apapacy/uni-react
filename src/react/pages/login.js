@@ -23,8 +23,8 @@ class Login extends React.PureComponent {
   }
 
   async componentDidMount() {
-    if (this.props.hydrated) {
-      // await Login.getInitialProps(this.props);
+    if (this.props.history.action === 'POP') {
+      await Login.getInitialProps(this.props);
     }
     if (this.props.match.params[0] === 'sign-out') {
       this.props.history.replace('/sign-in');

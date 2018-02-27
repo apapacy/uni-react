@@ -25,8 +25,8 @@ class Profile extends React.PureComponent {
   }
 
   componentDidMount() {
-    if (this.props.hydrated) {
-      // Profile.getInitialProps(this.props);
+    if (this.props.history.action === 'POP') {
+      Profile.getInitialProps(this.props);
     }
   }
 
