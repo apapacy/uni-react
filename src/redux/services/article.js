@@ -18,7 +18,7 @@ const ARTICLE_FAVORITE_FAILURE = Symbol('ARTICLE_FAVORITE_FAIULURE');
 
 
 const initialState = {
-  author: {},
+  article: { author: {} },
   comments: [],
 };
 
@@ -27,13 +27,19 @@ export default function userReduser(state = initialState, action) {
     case ARTICLE_REQUEST:
       return { ...initialState };
     case ARTICLE_SUCCESS:
-      return { ...action.payload.article };
+      return { ...state, article: action.payload.article };
     case ARTICLE_FAILURE:
-      return { ...initialState, error: action.error };
+      return { ...state, error: action.error };
+    case ARTICLE_COMMENTS_REQUEST:
+      return state;
+    case ARTICLE_COMMENTS_SUCCESS:
+      return { ...state, comments: action.payload.article.comments };
+    case ARTICLE_COMMENTS_FAILURE:
+      return { ...state, error: action.error };
     case ARTICLE_FOLLOW_SUCCESS:
-      return { ...state, author: action.payload.profile };
+      return { ...state, ...{ article: { ...state.article, author: action.payload.profile } } };
     case ARTICLE_FAVORITE_SUCCESS:
-      return { ...action.payload.article  }
+      return { ...state, article: action.payload.article };
     case CLEAR_ERRORS: // eslint-disable-line no-case-declarations
       const { error, ...nextState } = state;
       // eslint-disable-line no-case-declarations, no-unused-vars
@@ -59,6 +65,22 @@ export function article({ req, slug }) {
   };
 }
 
+export function comments({ req, slug }) {
+  return (dispatch) => {
+    dispatch({ type: ARTICLE_COMMENTS_REQUEST });
+    return request(req, {
+      method: 'get',
+      url: `/articles/${slug}/comments`,
+    }).then(
+      response => dispatch({
+        type: ARTICLE_COMMENTS_SUCCESS,
+        payload: response.data,
+      }),
+      error => dispatch({ type: ARTICLE_COMMENTS_FAILURE, error: parseError(error) }),
+    );
+  };
+}
+
 export function follow({ author, method }) {
   if (method !== 'post' && method !== 'delete') {
     return { type: PROFILE_FOLLOW_FAILURE, error: { message: 'Only post or delete methos alowed' } };
@@ -77,7 +99,7 @@ export function follow({ author, method }) {
 
 export function favorite({ slug, method }) {
   if (method !== 'post' && method !== 'delete') {
-    return { type: ARTICLE_FAVORITE_FAILURE, error: { message: 'Only post or delete methos alowed' } };
+    return { type: ARTICLE_FAVORITE_FAILURE, error: { message: 'usernameOnly post or delete methos alowed' } };
   }
   return (dispatch) => {
     dispatch({ type: ARTICLE_FAVORITE_REQUEST });

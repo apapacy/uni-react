@@ -61,7 +61,7 @@ ArticlePreview.propTypes = {
   }).isRequired,
   tagList: PropTypes.arrayOf(PropTypes.string).isRequired,
   user: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.number,
     username: PropTypes.string,
   }).isRequired,
 };

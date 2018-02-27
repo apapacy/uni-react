@@ -24,7 +24,7 @@ class Article extends React.PureComponent {
 
   follow(event) {
     this.props.dispatch(follow({
-      author: this.props.article.author.username,
+      author: this.props.article.article.author.username,
       method: 'post',
     }));
     event.target.blur();
@@ -32,7 +32,7 @@ class Article extends React.PureComponent {
 
   unfollow(event) {
     this.props.dispatch(follow({
-      author: this.props.article.author.username,
+      author: this.props.article.article.author.username,
       method: 'delete',
     }));
     event.target.blur();
@@ -40,7 +40,7 @@ class Article extends React.PureComponent {
 
   favorite(event) {
     this.props.dispatch(favorite({
-      slug: this.props.article.slug,
+      slug: this.props.article.article.slug,
       method: 'post',
     }));
     event.target.blur();
@@ -48,7 +48,7 @@ class Article extends React.PureComponent {
 
   unfavorite(event) {
     this.props.dispatch(favorite({
-      slug: this.props.article.slug,
+      slug: this.props.article.article.slug,
       method: 'delete',
     }));
     event.target.blur();
@@ -59,40 +59,40 @@ class Article extends React.PureComponent {
       <div className="article-page">
         <div className="banner">
           <div className="container">
-            <h1>{this.props.article.title}</h1>
+            <h1>{this.props.article.article.title}</h1>
             <div className="article-meta">
-              <Link to={`/author/${this.props.article.author.username}`}>
-                <img alt="" src={this.props.article.author.image} />
+              <Link to={`/author/${this.props.article.article.author.username}`}>
+                <img alt="" src={this.props.article.article.author.image} />
               </Link>
               <div className="info">
-                <Link to={`/author/${this.props.article.author.username}`} className="author">{this.props.article.author.username}</Link>
-                <span className="date">{this.props.article.updatedAt}</span>
+                <Link to={`/author/${this.props.article.article.author.username}`} className="author">{this.props.article.article.author.username}</Link>
+                <span className="date">{this.props.article.article.updatedAt}</span>
               </div>
               {
-                this.props.article.author.following
+                this.props.article.article.author.following
                   ?
                     <button className="btn btn-sm btn-secondary" onClick={this.unfollow.bind(this)}>
                       <i className="ion-minus-round" />
                       &nbsp;
-                      Unollow {this.props.article.author.username} <span className="counter" />
+                      Unollow {this.props.article.article.author.username} <span className="counter" />
                     </button>
                   :
                     <button className="btn btn-sm btn-outline-secondary" onClick={this.follow.bind(this)}>
                       <i className="ion-plus-round" />
                       &nbsp;
-                      Follow {this.props.article.author.username} <span className="counter" />
+                      Follow {this.props.article.article.author.username} <span className="counter" />
                     </button>
               }
               &nbsp;&nbsp;
               {
-                this.props.article.favorited
+                this.props.article.article.favorited
                   ?
                     <button className="btn btn-sm btn-primary" onClick={this.unfavorite.bind(this)}>
                       <i className="ion-heart" />
                       &nbsp;
                       Unfavorite Post
                       &nbsp;
-                      <span className="counter">({this.props.article.favoritesCount})</span>
+                      <span className="counter">({this.props.article.article.favoritesCount})</span>
                     </button>
                   :
                     <button className="btn btn-sm btn-outline-primary" onClick={this.favorite.bind(this)}>
@@ -100,7 +100,7 @@ class Article extends React.PureComponent {
                       &nbsp;
                       Favorite Post
                       &nbsp;
-                      <span className="counter">({this.props.article.favoritesCount})</span>
+                      <span className="counter">({this.props.article.article.favoritesCount})</span>
                     </button>
               }
             </div>
@@ -109,35 +109,35 @@ class Article extends React.PureComponent {
         <div className="container page">
           <div className="row article-content">
             <div className="col-md-12">
-              <ReactMarkdown>{this.props.article.body}</ReactMarkdown>
+              <ReactMarkdown>{this.props.article.article.body}</ReactMarkdown>
             </div>
           </div>
           <hr />
           <div className="article-actions">
             <div className="article-meta">
-              <Link to={`/author/${this.props.article.author.username}`}>
-                <img alt="" src={this.props.article.author.image} />
+              <Link to={`/author/${this.props.article.article.author.username}`}>
+                <img alt="" src={this.props.article.article.author.image} />
               </Link>
               <div className="info">
-                <Link to={`/author/${this.props.article.author.username}`} className="author">
-                  {this.props.article.author.username}
+                <Link to={`/author/${this.props.article.article.author.username}`} className="author">
+                  {this.props.article.article.author.username}
                 </Link>
-                <span className="date">{this.props.article.updatedAt}</span>
+                <span className="date">{this.props.article.article.updatedAt}</span>
               </div>
               {
-                this.props.article.author.following
+                this.props.article.article.author.following
                   ?
                     <button className="btn btn-sm btn-secondary"  onClick={this.unfollow.bind(this)}>
                       <i className="ion-minus-round" />
                       &nbsp;
-                      Unfollow {this.props.article.author.username}<span className="counter" />
+                      Unfollow {this.props.article.article.author.username}<span className="counter" />
                     </button>
                   :
                     <button className="btn btn-sm btn-outline-secondary"  onClick={this.follow.bind(this)}>
                       <i className="ion-plus-round" />
                       &nbsp;
-                      Follow {this.props.article.author.username}<span className="counter" />
-                    </button>              
+                      Follow {this.props.article.article.author.username}<span className="counter" />
+                    </button>
               }
               &nbsp;
               {
@@ -148,7 +148,7 @@ class Article extends React.PureComponent {
                       &nbsp;
                       Unfavorite Post
                       &nbsp;
-                      <span className="counter">({this.props.article.favoritesCount})</span>
+                      <span className="counter">({this.props.article.article.favoritesCount})</span>
                     </button>
                   :
                     <button className="btn btn-sm btn-outline-primary" onClick={this.favorite.bind(this)}>
@@ -156,7 +156,7 @@ class Article extends React.PureComponent {
                       &nbsp;
                       Favorite Post
                       &nbsp;
-                      <span className="counter">({this.props.article.favoritesCount})</span>
+                      <span className="counter">({this.props.article.article.favoritesCount})</span>
                     </button>
               }
             </div>
