@@ -33,7 +33,7 @@ export default function userReduser(state = initialState, action) {
     case ARTICLE_COMMENTS_REQUEST:
       return state;
     case ARTICLE_COMMENTS_SUCCESS:
-      return { ...state, comments: action.payload.article.comments };
+      return { ...state, comments: action.payload.comments };
     case ARTICLE_COMMENTS_FAILURE:
       return { ...state, error: action.error };
     case ARTICLE_FOLLOW_SUCCESS:

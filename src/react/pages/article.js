@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import { me } from '../../redux/services/user';
-import { article, follow, favorite } from '../../redux/services/article';
+import { article, comments, follow, favorite } from '../../redux/services/article';
 import Link from '../asyncLink';
 
 class Article extends React.PureComponent {
   static async getInitialProps({ req, dispatch, user, match }) {
     await dispatch(me({ req }));
     await dispatch(article({ req, slug: match.params[0] }));
+    await dispatch(comments({ req, slug: match.params[0] }));
   }
 
   async componentDidMount() {
@@ -141,7 +142,7 @@ class Article extends React.PureComponent {
               }
               &nbsp;
               {
-                this.props.article.favorited
+                this.props.article.article.favorited
                   ?
                     <button className="btn btn-sm btn-primary" onClick={this.unfavorite.bind(this)}>
                       <i className="ion-heart" />
@@ -163,51 +164,42 @@ class Article extends React.PureComponent {
           </div>
           <div className="row">
             <div className="col-xs-12 col-md-8 offset-md-2">
-              <form className="card comment-form">
-                <div className="card-block">
-                  <textarea className="form-control" placeholder="Write a comment..." rows="3" />
-                </div>
-                <div className="card-footer">
-                  <img alt="" src="http://i.imgur.com/Qr71crq.jpg" className="comment-author-img" />
-                  <button className="btn btn-sm btn-primary">
-                   Post Comment
-                  </button>
-                </div>
-              </form>
-              <div className="card">
-                <div className="card-block">
-                  <p className="card-text">
-                    With supporting text below as a natural lead-in to additional content.
-                  </p>
-                </div>
-                <div className="card-footer">
-                  <a href="" className="comment-author">
-                    <img alt="" src="http://i.imgur.com/Qr71crq.jpg" className="comment-author-img" />
-                  </a>
-                  &nbsp;
-                  <a href="" className="comment-author">Jacob Schmidt</a>
-                  <span className="date-posted">Dec 29th</span>
-                </div>
-              </div>
-              <div className="card">
-                <div className="card-block">
-                  <p className="card-text">
-                    With supporting text below as a natural lead-in to additional content.
-                  </p>
-                </div>
-                <div className="card-footer">
-                  <a href="" className="comment-author">
-                    <img alt="" src="http://i.imgur.com/Qr71crq.jpg" className="comment-author-img" />
-                  </a>
-                  &nbsp;
-                  <a href="" className="comment-author">Jacob Schmidt</a>
-                  <span className="date-posted">Dec 29th</span>
-                  <span className="mod-options">
-                    <i className="ion-edit" />
-                    <i className="ion-trash-a" />
-                  </span>
-                </div>
-              </div>
+              {
+                this.props.user && this.props.user.id
+                  ?
+                    <form className="card comment-form">
+                      <div className="card-block">
+                        <textarea className="form-control" placeholder="Write a comment..." rows="3" />
+                      </div>
+                      <div className="card-footer">
+                        <img alt="" src={this.props.user.image} className="comment-author-img" />
+                        <button className="btn btn-sm btn-primary">
+                         Post Comment
+                        </button>
+                      </div>
+                    </form>
+                  :
+                    null
+              }
+              {
+                this.props.article.comments.map(comment => (
+                  <div className="card" key={comment.id}>
+                    <div className="card-block">
+                      <p className="card-text">
+                        {comment.body}
+                      </p>
+                    </div>
+                    <div className="card-footer">
+                      <a href="" className="comment-author">
+                        <img alt="" src={comment.author.image} className="comment-author-img" />
+                      </a>
+                      &nbsp;
+                      <a href="" className="comment-author">{comment.author.username}</a>
+                      <span className="date-posted">{comment.updatedAt}</span>
+                    </div>
+                  </div>
+                ))
+              }
             </div>
           </div>
         </div>
