@@ -3,9 +3,8 @@ import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 
 import rootReducer from '../reducers';
-
+let store;
 export default function prepareStore(initialState) {
-  let store;
   if (module.hot) {
     store = compose(
       applyMiddleware(thunk),
@@ -23,5 +22,9 @@ export default function prepareStore(initialState) {
     )(createStore)(rootReducer, initialState);
   }
 
+  return store;
+}
+
+export function getStore() {
   return store;
 }

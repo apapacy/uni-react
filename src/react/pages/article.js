@@ -15,7 +15,7 @@ class Article extends React.PureComponent {
 
   async componentDidMount() {
     if (this.props.hydrated) {
-      await Article.getInitialProps(this.props);
+      // await Article.getInitialProps(this.props);
     }
   }
 

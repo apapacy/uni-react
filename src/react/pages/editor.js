@@ -14,7 +14,7 @@ class Editor extends React.PureComponent {
 
   async componentDidMount() {
     if (this.props.hydrated) {
-      await Editor.getInitialProps(this.props);
+      // await Editor.getInitialProps(this.props);
     }
   }
 

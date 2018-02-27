@@ -20,7 +20,7 @@ const initialState = {
 export default function userReduser(state = initialState, action) {
   switch (action.type) {
     case PROFILE_REQUEST:
-      return { ...initialState };
+      return state;
     case PROFILE_SUCCESS:
       return { ...action.payload.profile };
     case PROFILE_FAILURE:
@@ -41,7 +41,7 @@ export function getProfile({ req, author }) {
     dispatch({ type: PROFILE_REQUEST });
     return request(req, {
       method: 'get',
-      url: `/profiles/${author}`,
+      url: `/profiles/${decodeURIComponent(author)}`,
     }).then(
       response => dispatch({
         type: PROFILE_SUCCESS,

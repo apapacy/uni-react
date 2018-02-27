@@ -25,7 +25,7 @@ const initialState = {
 export default function userReduser(state = initialState, action) {
   switch (action.type) {
     case ARTICLE_REQUEST:
-      return { ...initialState };
+      return state;
     case ARTICLE_SUCCESS:
       return { ...state, article: action.payload.article };
     case ARTICLE_FAILURE:
