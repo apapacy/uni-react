@@ -10,12 +10,7 @@ const PROFILE_FOLLOW_FAILURE = Symbol('PROFILE_FOLLOW_FAILURE');
 const CLEAR_ERRORS = Symbol('PROFILE_CLEAR_ERRORS');
 
 
-const initialState = {
-  username: '',
-  bio: '',
-  image: '',
-  following: false,
-};
+const initialState = {};
 
 export default function userReduser(state = initialState, action) {
   switch (action.type) {

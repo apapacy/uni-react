@@ -12,13 +12,7 @@ const ARTICLE_FAVORITE_FAILURE = Symbol('ARTICLES_ARTICLE_FAVORITE_FAIULURE');
 const GLOBAL_FEED_COUNT = 10;
 const PERSONAL_FEED_COUNT = 5;
 
-const initialState = {
-  articles: [],
-  articlesCount: 0,
-  page: 1,
-  pageLength: 0,
-  filter: '',
-};
+const initialState = {};
 
 export default function userReduser(state = initialState, action) {
   switch (action.type) {

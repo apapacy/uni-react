@@ -17,10 +17,7 @@ const ARTICLE_FAVORITE_FAILURE = Symbol('ARTICLE_FAVORITE_FAIULURE');
 
 
 
-const initialState = {
-  article: { author: {} },
-  comments: [],
-};
+const initialState = {};
 
 export default function userReduser(state = initialState, action) {
   switch (action.type) {
