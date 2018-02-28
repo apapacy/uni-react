@@ -19,7 +19,7 @@ class Editor extends React.PureComponent {
   }
 
   async componentWillUnmount() {
-    this.props.dispatch(clearErrors());
+    // this.props.dispatch(clearErrors());
   }
 
   render() {

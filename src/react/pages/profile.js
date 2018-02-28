@@ -31,7 +31,7 @@ class Profile extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    this.props.dispatch(clearErrors());
+    // this.props.dispatch(clearErrors());
   }
 
   follow(event) {

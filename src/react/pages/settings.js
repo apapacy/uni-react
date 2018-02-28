@@ -18,6 +18,8 @@ class Settings extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.state = {
       ...this.props.user,
+      image: this.props.user.image || '',
+      bio: this.props.user.bio || '',
       password: '',
     };
   }
@@ -26,14 +28,10 @@ class Settings extends React.Component {
     if (this.props.history.action === 'POP') {
       await Settings.getInitialProps(this.props);
     }
-    this.setState({
-      ...this.props.user,
-      password: '',
-    });
   }
 
   async componentWillUnmount() {
-    this.props.dispatch(clearErrors());
+    // this.props.dispatch(clearErrors());
   }
 
   async handleSubmit(event) {

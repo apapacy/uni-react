@@ -4,7 +4,7 @@ import { Link, matchPath } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import routes from '../routes';
 import { getStore } from '../../redux/store'
-import { login, logout, signup } from '../../redux/services/user';
+import { login, logout, signup, clearErrors } from '../../redux/services/user';
 import ErrorsList from '../components/errorsList';
 
 class Login extends React.PureComponent {
@@ -24,6 +24,7 @@ class Login extends React.PureComponent {
   }
 
   async componentDidMount() {
+    this.props.dispatch(clearErrors());
     if (this.props.history.action === 'POP') {
       await Login.getInitialProps(this.props);
     }
