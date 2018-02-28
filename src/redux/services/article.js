@@ -18,8 +18,6 @@ const ARTICLE_COMMENT_REQUEST = Symbol('ARTICLE_COMMENT_REQUEST');
 const ARTICLE_COMMENT_SUCCESS = Symbol('ARTICLE_COMMENT_SUCCESS');
 const ARTICLE_COMMENT_FAILURE = Symbol('ARTICLE_COMMENT_FAIULURE');
 
-
-
 const initialState = {};
 
 export default function userReduser(state = initialState, action) {

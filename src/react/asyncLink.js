@@ -7,7 +7,6 @@ function isModifiedEvent(event) {
 }
 
 function handleClick(event){
-  console.log('***********************', this)
   if (this.props.onClick) this.props.onClick(event);
 
   if (

@@ -4,15 +4,18 @@ import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import { me } from '../../redux/services/user';
 import { article, comments, addComment, follow, favorite } from '../../redux/services/article';
-import Link from '../asyncLink';
+import Link from '../asyncLink'; // eslint-disable-line
 
 class Article extends React.PureComponent {
-  static async getInitialProps({ req, dispatch, user, match }) {
-    await Promise.all([
-       dispatch(me({ req })),
-       dispatch(article({ req, slug: match.params[0] })),
-       dispatch(comments({ req, slug: match.params[0] })),
-     ]);
+  static async getInitialProps({ req, dispatch, match }) {
+    const promises = [
+      dispatch(article({ req, slug: match.params[0] })),
+      dispatch(comments({ req, slug: match.params[0] })),
+    ];
+    if (req) {
+      promises.unshift(dispatch(me({ req })));
+    }
+    await Promise.all(promises);
   }
 
   async componentDidMount() {

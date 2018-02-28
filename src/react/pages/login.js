@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, matchPath } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
+import routes from '../routes';
+import { getStore } from '../../redux/store'
 import { login, logout, signup } from '../../redux/services/user';
 import ErrorsList from '../components/errorsList';
 
@@ -48,10 +49,24 @@ class Login extends React.PureComponent {
         password: this.passwordInput.value,
       }));
     }
-    if (this.props.user && this.props.user.id) {
-      this.passwordInput.value = '';
-      this.props.history.push('/feed');
+    if (!this.props.user || !this.props.user.id) {
+      return;
     }
+    this.passwordInput.value = '';
+    const routeTo = routes.find((route) =>
+      matchPath('/feed', route) ? route : null
+    );
+    const match = matchPath('/feed', routeTo);
+    const store = getStore();
+    import(`./home`) // eslint-diszanle-line
+      .then(component => component.default || component)
+      .then(component => component.getInitialProps({
+        match,
+        store,
+        dispatch: store.dispatch
+      }))
+      .then(() => this.props.history.push('/feed'));
+
   }
 
   isSignUp() {
