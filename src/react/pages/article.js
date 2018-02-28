@@ -22,6 +22,7 @@ class Article extends React.PureComponent {
     if (this.props.history.action === 'POP') {
       await Article.getInitialProps(this.props);
     }
+    this.commentBody = '';
   }
 
   async componentWillUnmount() {
@@ -33,9 +34,14 @@ class Article extends React.PureComponent {
     if (this.props.article.transition) {
       return;
     }
+    const body = this.commentInput.value;
+    if (!body || body === this.commentBody) {
+      return;
+    }
+    this.commentBody = body;
     this.props.dispatch(addComment({
       slug: this.props.article.article.slug,
-      body: this.commentInput.value,
+      body,
     }));
   }
 
