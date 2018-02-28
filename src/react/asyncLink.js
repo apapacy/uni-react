@@ -52,8 +52,6 @@ function handleClick(event){
   }
 };
 
-
-
 class AsyncLink extends Link {
   constructor(...args) {
     super(...args);
@@ -61,4 +59,4 @@ class AsyncLink extends Link {
   }
 }
 
-export default (AsyncLink);
+export default AsyncLink;

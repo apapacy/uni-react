@@ -14,6 +14,9 @@ const ARTICLE_FOLLOW_FAILURE = Symbol('ARTICLE_FOLLOW_FAILURE');
 const ARTICLE_FAVORITE_REQUEST = Symbol('ARTICLE_FAVORITE_REQUEST');
 const ARTICLE_FAVORITE_SUCCESS = Symbol('ARTICLE_FAVORITE_SUCCESS');
 const ARTICLE_FAVORITE_FAILURE = Symbol('ARTICLE_FAVORITE_FAIULURE');
+const ARTICLE_COMMENT_REQUEST = Symbol('ARTICLE_COMMENT_REQUEST');
+const ARTICLE_COMMENT_SUCCESS = Symbol('ARTICLE_COMMENT_SUCCESS');
+const ARTICLE_COMMENT_FAILURE = Symbol('ARTICLE_COMMENT_FAIULURE');
 
 
 
@@ -33,6 +36,13 @@ export default function userReduser(state = initialState, action) {
       return { ...state, comments: action.payload.comments };
     case ARTICLE_COMMENTS_FAILURE:
       return { ...state, error: action.error };
+    case ARTICLE_COMMENT_REQUEST:
+      return { ...state, transition: true };
+    case ARTICLE_COMMENT_SUCCESS:
+      state.comments.unshift(action.payload.comment);
+      return { ...state, transition: false };
+    case ARTICLE_COMMENT_FAILURE:
+      return { ...state, error: action.error, transition: false };
     case ARTICLE_FOLLOW_SUCCESS:
       return { ...state, ...{ article: { ...state.article, author: action.payload.profile } } };
     case ARTICLE_FAVORITE_SUCCESS:
@@ -74,6 +84,25 @@ export function comments({ req, slug }) {
         payload: response.data,
       }),
       error => dispatch({ type: ARTICLE_COMMENTS_FAILURE, error: parseError(error) }),
+    );
+  };
+}
+
+export function addComment({ slug, body }) {
+  return (dispatch) => {
+    dispatch({ type: ARTICLE_COMMENT_REQUEST });
+    return request(undefined, {
+      method: 'post',
+      url: `/articles/${slug}/comments`,
+      data: {
+        comment: { body }
+      }
+    }).then(
+      response => dispatch({
+        type: ARTICLE_COMMENT_SUCCESS,
+        payload: response.data,
+      }),
+      error => dispatch({ type: ARTICLE_COMMENT_FAILURE, error: parseError(error) }),
     );
   };
 }

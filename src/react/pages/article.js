@@ -3,14 +3,16 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import { me } from '../../redux/services/user';
-import { article, comments, follow, favorite } from '../../redux/services/article';
+import { article, comments, addComment, follow, favorite } from '../../redux/services/article';
 import Link from '../asyncLink';
 
 class Article extends React.PureComponent {
   static async getInitialProps({ req, dispatch, user, match }) {
-    await dispatch(me({ req }));
-    await dispatch(article({ req, slug: match.params[0] }));
-    await dispatch(comments({ req, slug: match.params[0] }));
+    await Promise.all([
+       dispatch(me({ req })),
+       dispatch(article({ req, slug: match.params[0] })),
+       dispatch(comments({ req, slug: match.params[0] })),
+     ]);
   }
 
   async componentDidMount() {
@@ -21,6 +23,17 @@ class Article extends React.PureComponent {
 
   async componentWillUnmount() {
     // this.props.dispatch(clearErrors());
+  }
+
+  addComment(event) {
+    event.preventDefault();
+    if (this.props.article.transition) {
+      return;
+    }
+    this.props.dispatch(addComment({
+      slug: this.props.article.article.slug,
+      body: this.commentInput.value,
+    }));
   }
 
   follow(event) {
@@ -167,9 +180,14 @@ class Article extends React.PureComponent {
               {
                 this.props.user && this.props.user.id
                   ?
-                    <form className="card comment-form">
+                    <form className="card comment-form" onSubmit={this.addComment.bind(this)}>
                       <div className="card-block">
-                        <textarea className="form-control" placeholder="Write a comment..." rows="3" />
+                        <textarea
+                          className="form-control"
+                          placeholder="Write a comment..."
+                          rows="3"
+                          ref={input => this.commentInput = input}
+                        />
                       </div>
                       <div className="card-footer">
                         <img alt="" src={this.props.user.image} className="comment-author-img" />
