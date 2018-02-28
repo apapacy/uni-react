@@ -92,6 +92,18 @@ class Article extends React.PureComponent {
                 <span className="date">{this.props.article.article.updatedAt}</span>
               </div>
               {
+                this.props.article.article.author.username === this.props.user.username
+                ?
+                  <Link className="btn btn-sm btn-secondary" to={`/edit/${this.props.article.article.slug}`}>
+                    <i className="ion-minus-round" />
+                    &nbsp;
+                    Edit <span className="counter" />
+                </Link>
+                :
+                  null
+              }
+              &nbsp;&nbsp;
+              {
                 this.props.article.article.author.following
                   ?
                     <button className="btn btn-sm btn-secondary" onClick={this.unfollow.bind(this)}>

@@ -31,7 +31,6 @@ function handleClick(event){
         matchPath(this.props.to, route) ? route : null
       );
       const match = matchPath(this.props.to, routeTo);
-      console.log('match', match)
       const store = getStore();
       if (routeTo) {
         import(`./${routeTo.componentName}`)

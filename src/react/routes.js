@@ -28,6 +28,10 @@ module.exports = [
     exact: true,
     componentName: 'pages/editor',
   }, {
+    path: '/edit/:slug',
+    exact: true,
+    componentName: 'pages/editor',
+  }, {
     path: '/(sign-up|sign-in|sign-out)',
     exact: true,
     componentName: 'pages/login',
