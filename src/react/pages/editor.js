@@ -22,15 +22,24 @@ class Editor extends React.PureComponent {
     super(...args);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = {
-      title: '',
-      description: '',
-      body: '',
-      tagList: '',
-      ...this.props.article.article,
-    };
-    if (this.props.article.article) {
-      this.state.tagList = this.props.article.article.tagList.join(', ');
+    if (this.props.match.params.slug) {
+      this.state = {
+        title: '',
+        description: '',
+        body: '',
+        tagList: '',
+        ...this.props.article.article,
+      };
+      if (this.props.article.article) {
+        this.state.tagList = this.props.article.article.tagList.join(', ');
+      }
+    } else {
+      this.state = {
+        title: '',
+        description: '',
+        body: '',
+        tagList: '',
+      };
     }
   }
 
@@ -54,12 +63,13 @@ class Editor extends React.PureComponent {
   async handleSubmit(event) {
     event.preventDefault();
     const articleToSave = { ...this.state };
-    const slug = this.props.article.article.slug;
+    let slug = this.props.match.params.slug;
     await this.props.dispatch(saveArticle({
       ...articleToSave,
       slug,
       tagList: articleToSave.tagList.split(/\s*,\s*/)
     }));
+    slug = this.props.article.article.slug;
     const promises = [
       this.props.dispatch(article({ slug })),
       this.props.dispatch(comments({ slug })),

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import { me } from '../../redux/services/user';
-import { article, comments, addComment, follow, favorite } from '../../redux/services/article';
+import { article, comments, addComment, deleteComment, follow, favorite } from '../../redux/services/article';
 import Link from '../asyncLink'; // eslint-disable-line
 
 class Article extends React.PureComponent {
@@ -42,6 +42,13 @@ class Article extends React.PureComponent {
     this.props.dispatch(addComment({
       slug: this.props.article.article.slug,
       body,
+    }));
+  }
+
+  async deleteComment(id) {
+    this.props.dispatch(deleteComment({
+      id,
+      slug: this.props.article.article.slug,
     }));
   }
 
@@ -147,6 +154,18 @@ class Article extends React.PureComponent {
               <ReactMarkdown>{this.props.article.article.body}</ReactMarkdown>
             </div>
           </div>
+          {
+            this.props.article.article.tagList && this.props.article.article.tagList.length
+              ?
+                <ul className="tag-list">
+                  {
+                    this.props.article.article.tagList.map(tag => (
+                      <li className="tag-default tag-pill tag-outline" key={tag}><Link to={`/tag/${tag}`}>{tag}</Link></li>
+                    ))
+                  }
+                </ul>
+              : null
+          }
           <hr />
           <div className="article-actions">
             <div className="article-meta">
@@ -237,6 +256,9 @@ class Article extends React.PureComponent {
                       &nbsp;
                       <Link to={`/author/${comment.author.username}`} className="comment-author">{comment.author.username}</Link>
                       <span className="date-posted">{comment.updatedAt}</span>
+                      <span class="mod-options" onClick={() => this.deleteComment(comment.id)}>
+                        <i class="ion-trash-a" />
+                      </span>
                     </div>
                   </div>
                 ))

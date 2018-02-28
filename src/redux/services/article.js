@@ -20,6 +20,9 @@ const ARTICLE_FAVORITE_FAILURE = Symbol('ARTICLE_FAVORITE_FAIULURE');
 const ARTICLE_COMMENT_REQUEST = Symbol('ARTICLE_COMMENT_REQUEST');
 const ARTICLE_COMMENT_SUCCESS = Symbol('ARTICLE_COMMENT_SUCCESS');
 const ARTICLE_COMMENT_FAILURE = Symbol('ARTICLE_COMMENT_FAIULURE');
+const ARTICLE_COMMENT_DELETE_REQUEST = Symbol('ARTICLE_COMMENT_DELETE_REQUEST');
+const ARTICLE_COMMENT_DELETE_SUCCESS = Symbol('ARTICLE_COMMENT_DELETE_SUCCESS');
+const ARTICLE_COMMENT_DELETE_FAILURE = Symbol('ARTICLE_COMMENT_DELETE_FAIULURE');
 
 const initialState = {};
 
@@ -30,6 +33,12 @@ export default function userReduser(state = initialState, action) {
     case ARTICLE_SUCCESS:
       return { ...state, article: action.payload.article };
     case ARTICLE_FAILURE:
+      return { ...state, error: action.error };
+    case ARTICLE_SAVE_REQUEST:
+      return state;
+    case ARTICLE_SAVE_SUCCESS:
+      return { ...state, article: action.payload.article };
+    case ARTICLE_SAVE_FAILURE:
       return { ...state, error: action.error };
     case ARTICLE_COMMENTS_REQUEST:
       return state;
@@ -43,6 +52,15 @@ export default function userReduser(state = initialState, action) {
       state.comments.unshift(action.payload.comment);
       return { ...state, transition: false };
     case ARTICLE_COMMENT_FAILURE:
+      return { ...state, error: action.error, transition: false };
+    case ARTICLE_COMMENT_DELETE_REQUEST:
+      return { ...state, transition: true };
+    case ARTICLE_COMMENT_DELETE_SUCCESS:
+      const comments = state.comments.filter(
+        comment => comment.id !== action.payload.id
+      );
+      return { ...state, transition: false, comments };
+    case ARTICLE_COMMENT_DELETE_FAILURE:
       return { ...state, error: action.error, transition: false };
     case ARTICLE_FOLLOW_SUCCESS:
       return { ...state, ...{ article: { ...state.article, author: action.payload.profile } } };
@@ -74,12 +92,13 @@ export function article({ req, slug }) {
 }
 
 export function saveArticle(article) {
+  const slug = article.slug;
   const data = { article };
   return (dispatch) => {
     dispatch({ type: ARTICLE_SAVE_REQUEST });
     return request(undefined, {
-      method: 'put',
-      url: `/articles/${article.slug}`,
+      method: slug ? 'put' : 'post',
+      url: slug ? `/articles/${slug}` : '/articles',
       data,
     }).then(
       response => dispatch({
@@ -122,6 +141,22 @@ export function addComment({ slug, body }) {
         payload: response.data,
       }),
       error => dispatch({ type: ARTICLE_COMMENT_FAILURE, error: parseError(error) }),
+    );
+  };
+}
+
+export function deleteComment({ slug, id }) {
+  return (dispatch) => {
+    dispatch({ type: ARTICLE_COMMENT_DELETE_REQUEST });
+    return request(undefined, {
+      method: 'delete',
+      url: `/articles/${slug}/comments/${id}`,
+    }).then(
+      response => dispatch({
+        type: ARTICLE_COMMENT_DELETE_SUCCESS,
+        payload: { id },
+      }),
+      error => dispatch({ type: ARTICLE_COMMENT_DELETE_FAILURE, error: parseError(error) }),
     );
   };
 }
