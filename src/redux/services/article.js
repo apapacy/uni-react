@@ -4,6 +4,9 @@ import { parseError } from '../utils';
 const ARTICLE_REQUEST = Symbol('ARTICLE_REQUEST');
 const ARTICLE_SUCCESS = Symbol('ARTICLE_SUCCESS');
 const ARTICLE_FAILURE = Symbol('ARTICLE_FAILURE');
+const ARTICLE_SAVE_REQUEST = Symbol('ARTICLE_SAVE_REQUEST');
+const ARTICLE_SAVE_SUCCESS = Symbol('ARTICLE_SAVE_SUCCESS');
+const ARTICLE_SAVE_FAILURE = Symbol('ARTICLE_SAVE_FAILURE');
 const CLEAR_ERRORS = Symbol('ARTICLE_CLEAR_ERRORS');
 const ARTICLE_COMMENTS_REQUEST = Symbol('ARTICLE_COMMENTS_REQUEST');
 const ARTICLE_COMMENTS_SUCCESS = Symbol('ARTICLE_COMMENTS_SUCCESS');
@@ -66,6 +69,24 @@ export function article({ req, slug }) {
         payload: response.data,
       }),
       error => dispatch({ type: ARTICLE_FAILURE, error: parseError(error) }),
+    );
+  };
+}
+
+export function saveArticle(article) {
+  const data = { article };
+  return (dispatch) => {
+    dispatch({ type: ARTICLE_SAVE_REQUEST });
+    return request(undefined, {
+      method: 'put',
+      url: `/articles/${article.slug}`,
+      data,
+    }).then(
+      response => dispatch({
+        type: ARTICLE_SAVE_SUCCESS,
+        payload: response.data,
+      }),
+      error => dispatch({ type: ARTICLE_SAVE_FAILURE, error: parseError(error) }),
     );
   };
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { me, clearErrors } from '../../redux/services/user';
-import { article } from '../../redux/services/article';
+import { article, comments, saveArticle } from '../../redux/services/article';
 
 
 class Editor extends React.PureComponent {
@@ -21,18 +21,21 @@ class Editor extends React.PureComponent {
   constructor(...args) {
     super(...args);
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       title: '',
       description: '',
       body: '',
       tagList: '',
       ...this.props.article.article,
-      tagList: this.props.article.article.tagList.join(', '),
     };
+    if (this.props.article.article) {
+      this.state.tagList = this.props.article.article.tagList.join(', ');
+    }
   }
 
   async componentDidMount() {
-    if (this.state.hydrated & this.props.history.action === 'POP') {
+    if (this.state.hydrated && this.props.history.action === 'POP') {
       await Editor.getInitialProps(this.props);
     }
   }
@@ -48,13 +51,30 @@ class Editor extends React.PureComponent {
     });
   }
 
+  async handleSubmit(event) {
+    event.preventDefault();
+    const articleToSave = { ...this.state };
+    const slug = this.props.article.article.slug;
+    await this.props.dispatch(saveArticle({
+      ...articleToSave,
+      slug,
+      tagList: articleToSave.tagList.split(/\s*,\s*/)
+    }));
+    const promises = [
+      this.props.dispatch(article({ slug })),
+      this.props.dispatch(comments({ slug })),
+    ];
+    await Promise.all(promises);
+    this.props.history.push(`/${slug}`);
+  }
+
   render() {
     return (
       <div className="editor-page">
         <div className="container page">
           <div className="row">
             <div className="col-md-10 offset-md-1 col-xs-12">
-              <form>
+              <form onSubmit={this.handleSubmit}>
                 <fieldset>
                   <fieldset className="form-group">
                     <input
@@ -99,7 +119,8 @@ class Editor extends React.PureComponent {
                   </fieldset>
                   <button
                     className="btn btn-lg pull-xs-right btn-primary"
-                    type="button"
+                    type="submit"
+                    onClick={this.handleSubmit}
                   >
                       Publish Article
                   </button>

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { me, save, clearErrors } from '../../redux/services/user';
 import ErrorsList from '../components/errorsList';
 
-class Settings extends React.Component {
+class Settings extends React.PureComponent {
   static async getInitialProps({ req, dispatch, user }) {
     const promises = [];
 
@@ -119,7 +119,10 @@ class Settings extends React.Component {
                       value={this.state.password}
                     />
                   </fieldset>
-                  <button className="btn btn-lg btn-primary pull-xs-right">
+                  <button
+                    className="btn btn-lg btn-primary pull-xs-right"
+                    type="submit"
+                  >
                     Update Settings
                   </button>
                 </fieldset>
