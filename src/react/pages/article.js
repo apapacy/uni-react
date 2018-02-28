@@ -7,12 +7,12 @@ import { article, comments, addComment, follow, favorite } from '../../redux/ser
 import Link from '../asyncLink'; // eslint-disable-line
 
 class Article extends React.PureComponent {
-  static async getInitialProps({ req, dispatch, match }) {
+  static async getInitialProps({ req, dispatch, match, user }) {
     const promises = [
       dispatch(article({ req, slug: match.params[0] })),
       dispatch(comments({ req, slug: match.params[0] })),
     ];
-    if (req) {
+    if (req && !user) {
       promises.unshift(dispatch(me({ req })));
     }
     await Promise.all(promises);

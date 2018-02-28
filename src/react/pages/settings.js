@@ -6,10 +6,12 @@ import ErrorsList from '../components/errorsList';
 
 class Settings extends React.Component {
   static async getInitialProps({ req, dispatch, user }) {
-    if (user && user.id) {
-      return;
+    const promises = [];
+
+    if (req && !user) {
+      promises.unshift(dispatch(me({ req })));
     }
-    await dispatch(me({ req }));
+    await Promise.all(promises);
   }
 
   constructor(props) {

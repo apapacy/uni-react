@@ -13,10 +13,13 @@ import Pagination from '../components/pagination';
 class Profile extends React.PureComponent {
   static async getInitialProps({ req, dispatch, user, match, profile, articles }) {
     const promises = [];
-    promises.push(dispatch(me({ req })));
     const page = Number(match.params.page) || 1;
     const author = match.params.author;
     const filter = match.params[0];
+
+    if (req && !user) {
+      promises.unshift(dispatch(me({ req })));
+    }
     if (!profile || profile.username !== author) {
       promises.push(dispatch(getProfile({ req, author })))
     }

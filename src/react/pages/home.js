@@ -10,12 +10,17 @@ import Pagination from '../components/pagination';
 
 
 class Home extends React.PureComponent {
-  static async getInitialProps({ req, dispatch, user, match, articles, hydrated }) {
+  static async getInitialProps({ req, store, dispatch, user, match, articles, hydrated }) {
     const promises = [];
-    promises.push(dispatch(me({ req })));
     const page = Number(match.params.page) || 1;
-    let filter
-    if (match.path.slice(0, 5) === '/feed')  {
+    let filter;
+    if (req && !user) {
+      await dispatch(me({ req }));
+    }
+    if (match.path.slice(0, 5) === '/feed') {
+      if (req && !store.getState().user.id) {
+        return { redirectUrl: '/' };
+      }
       filter = 'feed';
     } else {
       filter = undefined;
