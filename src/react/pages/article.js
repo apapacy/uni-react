@@ -256,9 +256,15 @@ class Article extends React.PureComponent {
                       &nbsp;
                       <Link to={`/author/${comment.author.username}`} className="comment-author">{comment.author.username}</Link>
                       <span className="date-posted">{comment.updatedAt}</span>
-                      <span class="mod-options" onClick={() => this.deleteComment(comment.id)}>
-                        <i class="ion-trash-a" />
-                      </span>
+                      {
+                        comment.author.username === (this.props.user && this.props.user.username)
+                          ?
+                            <span class="mod-options" onClick={() => this.deleteComment(comment.id)}>
+                              <i class="ion-trash-a" />
+                            </span>
+                          :
+                            null
+                      }
                     </div>
                   </div>
                 ))
