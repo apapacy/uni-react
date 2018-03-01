@@ -147,18 +147,13 @@ class Article extends React.PureComponent {
               <ReactMarkdown>{this.props.article.article.body}</ReactMarkdown>
             </div>
           </div>
-          {
-            this.props.article.article.tagList && this.props.article.article.tagList.length
-              ?
-                <ul className="tag-list">
-                  {
-                    this.props.article.article.tagList.map(tag => (
-                      <li className="tag-default tag-pill tag-outline" key={tag}><Link to={`/tag/${tag}`}>{tag}</Link></li>
-                    ))
-                  }
-                </ul>
-              : null
-          }
+          <ul className="tag-list">
+            {
+              this.props.article.article.tagList.map(tag => (
+                <li className="tag-default tag-pill tag-outline" key={tag}><Link to={`/tag/${tag}`}>{tag}</Link></li>
+              ))
+            }
+          </ul>
           <hr />
           <div className="article-actions">
             <div className="article-meta">

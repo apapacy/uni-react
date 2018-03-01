@@ -7,11 +7,10 @@ const Favorited = ({ article, user, onClick, addClassName }) => {
       <button className={`btn btn-sm btn-outline-primary ${addClassName}`}>
         <i className="ion-heart" />
         {
-          addClassName
-            ?
-              null
-            :
-              <span>&nbsp;Favorited count</span>
+          addClassName ?
+            null
+          :
+            <span>&nbsp;Favorited count</span>
         }
         &nbsp;
         <span className="counter">{article.favoritesCount}</span>
@@ -37,11 +36,10 @@ const Favorited = ({ article, user, onClick, addClassName }) => {
     <button className={`btn btn-sm btn-outline-primary ${addClassName}`} onClick={onClick}>
       <i className="ion-heart" />
       {
-        addClassName
-          ?
-            null
-          :
-            <span>&nbsp;Favorite Post</span>
+        addClassName ?
+          null
+        :
+          <span>&nbsp;Favorite Post</span>
       }
       &nbsp;
       <span className="counter">{article.favoritesCount}</span>

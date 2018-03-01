@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { me, save, clearErrors } from '../../redux/services/user';
+import { me, save } from '../../redux/services/user';
 import ErrorsList from '../components/errorsList';
 
 class Settings extends React.PureComponent {
@@ -138,12 +138,8 @@ class Settings extends React.PureComponent {
 Settings.propTypes = {
   dispatch: PropTypes.func.isRequired,
   hydrated: PropTypes.bool.isRequired,
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    username: PropTypes.string,
-    error: PropTypes.object,
-    transition: PropTypes.bool,
-  }).isRequired,
+  history: PropTypes.shape().isRequired,
+  user: PropTypes.shape().isRequired,
 };
 
 export default connect(state => ({ user: state.user, hydrated: state.hydrated }))(Settings);
