@@ -28,6 +28,7 @@ class Article extends React.PureComponent {
     this.follow = this.follow.bind(this);
     this.favorite = this.favorite.bind(this);
     this.deleteArticle = this.deleteArticle.bind(this);
+    this.addComment = this.addComment.bind(this);
   }
 
   async componentDidMount() {
@@ -88,7 +89,7 @@ class Article extends React.PureComponent {
       <div className="article-page">
         <div className="banner">
           <div className="container">
-            <h1> this.props.article.article.title}</h1>
+            <h1>{this.props.article.article.title}</h1>
             <div className="article-meta">
               <Link to={`/author/${this.props.article.article.author.username}`}>
                 <img alt="" src={this.props.article.article.author.image} />
@@ -113,7 +114,9 @@ class Article extends React.PureComponent {
                     className="btn btn-sm btn-outline-danger"
                     onClick={this.deleteArticle}
                     role="button"
-                    onKeyUp={event => (event.keyCode === KEY_DEL ? this.deleteArticle() : undefined)}
+                    onKeyUp={
+                      event => (event.keyCode === KEY_DEL ? this.deleteArticle() : undefined)
+                    }
                     tabIndex={-1}
                     key="delete"
                   >
@@ -186,13 +189,13 @@ class Article extends React.PureComponent {
               {
                 this.props.user && this.props.user.id
                   ?
-                    <form className="card comment-form" onSubmit={this.addComment.bind(this)}>
+                    <form className="card comment-form" onSubmit={this.addComment}>
                       <div className="card-block">
                         <textarea
                           className="form-control"
                           placeholder="Write a comment..."
                           rows="3"
-                          ref={input => this.commentInput = input}
+                          ref={(input) => { this.commentInput = input; }}
                         />
                       </div>
                       <div className="card-footer">
@@ -208,7 +211,7 @@ class Article extends React.PureComponent {
                     null
               }
               {
-                this.props.article.comments.map( (comment, index) => (
+                this.props.article.comments.map((comment, index) => (
                   <div className="card" key={comment.id}>
                     <div className="card-block">
                       <p className="card-text">
@@ -223,19 +226,23 @@ class Article extends React.PureComponent {
                       <Link to={`/author/${comment.author.username}`} className="comment-author">{comment.author.username}</Link>
                       <span className="date-posted">{moment(comment.updatedAt).format('ddd MMM DD YYYY HH:mm')}</span>
                       {
-                        comment.author.username === (this.props.user && this.props.user.username)
-                          ?
-                            <span
-                              className="mod-options"
-                              tabIndex={-2 - index}
-                              role="button"
-                              onClick={() => this.deleteComment(comment.id)}
-                              onKeyUp={event => (event.keyCode === KEY_DEL ? this.deleteComment(comment.id) : undefined)}
-                            >
-                              <i className="ion-trash-a" />
-                            </span>
-                          :
-                            null
+                        comment.author.username === (this.props.user && this.props.user.username) ?
+                          <span
+                            className="mod-options"
+                            tabIndex={-2 - index}
+                            role="button"
+                            onClick={() => this.deleteComment(comment.id)}
+                            onKeyUp={event => (
+                              event.keyCode === KEY_DEL ?
+                                this.deleteComment(comment.id)
+                              :
+                                undefined
+                            )}
+                          >
+                            <i className="ion-trash-a" />
+                          </span>
+                        :
+                          null
                       }
                     </div>
                   </div>
@@ -249,8 +256,12 @@ class Article extends React.PureComponent {
   }
 }
 
-Article.propTypes = { 
-  dispatch: PropTypes.func.isRequired
+Article.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  history: PropTypes.shape().isRequired,
+  user: PropTypes.shape().isRequired,
+  article: PropTypes.shape().isRequired,
+  hydrated: PropTypes.bool.isRequired,
 };
 
 export default connect(state => ({
