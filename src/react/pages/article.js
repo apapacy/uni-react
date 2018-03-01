@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
 import moment from 'moment';
 import { me } from '../../redux/services/user';
-import { article, comments, addComment, deleteComment, follow, favorite } from '../../redux/services/article';
+import { article, deleteArticle, comments, addComment, deleteComment, follow, favorite } from '../../redux/services/article';
 import Link from '../asyncLink'; // eslint-disable-line
 import Following from '../components/following';
 import Favorited from '../components/favorited';
@@ -27,13 +27,22 @@ class Article extends React.PureComponent {
     super(...args);
     this.follow = this.follow.bind(this);
     this.favorite = this.favorite.bind(this);
+    this.deleteArticle = this.deleteArticle.bind(this);
   }
 
   async componentDidMount() {
-    if (this.props.history.action === 'POP') {
+    if (['POP', 'PUSH'].indexOf(this.props.history.action) > -1 && this.props.hydrated) {
       await Article.getInitialProps(this.props);
     }
     this.commentBody = '';
+  }
+
+  async deleteArticle(event) {
+    event.preventDefault();
+    await this.props.dispatch(deleteArticle({ slug: this.props.article.article.slug }));
+    if (!this.props.article.error) {
+      this.props.history.push(`/author/${this.props.user.username}`);
+    }
   }
 
   addComment(event) {
@@ -79,27 +88,42 @@ class Article extends React.PureComponent {
       <div className="article-page">
         <div className="banner">
           <div className="container">
-            <h1>{ this.props.article.article.title }</h1>
+            <h1> this.props.article.article.title}</h1>
             <div className="article-meta">
               <Link to={`/author/${this.props.article.article.author.username}`}>
                 <img alt="" src={this.props.article.article.author.image} />
               </Link>
               <div className="info">
                 <Link to={`/author/${this.props.article.article.author.username}`} className="author">{this.props.article.article.author.username}</Link>
-                <span className="date">{moment( this.props.article.article.updatedAt).format('ddd MMM DD YYYY')}</span>
+                <span className="date">{moment(this.props.article.article.updatedAt).format('ddd MMM DD YYYY')}</span>
               </div>
               {
-                this.props.article.article.author.username === this.props.user.username
-                ?
-                  <Link className="btn btn-sm btn-secondary" to={`/edit/${this.props.article.article.slug}`}>
+                this.props.article.article.author.username === this.props.user.username ? [
+                  <Link
+                    className="btn btn-sm btn-outline-secondary"
+                    to={`/edit/${this.props.article.article.slug}`}
+                    key="edit"
+                  >
                     <i className="ion-edit" />
                     &nbsp;
                     Edit <span className="counter" />
-                </Link>
-                :
+                  </Link>,
+                  <span key="spase">&nbsp;&nbsp;</span>,
+                  <a
+                    className="btn btn-sm btn-outline-danger"
+                    onClick={this.deleteArticle}
+                    role="button"
+                    onKeyUp={event => (event.keyCode === KEY_DEL ? this.deleteArticle() : undefined)}
+                    tabIndex={-1}
+                    key="delete"
+                  >
+                    <i className="ion-trash-a" />
+                    &nbsp;
+                    Delete <span className="counter" />
+                  </a>,
+            ] :
                   null
               }
-              &nbsp;&nbsp;
               <Following
                 profile={this.props.article.article.author}
                 user={this.props.user}
@@ -203,7 +227,7 @@ class Article extends React.PureComponent {
                           ?
                             <span
                               className="mod-options"
-                              tabIndex={1 + index}
+                              tabIndex={-2 - index}
                               role="button"
                               onClick={() => this.deleteComment(comment.id)}
                               onKeyUp={event => (event.keyCode === KEY_DEL ? this.deleteComment(comment.id) : undefined)}

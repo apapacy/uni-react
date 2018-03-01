@@ -27,7 +27,7 @@ class Settings extends React.PureComponent {
   }
 
   async componentWillMount() {
-    if (this.props.history.action === 'POP') {
+    if (['POP', 'PUSH'].indexOf(this.props.history.action) > -1 && this.props.hydrated) {
       await Settings.getInitialProps(this.props);
     }
   }

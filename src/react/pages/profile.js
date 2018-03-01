@@ -29,7 +29,7 @@ class Profile extends React.PureComponent {
   }
 
   componentDidMount() {
-    if (this.props.history.action === 'POP') {
+    if (['POP', 'PUSH'].indexOf(this.props.history.action) > -1 && this.props.hydrated) {
       Profile.getInitialProps(this.props);
     }
   }

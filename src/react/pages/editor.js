@@ -44,7 +44,7 @@ class Editor extends React.PureComponent {
   }
 
   async componentDidMount() {
-    if (this.state.hydrated && this.props.history.action === 'POP') {
+    if (['POP', 'PUSH'].indexOf(this.props.history.action) > -1 && this.props.hydrated) {
       await Editor.getInitialProps(this.props);
     }
   }

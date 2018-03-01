@@ -9,6 +9,10 @@ const ARTICLE_SAVE_REQUEST = Symbol('ARTICLE_SAVE_REQUEST');
 const ARTICLE_SAVE_SUCCESS = Symbol('ARTICLE_SAVE_SUCCESS');
 const ARTICLE_SAVE_FAILURE = Symbol('ARTICLE_SAVE_FAILURE');
 
+const ARTICLE_DELETE_REQUEST = Symbol('ARTICLE_DELETE_REQUEST');
+const ARTICLE_DELETE_SUCCESS = Symbol('ARTICLE_DELETE_SUCCESS');
+const ARTICLE_DELETE_FAILURE = Symbol('ARTICLE_DELETE_FAILURE');
+
 const ARTICLE_COMMENTS_REQUEST = Symbol('ARTICLE_COMMENTS_REQUEST');
 const ARTICLE_COMMENTS_SUCCESS = Symbol('ARTICLE_COMMENTS_SUCCESS');
 const ARTICLE_COMMENTS_FAILURE = Symbol('ARTICLE_COMMENTS_FAIULURE');
@@ -44,6 +48,11 @@ export default function userReduser(state = initialState, action) {
     case ARTICLE_SAVE_SUCCESS:
       return { ...state, article: action.payload.article };
     case ARTICLE_SAVE_FAILURE:
+      return { ...state, error: action.error };
+
+    case ARTICLE_DELETE_SUCCESS:
+      return { ...state, deletedAt: new Date() };
+    case ARTICLE_DELETE_FAILURE:
       return { ...state, error: action.error };
 
     case ARTICLE_COMMENTS_SUCCESS:
@@ -104,6 +113,20 @@ export function saveArticle(article) { // eslint-disable-line no-shadow
     }).then(
       response => dispatch({ type: ARTICLE_SAVE_SUCCESS, payload: response.data }),
       error => dispatch({ type: ARTICLE_SAVE_FAILURE, error: parseError(error) }),
+    );
+  };
+}
+
+export function deleteArticle(article) { // eslint-disable-line no-shadow
+  const { slug } = article;
+  return (dispatch) => {
+    dispatch({ type: ARTICLE_DELETE_REQUEST });
+    return request(undefined, {
+      method: 'delete',
+      url: `/articles/${slug}`,
+    }).then(
+      () => dispatch({ type: ARTICLE_DELETE_SUCCESS }),
+      error => dispatch({ type: ARTICLE_DELETE_FAILURE, error: parseError(error) }),
     );
   };
 }
