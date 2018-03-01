@@ -38,7 +38,8 @@ class Profile extends React.PureComponent {
     // this.props.dispatch(clearErrors());
   }
 
-  async follow(event) {
+  follow = async (event) => {
+    event.persist();
     await this.props.dispatch(follow({
       author: this.props.profile.username,
       method: this.props.profile.following ? 'delete' : 'post',
@@ -63,7 +64,7 @@ class Profile extends React.PureComponent {
                 <Following
                   user={this.props.user}
                   profile={this.props.profile}
-                  onClick={(event) => { event.persist(); this.follow(event); }}
+                  onClick={this.follow}
                 />
               </div>
             </div>

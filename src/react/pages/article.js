@@ -54,7 +54,8 @@ class Article extends React.PureComponent {
     }));
   }
 
-  async follow(event) {
+  follow = async (event) => {
+    event.persist();
     await this.props.dispatch(follow({
       author: this.props.article.article.author.username,
       method: this.props.article.article.author.following ? 'delete' : 'post',
@@ -107,7 +108,7 @@ class Article extends React.PureComponent {
               <Following
                 profile={this.props.article.article.author}
                 user={this.props.user}
-                onClick={(event) => { event.persist(); this.follow(event); }}
+                onClick={this.follow}
               />
               &nbsp;&nbsp;
               {
@@ -165,7 +166,7 @@ class Article extends React.PureComponent {
               <Following
                 profile={this.props.article.article.author}
                 user={this.props.user}
-                onClick={(event) => { event.persist(); this.follow(event); }}
+                onClick={this.follow}
               />
               &nbsp;
               {
