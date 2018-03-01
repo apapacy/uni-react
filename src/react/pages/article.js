@@ -5,6 +5,8 @@ import ReactMarkdown from 'react-markdown';
 import { me } from '../../redux/services/user';
 import { article, comments, addComment, deleteComment, follow, favorite } from '../../redux/services/article';
 import Link from '../asyncLink'; // eslint-disable-line
+import Following from '../components/following';
+
 
 class Article extends React.PureComponent {
   static async getInitialProps({ req, dispatch, match, user }) {
@@ -52,18 +54,10 @@ class Article extends React.PureComponent {
     }));
   }
 
-  follow(event) {
-    this.props.dispatch(follow({
+  async follow(event) {
+    await this.props.dispatch(follow({
       author: this.props.article.article.author.username,
-      method: 'post',
-    }));
-    event.target.blur();
-  }
-
-  unfollow(event) {
-    this.props.dispatch(follow({
-      author: this.props.article.article.author.username,
-      method: 'delete',
+      method: this.props.article.article.author.following ? 'delete' : 'post',
     }));
     event.target.blur();
   }
@@ -102,7 +96,7 @@ class Article extends React.PureComponent {
                 this.props.article.article.author.username === this.props.user.username
                 ?
                   <Link className="btn btn-sm btn-secondary" to={`/edit/${this.props.article.article.slug}`}>
-                    <i className="ion-minus-round" />
+                    <i className="ion-edit" />
                     &nbsp;
                     Edit <span className="counter" />
                 </Link>
@@ -110,21 +104,11 @@ class Article extends React.PureComponent {
                   null
               }
               &nbsp;&nbsp;
-              {
-                this.props.article.article.author.following
-                  ?
-                    <button className="btn btn-sm btn-secondary" onClick={this.unfollow.bind(this)}>
-                      <i className="ion-minus-round" />
-                      &nbsp;
-                      Unollow {this.props.article.article.author.username} <span className="counter" />
-                    </button>
-                  :
-                    <button className="btn btn-sm btn-outline-secondary" onClick={this.follow.bind(this)}>
-                      <i className="ion-plus-round" />
-                      &nbsp;
-                      Follow {this.props.article.article.author.username} <span className="counter" />
-                    </button>
-              }
+              <Following
+                profile={this.props.article.article.author}
+                user={this.props.user}
+                onClick={(event) => { event.persist(); this.follow(event); }}
+              />
               &nbsp;&nbsp;
               {
                 this.props.article.article.favorited
@@ -178,21 +162,11 @@ class Article extends React.PureComponent {
                 </Link>
                 <span className="date">{this.props.article.article.updatedAt}</span>
               </div>
-              {
-                this.props.article.article.author.following
-                  ?
-                    <button className="btn btn-sm btn-secondary"  onClick={this.unfollow.bind(this)}>
-                      <i className="ion-minus-round" />
-                      &nbsp;
-                      Unfollow {this.props.article.article.author.username}<span className="counter" />
-                    </button>
-                  :
-                    <button className="btn btn-sm btn-outline-secondary"  onClick={this.follow.bind(this)}>
-                      <i className="ion-plus-round" />
-                      &nbsp;
-                      Follow {this.props.article.article.author.username}<span className="counter" />
-                    </button>
-              }
+              <Following
+                profile={this.props.article.article.author}
+                user={this.props.user}
+                onClick={(event) => { event.persist(); this.follow(event); }}
+              />
               &nbsp;
               {
                 this.props.article.article.favorited

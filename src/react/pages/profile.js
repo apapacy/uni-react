@@ -8,6 +8,7 @@ import { feed } from '../../redux/services/articles';
 import ArticlePreview from '../components/articlePreview';
 import NavItem from '../components/navItem';
 import Pagination from '../components/pagination';
+import Following from '../components/following';
 
 
 class Profile extends React.PureComponent {
@@ -37,18 +38,10 @@ class Profile extends React.PureComponent {
     // this.props.dispatch(clearErrors());
   }
 
-  follow(event) {
-    this.props.dispatch(follow({
+  async follow(event) {
+    await this.props.dispatch(follow({
       author: this.props.profile.username,
-      method: 'post',
-    }));
-    event.target.blur();
-  }
-
-  unfollow(event) {
-    this.props.dispatch(follow({
-      author: this.props.profile.username,
-      method: 'delete',
+      method: this.props.profile.following ? 'delete' : 'post',
     }));
     event.target.blur();
   }
@@ -67,30 +60,11 @@ class Profile extends React.PureComponent {
                 <img alt="" src={this.props.profile.image} className="user-img" />
                 <h4>{this.props.profile.username}</h4>
                 <p>{this.props.profile.bio}</p>
-                {
-                  this.props.user && this.props.user.id && this.props.user.username !== this.props.profile.username
-                    ?
-                      this.props.profile.following
-                        ?
-                          <button
-                            className="btn btn-sm btn-outline-secondary action-btn"
-                            onClick={this.unfollow.bind(this)}
-                          >
-                            <i className="ion-minus-round" />
-                            &nbsp;
-                            Unfollow {this.props.profile.username}
-                          </button>
-                        :
-                          <button
-                            className="btn btn-sm btn-outline-secondary action-btn"
-                            onClick={this.follow.bind(this)}
-                          >
-                            <i className="ion-plus-round" />
-                            &nbsp;
-                            Follow {this.props.profile.username}
-                          </button>
-                    : null
-                }
+                <Following
+                  user={this.props.user}
+                  profile={this.props.profile}
+                  onClick={(event) => { event.persist(); this.follow(event); }}
+                />
               </div>
             </div>
           </div>
