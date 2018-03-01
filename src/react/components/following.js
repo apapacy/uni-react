@@ -33,6 +33,6 @@ Following.propTypes = {
   profile: PropTypes.shape().isRequired,
   user: PropTypes.shape().isRequired,
   onClick: PropTypes.func.isRequired,
-}
+};
 
 export default Following;
