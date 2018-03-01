@@ -5,58 +5,57 @@ import { parseError } from '../utils';
 const SIGNUP_REQUEST = Symbol('USER_SIGNUP_REQUEST');
 const SIGNUP_SUCCESS = Symbol('USER_SIGNUP_SUCCESS');
 const SIGNUP_FAILURE = Symbol('USER_SIGNUP_FAILURE');
+
 const LOGIN_REQUEST = Symbol('USER_LOGIN_REQUEST');
 const LOGIN_SUCCESS = Symbol('USER_LOGIN_SUCCESS');
 const LOGIN_FAILURE = Symbol('USER_LOGIN_FAILURE');
+
 const LOGOUT_REQUEST = Symbol('USER_LOGOUT_REQUEST');
 const LOGOUT_SUCCESS = Symbol('USER_LOGOUT_SUCCESS');
 const LOGOUT_FAILURE = Symbol('USER_LOGOUT_FAILURE');
+
 const USER_REQUEST = Symbol('USER_REQUEST');
 const USER_SUCCESS = Symbol('USER_SUCCESS');
 const USER_FAILURE = Symbol('USER_FAILURE');
+
 const SAVE_REQUEST = Symbol('USER_SAVE_REQUEST');
 const SAVE_SUCCESS = Symbol('USER_SAVE_SUCCESS');
 const SAVE_FAILURE = Symbol('USER_SAVE_FAILURE');
+
 const CLEAR_ERRORS = Symbol('USER_CLEAR_ERRORS');
 
 const initialState = {};
 
 export default function userReduser(state = initialState, action) {
   switch (action.type) {
-    case SIGNUP_REQUEST:
-      return { transition: true };
     case SIGNUP_SUCCESS:
-      return { ...action.payload.user, transition: false };
+      return { ...action.payload.user };
     case SIGNUP_FAILURE:
-      return { error: action.error, transition: false };
-    case LOGIN_REQUEST:
-      return { transition: true };
+      return { ...initialState, error: action.error };
+
     case LOGIN_SUCCESS:
-      return { ...action.payload.user, transition: false };
+      return { ...action.payload.user };
     case LOGIN_FAILURE:
-      return { error: action.error, transition: false };
-    case LOGOUT_REQUEST:
-      return { ...state, transition: true };
+      return { ...initialState, error: action.error };
+
     case LOGOUT_SUCCESS:
-      return { transition: false };
+      return { ...initialState };
     case LOGOUT_FAILURE:
-      return { ...state, error: action.error, transition: false };
-    case USER_REQUEST:
-      return { ...state, transition: true };
+      return { ...state, error: action.error };
+
     case USER_SUCCESS:
-      return { ...action.payload.user, transition: false };
+      return { ...action.payload.user };
     case USER_FAILURE:
-      return { ...state, error: action.error, transition: false };
-    case SAVE_REQUEST:
-      return { ...state, transition: true };
+      return { ...state, error: action.error };
+
     case SAVE_SUCCESS:
-      return { ...action.payload.user, transition: false };
+      return { ...action.payload.user };
     case SAVE_FAILURE:
-      return { ...state, error: action.error, transition: false };
+      return { ...state, error: action.error };
+
     case CLEAR_ERRORS: // eslint-disable-line no-case-declarations
       const { error, ...nextState } = state;
       // eslint-disable-line no-case-declarations, no-unused-vars
-
       return nextState; // eslint-disable-line no-case-declarations
     default:
       return state;
@@ -66,7 +65,7 @@ export default function userReduser(state = initialState, action) {
 
 export function signup({ username, email, password }) {
   return (dispatch) => {
-    dispatch({ type: LOGIN_REQUEST });
+    dispatch({ type: SIGNUP_REQUEST });
 
     return request(undefined, {
       method: 'post',
@@ -75,13 +74,15 @@ export function signup({ username, email, password }) {
     }).then(
       (response) => {
         setJWT(response.data.user.token);
+        // set cookie with frontend server
         axios.post('/api/token', { token: response.data.user.token });
-        dispatch({ type: LOGIN_SUCCESS, payload: response.data });
+        dispatch({ type: SIGNUP_SUCCESS, payload: response.data });
       },
       (error) => {
         setJWT(undefined);
+        // clear cookie with frontend server
         axios.post('/api/token', { token: '' });
-        dispatch({ type: LOGIN_FAILURE, error: parseError(error) });
+        dispatch({ type: SIGNUP_FAILURE, error: parseError(error) });
       },
     );
   };
@@ -98,11 +99,13 @@ export function login({ email, password }) {
     }).then(
       (response) => {
         setJWT(response.data.user.token);
+        // set cookie with frontend server
         axios.post('/api/token', { token: response.data.user.token });
         dispatch({ type: LOGIN_SUCCESS, payload: response.data });
       },
       (error) => {
         setJWT(undefined);
+        // clear cookie with frontend server
         axios.post('/api/token', { token: '' });
         dispatch({ type: LOGIN_FAILURE, error: parseError(error) });
       },
@@ -129,10 +132,10 @@ export function save({ bio, email, image, username, password }) {
     return { type: SAVE_FAILURE, error: { message: 'Empty username or email' } };
   }
   const user = { bio, email, image, username };
-
   if (password) {
     user.password = password;
   }
+
   return (dispatch) => {
     dispatch({ type: SAVE_REQUEST });
 
@@ -151,6 +154,7 @@ export function logout() {
   return (dispatch) => {
     dispatch({ type: LOGOUT_REQUEST });
 
+    // clear cookie with frontend server
     return axios.post('/api/token', { token: '' })
       .then(
         () => {
@@ -163,7 +167,6 @@ export function logout() {
       );
   };
 }
-
 
 export function clearErrors() {
   return { type: CLEAR_ERRORS };

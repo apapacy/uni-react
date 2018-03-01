@@ -4,10 +4,12 @@ import { parseError } from '../utils';
 const ARTICLES_REQUEST = Symbol('ARTICLES_REQUEST');
 const ARTICLES_SUCCESS = Symbol('ARTICLES_SUCCESS');
 const ARTICLES_FAILURE = Symbol('ARTICLES_FAILURE');
-const CLEAR_ERRORS = Symbol('ARTICLES_CLEAR_ERRORS');
+
 const ARTICLE_FAVORITE_REQUEST = Symbol('ARTICLES_ARTICLE_FAVORITE_REQUEST');
 const ARTICLE_FAVORITE_SUCCESS = Symbol('ARTICLES_ARTICLE_FAVORITE_SUCCESS');
 const ARTICLE_FAVORITE_FAILURE = Symbol('ARTICLES_ARTICLE_FAVORITE_FAIULURE');
+
+const CLEAR_ERRORS = Symbol('ARTICLES_CLEAR_ERRORS');
 
 const GLOBAL_FEED_COUNT = 10;
 const PERSONAL_FEED_COUNT = 5;
@@ -16,8 +18,6 @@ const initialState = {};
 
 export default function userReduser(state = initialState, action) {
   switch (action.type) {
-    case ARTICLES_REQUEST:
-      return state;
     case ARTICLES_SUCCESS:
       return {
         ...action.payload,
@@ -27,6 +27,7 @@ export default function userReduser(state = initialState, action) {
       };
     case ARTICLES_FAILURE:
       return { ...initialState, error: action.error };
+
     case ARTICLE_FAVORITE_SUCCESS:
       return {
         ...state,
@@ -36,10 +37,12 @@ export default function userReduser(state = initialState, action) {
             : article
         )),
       };
+
     case CLEAR_ERRORS: // eslint-disable-line no-case-declarations
       const { error, ...nextState } = state;
       // eslint-disable-line no-case-declarations, no-unused-vars
       return nextState; // eslint-disable-line no-case-declarations
+
     default:
       return state;
   }
@@ -63,8 +66,10 @@ export function feed({ req, filter, author, page }) {
   if (filter === 'author' || filter === 'favorited') {
     params[filter] = decodeURIComponent(author);
   }
+
   return (dispatch) => {
     dispatch({ type: ARTICLES_REQUEST });
+
     return request(req, {
       method: 'get',
       url: filter === 'feed' ? '/articles/feed' : '/articles',
@@ -83,11 +88,9 @@ export function feed({ req, filter, author, page }) {
 }
 
 export function favorite({ slug, method }) {
-  if (method !== 'post' && method !== 'delete') {
-    return { type: ARTICLE_FAVORITE_FAILURE, error: { message: 'Only post or delete methos alowed' } };
-  }
   return (dispatch) => {
     dispatch({ type: ARTICLE_FAVORITE_REQUEST });
+
     return request(undefined, {
       method,
       url: `/articles/${slug}/favorite`,

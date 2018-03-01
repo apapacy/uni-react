@@ -8,14 +8,15 @@ import { favorite } from '../../redux/services/articles';
 import Favorited from './favorited';
 
 const ArticlePreview = (props) => {
-  function onClick(event) {
+  function onClickFavorite(event) {
     event.persist();
     event.preventDefault();
-    if (props.user && props.user.id && props.user.username !== props.author.username) {
+    if (props.user && props.user.username && props.user.username !== props.author.username) {
       props.dispatch(favorite({ slug: props.slug, method: props.favorited ? 'delete' : 'post' }));
     }
     event.target.blur();
   }
+
   return (
     <div className="article-preview">
       <div className="article-meta">
@@ -27,7 +28,7 @@ const ArticlePreview = (props) => {
         <Favorited
           user={props.user}
           article={props}
-          onClick={onClick}
+          onClick={onClickFavorite}
           addClassName="pull-xs-right"
         />
       </div>
@@ -35,18 +36,13 @@ const ArticlePreview = (props) => {
         <h1>{props.title}</h1>
         <p>{props.description}</p>
         <span>Read more...</span>
-        {
-          props.tagList && props.tagList.length
-            ?
-              <ul className="tag-list">
-                {
-                  props.tagList.map(tag => (
-                    <li className="tag-default tag-pill tag-outline" key={tag}>{tag}</li>
-                  ))
-                }
-              </ul>
-            : null
-        }
+        <ul className="tag-list">
+          {
+            props.tagList.map(tag => (
+              <li className="tag-default tag-pill tag-outline" key={tag}>{tag}</li>
+            ))
+          }
+        </ul>
       </Link>
     </div>
   );
@@ -58,7 +54,6 @@ ArticlePreview.propTypes = {
   slug: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  favoritesCount: PropTypes.number.isRequired,
   updatedAt: PropTypes.string.isRequired,
   author: PropTypes.shape({
     username: PropTypes.string,

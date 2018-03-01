@@ -38,9 +38,6 @@ class Article extends React.PureComponent {
 
   addComment(event) {
     event.preventDefault();
-    if (this.props.article.transition) {
-      return;
-    }
     const body = this.commentInput.value;
     if (!body || body === this.commentBody) {
       return;

@@ -1,6 +1,7 @@
 const express = require('express');
-const router = express.Router();
 const users = require('./users.json');
+
+const router = express.Router();
 
 router.get('/users', (req, res) => {
   res.send(users.data.map((user, id) => ({ id, name: user[0], })));
@@ -15,14 +16,14 @@ router.get('/users/:id', (req, res) => {
   }
   const [name, phone, email, birtday] = user; // eslint-disable-line comma-dangle
 
-  res.send({ id, name, phone, email, birtday, });
+  return res.send({ id, name, phone, email, birtday });
 });
 
 router.post('/token', (req, res) => {
   if (req.body.token) {
-    res.cookie('token', req.body.token, { signed: true, httpOnly: true, });
+    res.cookie('token', req.body.token, { signed: true, httpOnly: true });
   } else {
-    res.cookie('token', '', { signed: false, });
+    res.cookie('token', '', { signed: false });
   }
   res.send('');
 });
