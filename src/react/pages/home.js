@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { me, clearErrors } from '../../redux/services/user';
+import { me } from '../../redux/services/user';
 import { feed } from '../../redux/services/articles';
 import ArticlePreview from '../components/articlePreview';
 import NavItem from '../components/navItem';
@@ -10,7 +9,7 @@ import Pagination from '../components/pagination';
 
 
 class Home extends React.PureComponent {
-  static async getInitialProps({ req, store, dispatch, user, match, articles, hydrated }) {
+  static async getInitialProps({ req, store, dispatch, user, match }) {
     const promises = [];
     const page = Number(match.params.page) || 1;
     let filter;
@@ -26,17 +25,13 @@ class Home extends React.PureComponent {
       filter = undefined;
     }
     promises.push(dispatch(feed({ req, filter, page })));
-    await Promise.all(promises);
+    return Promise.all(promises);
   }
 
   async componentDidMount() {
     if (['POP', 'PUSH'].indexOf(this.props.history.action) > -1 && this.props.hydrated) {
       await Home.getInitialProps(this.props);
     }
-  }
-
-  async componentWillUnmount() {
-    // this.props.dispatch(clearErrors());
   }
 
   render() {
@@ -98,6 +93,9 @@ Home.propTypes = {
     url: PropTypes.string,
     params: PropTypes.object,
   }).isRequired,
+  history: PropTypes.shape().isRequired,
+  hydrated: PropTypes.bool.isRequired,
+  user: PropTypes.shape().isRequired,
   articles: PropTypes.shape({
     page: PropTypes.number,
     pageLength: PropTypes.number,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { me, clearErrors } from '../../redux/services/user';
+import { me } from '../../redux/services/user';
 import { article, comments, saveArticle } from '../../redux/services/article';
 
 
@@ -11,7 +11,7 @@ class Editor extends React.PureComponent {
     if (req && !user) {
       promises.unshift(dispatch(me({ req })));
     }
-    const slug = match.params.slug;
+    const { slug } = match.params;
     if (slug) {
       promises.push(dispatch(article({ req, slug })));
     }
@@ -49,10 +49,6 @@ class Editor extends React.PureComponent {
     }
   }
 
-  async componentWillUnmount() {
-    // this.props.dispatch(clearErrors());
-  }
-
   handleChange(event) {
     this.setState({
       ...this.state,
@@ -63,14 +59,14 @@ class Editor extends React.PureComponent {
   async handleSubmit(event) {
     event.preventDefault();
     const articleToSave = { ...this.state };
-    let slug = this.props.match.params.slug;
+    let { slug } = this.props.match.params;
     await this.props.dispatch(saveArticle({
       ...articleToSave,
       slug,
-      tagList: articleToSave.tagList.split(/\s*,\s*/)
+      tagList: articleToSave.tagList.split(/\s*,\s*/),
     }));
     if (!this.props.article.error) {
-      slug = this.props.article.article.slug;
+      ({ slug } = this.props.article.article);
       const promises = [
         this.props.dispatch(article({ slug })),
         this.props.dispatch(comments({ slug })),
@@ -151,6 +147,13 @@ class Editor extends React.PureComponent {
 Editor.propTypes = {
   dispatch: PropTypes.func.isRequired,
   hydrated: PropTypes.bool.isRequired,
+  match: PropTypes.shape().isRequired,
+  article: PropTypes.shape().isRequired,
+  history: PropTypes.shape().isRequired,
 };
 
-export default connect(state => ({ user: state.user, hydrated: state.hydrated, article: state.article }))(Editor);
+export default connect(state => ({
+  user: state.user,
+  hydrated: state.hydrated,
+  article: state.article,
+}))(Editor);
