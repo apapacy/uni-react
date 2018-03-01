@@ -69,13 +69,17 @@ class Editor extends React.PureComponent {
       slug,
       tagList: articleToSave.tagList.split(/\s*,\s*/)
     }));
-    slug = this.props.article.article.slug;
-    const promises = [
-      this.props.dispatch(article({ slug })),
-      this.props.dispatch(comments({ slug })),
-    ];
-    await Promise.all(promises);
-    this.props.history.push(`/${slug}`);
+    if (!this.props.article.error) {
+      slug = this.props.article.article.slug;
+      const promises = [
+        this.props.dispatch(article({ slug })),
+        this.props.dispatch(comments({ slug })),
+      ];
+      await Promise.all(promises);
+      if (!this.props.article.error) {
+        this.props.history.push(`/${slug}`);
+      }
+    }
   }
 
   render() {

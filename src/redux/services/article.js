@@ -39,49 +39,59 @@ const CLEAR_ERRORS = Symbol('ARTICLE_CLEAR_ERRORS');
 const initialState = {};
 
 export default function userReduser(state = initialState, action) {
+  let error;
+  let rest;
   switch (action.type) {
     case ARTICLE_SUCCESS:
-      return { ...state, article: action.payload.article };
+      ({ error, ...rest } = state);
+      return { ...rest, article: action.payload.article };
     case ARTICLE_FAILURE:
       return { ...state, error: action.error };
 
     case ARTICLE_SAVE_SUCCESS:
-      return { ...state, article: action.payload.article };
+      ({ error, ...rest } = state);
+      return { ...rest, article: action.payload.article };
     case ARTICLE_SAVE_FAILURE:
       return { ...state, error: action.error };
 
     case ARTICLE_DELETE_SUCCESS:
-      return { ...state, deletedAt: new Date() };
+      ({ error, ...rest } = state);
+      return rest;
     case ARTICLE_DELETE_FAILURE:
       return { ...state, error: action.error };
 
     case ARTICLE_COMMENTS_SUCCESS:
-      return { ...state, comments: action.payload.comments };
+      ({ error, ...rest } = state);
+      return { ...rest, comments: action.payload.comments };
     case ARTICLE_COMMENTS_FAILURE:
       return { ...state, error: action.error };
 
     case ARTICLE_COMMENT_SUCCESS:
-      state.comments.unshift(action.payload.comment);
-      return { ...state };
+      ({ error, ...rest } = state);
+      rest.comments.unshift(action.payload.comment);
+      return rest;
     case ARTICLE_COMMENT_FAILURE:
       return { ...state, error: action.error };
 
     case ARTICLE_COMMENT_DELETE_SUCCESS: // eslint-disable-line no-case-declarations
-      const comments = state.comments.filter(comment => comment.id !== action.payload.id); // eslint-disable-line no-shadow, max-len
-      return { ...state, comments };
+      ({ error, ...rest } = state);
+      const comments = rest.comments.filter(comment => comment.id !== action.payload.id); // eslint-disable-line no-shadow, max-len
+      return { ...rest, comments };
     case ARTICLE_COMMENT_DELETE_FAILURE:
       return { ...state, error: action.error };
 
     case ARTICLE_FOLLOW_SUCCESS:
-      return { ...state, ...{ article: { ...state.article, author: action.payload.profile } } };
+      ({ error, ...rest } = state);
+      return { ...rest, ...{ article: { ...rest.article, author: action.payload.profile } } };
 
     case ARTICLE_FAVORITE_SUCCESS:
-      return { ...state, article: action.payload.article };
+      ({ error, ...rest } = state);
+      return { ...rest, article: action.payload.article };
 
     case CLEAR_ERRORS: // eslint-disable-line no-case-declarations
-      const { error, ...nextState } = state;
+      ({ error, ...rest } = state);
       // eslint-disable-line no-case-declarations, no-unused-vars
-      return nextState; // eslint-disable-line no-case-declarations
+      return rest; // eslint-disable-line no-case-declarations
 
     default:
       return state;
