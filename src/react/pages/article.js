@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
+import moment from 'moment';
 import { me } from '../../redux/services/user';
 import { article, comments, addComment, deleteComment, follow, favorite } from '../../redux/services/article';
 import Link from '../asyncLink'; // eslint-disable-line
@@ -88,7 +89,7 @@ class Article extends React.PureComponent {
               </Link>
               <div className="info">
                 <Link to={`/author/${this.props.article.article.author.username}`} className="author">{this.props.article.article.author.username}</Link>
-                <span className="date">{this.props.article.article.updatedAt}</span>
+                <span className="date">{moment( this.props.article.article.updatedAt).format('ddd MMM DD YYYY')}</span>
               </div>
               {
                 this.props.article.article.author.username === this.props.user.username
@@ -144,7 +145,7 @@ class Article extends React.PureComponent {
                 <Link to={`/author/${this.props.article.article.author.username}`} className="author">
                   {this.props.article.article.author.username}
                 </Link>
-                <span className="date">{this.props.article.article.updatedAt}</span>
+                <span className="date">{moment(this.props.article.article.updatedAt).format('ddd MMM DD YYYY')}</span>
               </div>
               <Following
                 profile={this.props.article.article.author}
@@ -199,7 +200,7 @@ class Article extends React.PureComponent {
                       </Link>
                       &nbsp;
                       <Link to={`/author/${comment.author.username}`} className="comment-author">{comment.author.username}</Link>
-                      <span className="date-posted">{comment.updatedAt}</span>
+                      <span className="date-posted">{moment(comment.updatedAt).format('ddd MMM DD YYYY HH:mm')}</span>
                       {
                         comment.author.username === (this.props.user && this.props.user.username)
                           ?
