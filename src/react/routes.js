@@ -40,10 +40,6 @@ module.exports = [
     exact: true,
     componentName: 'pages/settings',
   }, {
-    path: '/users/:id',
-    exact: true,
-    componentName: 'components/user',
-  }, {
     path: '/([^/]*-[^/]+)',
     exact: true,
     componentName: 'pages/article',

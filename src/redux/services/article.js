@@ -93,7 +93,8 @@ export function article({ req, slug }) {
 }
 
 export function saveArticle(article) { // eslint-disable-line no-shadow
-  const { slug, data } = article;
+  const { slug } = article;
+  const data = { article };
   return (dispatch) => {
     dispatch({ type: ARTICLE_SAVE_REQUEST });
     return request(undefined, {
