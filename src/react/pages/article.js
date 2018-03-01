@@ -8,6 +8,7 @@ import Link from '../asyncLink'; // eslint-disable-line
 import Following from '../components/following';
 import Favorited from '../components/favorited';
 
+const KEY_DEL = 46;
 
 class Article extends React.PureComponent {
   static async getInitialProps({ req, dispatch, match, user }) {
@@ -21,15 +22,17 @@ class Article extends React.PureComponent {
     await Promise.all(promises);
   }
 
+  constructor(...args) {
+    super(...args);
+    this.follow = this.follow.bind(this);
+    this.favorite = this.favorite.bind(this);
+  }
+
   async componentDidMount() {
     if (this.props.history.action === 'POP') {
       await Article.getInitialProps(this.props);
     }
     this.commentBody = '';
-  }
-
-  async componentWillUnmount() {
-    // this.props.dispatch(clearErrors());
   }
 
   addComment(event) {
@@ -55,7 +58,7 @@ class Article extends React.PureComponent {
     }));
   }
 
-  follow = async (event) => {
+  async follow(event) {
     event.persist();
     await this.props.dispatch(follow({
       author: this.props.article.article.author.username,
@@ -64,7 +67,7 @@ class Article extends React.PureComponent {
     event.target.blur();
   }
 
-  favorite = async (event) => {
+  async favorite(event) {
     event.persist();
     await this.props.dispatch(favorite({
       slug: this.props.article.article.slug,
@@ -78,7 +81,7 @@ class Article extends React.PureComponent {
       <div className="article-page">
         <div className="banner">
           <div className="container">
-            <h1>{this.props.article.article.title}</h1>
+            <h1>{ this.props.article.article.title }</h1>
             <div className="article-meta">
               <Link to={`/author/${this.props.article.article.author.username}`}>
                 <img alt="" src={this.props.article.article.author.image} />
@@ -183,7 +186,7 @@ class Article extends React.PureComponent {
                     null
               }
               {
-                this.props.article.comments.map(comment => (
+                this.props.article.comments.map( (comment, index) => (
                   <div className="card" key={comment.id}>
                     <div className="card-block">
                       <p className="card-text">
@@ -200,8 +203,14 @@ class Article extends React.PureComponent {
                       {
                         comment.author.username === (this.props.user && this.props.user.username)
                           ?
-                            <span class="mod-options" onClick={() => this.deleteComment(comment.id)}>
-                              <i class="ion-trash-a" />
+                            <span
+                              className="mod-options"
+                              tabIndex={1 + index}
+                              role="button"
+                              onClick={() => this.deleteComment(comment.id)}
+                              onKeyUp={event => (event.keyCode === KEY_DEL ? this.deleteComment(comment.id) : undefined)}
+                            >
+                              <i className="ion-trash-a" />
                             </span>
                           :
                             null
@@ -218,7 +227,9 @@ class Article extends React.PureComponent {
   }
 }
 
-Article.propTypes = { dispatch: PropTypes.func.isRequired };
+Article.propTypes = { 
+  dispatch: PropTypes.func.isRequired
+};
 
 export default connect(state => ({
   user: state.user,
