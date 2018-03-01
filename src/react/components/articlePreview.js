@@ -1,7 +1,6 @@
 import React from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Link from '../asyncLink'; // eslint-disable-line
 import { favorite } from '../../redux/services/articles';
@@ -66,4 +65,4 @@ ArticlePreview.propTypes = {
   }).isRequired,
 };
 
-export default withRouter(connect()(ArticlePreview));
+export default connect()(ArticlePreview);

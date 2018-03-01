@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
-import Link from '../asyncLink';
+import Link from '../asyncLink'; // eslint-disable-line
 
 function prepareLink(match, page, author) {
   let [basePath] = match.path.split('/:');
@@ -36,7 +36,7 @@ function prepareLink(match, page, author) {
   return `/page/${page}`;
 }
 
-const Pagination = ({ count, pageLength, page, match, author }) => ( // eslint-disable-line
+const Pagination = ({ count, pageLength, page, match, author }) => ( // eslint-disable-line react/prop-types, max-len
   count && pageLength && count > pageLength
     ?
       <nav>

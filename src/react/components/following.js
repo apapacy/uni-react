@@ -1,8 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
-
-import Link from '../asyncLink'; // eslint-disable-line
-// asyncLink contents dynamic import()
+import PropTypes from 'prop-types';
 
 const Following = ({ profile, user, onClick }) => {
   if (!user || !user.id || user.username === profile.username) {
@@ -19,18 +16,23 @@ const Following = ({ profile, user, onClick }) => {
         Unfollow {profile.username}
       </button>
     );
-  } else {
-    return (
-      <button
-        className="btn btn-sm btn-outline-secondary action-btn"
-        onClick={onClick}
-      >
-        <i className="ion-plus-round" />
-        &nbsp;
-        Follow {profile.username}
-      </button>
-    );
   }
+  return (
+    <button
+      className="btn btn-sm btn-outline-secondary action-btn"
+      onClick={onClick}
+    >
+      <i className="ion-plus-round" />
+      &nbsp;
+      Follow {profile.username}
+    </button>
+  );
 };
 
-export default withRouter(Following);
+Following.propTypes = {
+  profile: PropTypes.shape().isRequired,
+  user: PropTypes.shape().isRequired,
+  onClick: PropTypes.func.isRequired,
+}
+
+export default Following;
