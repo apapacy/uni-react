@@ -5,9 +5,11 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Link from '../asyncLink'; // eslint-disable-line
 import { favorite } from '../../redux/services/articles';
+import Favorited from './favorited';
 
 const ArticlePreview = (props) => {
-  function favoritedOnClick(event) {
+  function onClick(event) {
+    event.persist();
     event.preventDefault();
     if (props.user && props.user.id && props.user.username !== props.author.username) {
       props.dispatch(favorite({ slug: props.slug, method: props.favorited ? 'delete' : 'post' }));
@@ -22,9 +24,12 @@ const ArticlePreview = (props) => {
           <Link to={`/author/${props.author.username}`} className="author">{props.author.username}</Link>
           <span className="date">{moment(props.updatedAt).format('ddd MMM DD YYYY')}</span>
         </div>
-        <button className={`btn btn-${props.favorited ? '' : 'outline-'}primary btn-sm pull-xs-right`} onClick={favoritedOnClick}>
-          <i className="ion-heart" />&nbsp;{props.favoritesCount}
-        </button>
+        <Favorited
+          user={props.user}
+          article={props}
+          onClick={onClick}
+          addClassName="pull-xs-right"
+        />
       </div>
       <Link to={`/${props.slug}`} className="preview-link">
         <h1>{props.title}</h1>

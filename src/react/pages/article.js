@@ -6,6 +6,7 @@ import { me } from '../../redux/services/user';
 import { article, comments, addComment, deleteComment, follow, favorite } from '../../redux/services/article';
 import Link from '../asyncLink'; // eslint-disable-line
 import Following from '../components/following';
+import Favorited from '../components/favorited';
 
 
 class Article extends React.PureComponent {
@@ -63,18 +64,11 @@ class Article extends React.PureComponent {
     event.target.blur();
   }
 
-  favorite(event) {
-    this.props.dispatch(favorite({
+  favorite = async (event) => {
+    event.persist();
+    await this.props.dispatch(favorite({
       slug: this.props.article.article.slug,
-      method: 'post',
-    }));
-    event.target.blur();
-  }
-
-  unfavorite(event) {
-    this.props.dispatch(favorite({
-      slug: this.props.article.article.slug,
-      method: 'delete',
+      method: this.props.article.article.favorited ? 'delete' : 'post',
     }));
     event.target.blur();
   }
@@ -111,25 +105,11 @@ class Article extends React.PureComponent {
                 onClick={this.follow}
               />
               &nbsp;&nbsp;
-              {
-                this.props.article.article.favorited
-                  ?
-                    <button className="btn btn-sm btn-primary" onClick={this.unfavorite.bind(this)}>
-                      <i className="ion-heart" />
-                      &nbsp;
-                      Unfavorite Post
-                      &nbsp;
-                      <span className="counter">({this.props.article.article.favoritesCount})</span>
-                    </button>
-                  :
-                    <button className="btn btn-sm btn-outline-primary" onClick={this.favorite.bind(this)}>
-                      <i className="ion-heart" />
-                      &nbsp;
-                      Favorite Post
-                      &nbsp;
-                      <span className="counter">({this.props.article.article.favoritesCount})</span>
-                    </button>
-              }
+              <Favorited
+                user={this.props.user}
+                article={this.props.article.article}
+                onClick={this.favorite}
+              />
             </div>
           </div>
         </div>
@@ -169,25 +149,11 @@ class Article extends React.PureComponent {
                 onClick={this.follow}
               />
               &nbsp;
-              {
-                this.props.article.article.favorited
-                  ?
-                    <button className="btn btn-sm btn-primary" onClick={this.unfavorite.bind(this)}>
-                      <i className="ion-heart" />
-                      &nbsp;
-                      Unfavorite Post
-                      &nbsp;
-                      <span className="counter">({this.props.article.article.favoritesCount})</span>
-                    </button>
-                  :
-                    <button className="btn btn-sm btn-outline-primary" onClick={this.favorite.bind(this)}>
-                      <i className="ion-heart" />
-                      &nbsp;
-                      Favorite Post
-                      &nbsp;
-                      <span className="counter">({this.props.article.article.favoritesCount})</span>
-                    </button>
-              }
+              <Favorited
+                user={this.props.user}
+                article={this.props.article.article}
+                onClick={this.favorite}
+              />
             </div>
           </div>
           <div className="row">
