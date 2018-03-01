@@ -1,8 +1,8 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
-
 import rootReducer from '../reducers';
+
 let store;
 export default function prepareStore(initialState) {
   if (module.hot) {
@@ -17,9 +17,7 @@ export default function prepareStore(initialState) {
       store.replaceReducer(nextRootReducer);
     });
   } else {
-    store = compose(
-      applyMiddleware(thunk),
-    )(createStore)(rootReducer, initialState);
+    store = compose(applyMiddleware(thunk))(createStore)(rootReducer, initialState);
   }
 
   return store;

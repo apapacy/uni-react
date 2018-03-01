@@ -38,8 +38,8 @@ const CLEAR_ERRORS = Symbol('ARTICLE_CLEAR_ERRORS');
 
 const initialState = {};
 
-export default function userReduser(state = initialState, action) {
-  let error;
+export default function articleReduser(state = initialState, action) {
+  let error; // eslint-disable-line no-unused-vars
   let rest;
   switch (action.type) {
     case ARTICLE_SUCCESS:

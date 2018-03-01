@@ -13,7 +13,7 @@ const CLEAR_ERRORS = Symbol('PROFILE_CLEAR_ERRORS');
 
 const initialState = {};
 
-export default function userReduser(state = initialState, action) {
+export default function profileReduser(state = initialState, action) {
   switch (action.type) {
     case PROFILE_SUCCESS:
       return { ...action.payload.profile };

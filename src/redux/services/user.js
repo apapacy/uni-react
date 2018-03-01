@@ -62,7 +62,6 @@ export default function userReduser(state = initialState, action) {
   }
 }
 
-
 export function signup({ username, email, password }) {
   return (dispatch) => {
     dispatch({ type: SIGNUP_REQUEST });

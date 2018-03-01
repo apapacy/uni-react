@@ -16,7 +16,7 @@ const PERSONAL_FEED_COUNT = 5;
 
 const initialState = {};
 
-export default function userReduser(state = initialState, action) {
+export default function articlesReduser(state = initialState, action) {
   switch (action.type) {
     case ARTICLES_SUCCESS:
       return {
