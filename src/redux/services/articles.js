@@ -5,6 +5,10 @@ const ARTICLES_REQUEST = Symbol('ARTICLES_REQUEST');
 const ARTICLES_SUCCESS = Symbol('ARTICLES_SUCCESS');
 const ARTICLES_FAILURE = Symbol('ARTICLES_FAILURE');
 
+const TAGS_REQUEST = Symbol('TAGS_REQUEST');
+const TAGS_SUCCESS = Symbol('TAGS_SUCCESS');
+const TAGS_FAILURE = Symbol('TAGS_FAILURE');
+
 const ARTICLE_FAVORITE_REQUEST = Symbol('ARTICLES_ARTICLE_FAVORITE_REQUEST');
 const ARTICLE_FAVORITE_SUCCESS = Symbol('ARTICLES_ARTICLE_FAVORITE_SUCCESS');
 const ARTICLE_FAVORITE_FAILURE = Symbol('ARTICLES_ARTICLE_FAVORITE_FAIULURE');
@@ -14,19 +18,26 @@ const CLEAR_ERRORS = Symbol('ARTICLES_CLEAR_ERRORS');
 const GLOBAL_FEED_COUNT = 10;
 const PERSONAL_FEED_COUNT = 5;
 
-const initialState = {};
+const initialState = {
+  articles: [],
+  tags: [],
+};
 
 export default function articlesReduser(state = initialState, action) {
   switch (action.type) {
     case ARTICLES_SUCCESS:
       return {
         ...action.payload,
+        tags: state.tags,
         pageLength: action.pageLength,
         page: action.page,
         filter: action.filter,
       };
     case ARTICLES_FAILURE:
       return { ...initialState, error: action.error };
+
+    case TAGS_SUCCESS:
+      return { ...state, tags: action.payload.tags };
 
     case ARTICLE_FAVORITE_SUCCESS:
       return {
@@ -83,6 +94,20 @@ export function feed({ req, filter, author, page }) {
         filter,
       }),
       error => dispatch({ type: ARTICLES_FAILURE, error: parseError(error) }),
+    );
+  };
+}
+
+export function tags({ req }) {
+  return (dispatch) => {
+    dispatch({ type: TAGS_REQUEST });
+
+    return request(req, {
+      method: 'get',
+      url: '/tags',
+    }).then(
+      response => dispatch({ type: TAGS_SUCCESS, payload: response.data }),
+      error => dispatch({ type: TAGS_FAILURE, error: parseError(error) }),
     );
   };
 }

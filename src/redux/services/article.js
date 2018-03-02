@@ -36,7 +36,10 @@ const ARTICLE_COMMENT_DELETE_FAILURE = Symbol('ARTICLE_COMMENT_DELETE_FAIULURE')
 const CLEAR_ERRORS = Symbol('ARTICLE_CLEAR_ERRORS');
 
 
-const initialState = {};
+const initialState = {
+  article: { author: {}, tagList: [] },
+  comments: [],
+};
 
 export default function articleReduser(state = initialState, action) {
   let error; // eslint-disable-line no-unused-vars

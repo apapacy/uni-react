@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { me } from '../../redux/services/user';
-import { feed } from '../../redux/services/articles';
+import { feed, tags } from '../../redux/services/articles';
 import ArticlePreview from '../components/articlePreview';
 import NavItem from '../components/navItem';
 import Pagination from '../components/pagination';
+import Link from '../asyncLink';
 
 
 class Home extends React.PureComponent {
@@ -25,11 +26,12 @@ class Home extends React.PureComponent {
       filter = undefined;
     }
     promises.push(dispatch(feed({ req, filter, page })));
+    promises.push(dispatch(tags({ req })));
     return Promise.all(promises);
   }
 
   async componentDidMount() {
-    if (['POP', 'PUSH'].indexOf(this.props.history.action) > -1 && this.props.hydrated) {
+    if (['POP'].indexOf(this.props.history.action) > -1 && this.props.hydrated) {
       await Home.getInitialProps(this.props);
     }
   }
@@ -69,14 +71,10 @@ class Home extends React.PureComponent {
               <div className="sidebar">
                 <p>Popular Tags</p>
                 <div className="tag-list">
-                  <a href="/" className="tag-pill tag-default">programming</a>
-                  <a href="/" className="tag-pill tag-default">javascript</a>
-                  <a href="/" className="tag-pill tag-default">emberjs</a>
-                  <a href="/" className="tag-pill tag-default">angularjs</a>
-                  <a href="/" className="tag-pill tag-default">react</a>
-                  <a href="/" className="tag-pill tag-default">mean</a>
-                  <a href="/" className="tag-pill tag-default">node</a>
-                  <a href="/" className="tag-pill tag-default">rails</a>
+                  {
+                    this.props.articles.tags
+                      .map(tag => <Link to={`/tag/${tag}`} className="tag-pill tag-default" key={tag}>{tag}</Link>)
+                  }
                 </div>
               </div>
             </div>
@@ -101,6 +99,7 @@ Home.propTypes = {
     pageLength: PropTypes.number,
     articlesCount: PropTypes.number,
     articles: PropTypes.arrayOf(PropTypes.shape({ slug: PropTypes.string })),
+    tags: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
 };
 
