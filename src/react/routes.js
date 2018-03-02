@@ -16,6 +16,14 @@ module.exports = [
     exact: true,
     componentName: 'pages/home',
   }, {
+    path: '/tag/:tag',
+    exact: true,
+    componentName: 'pages/home',
+  }, {
+    path: '/tag/:tag/page/:page',
+    exact: true,
+    componentName: 'pages/home',
+  }, {
     path: '/(author|favorited)/:author',
     exact: true,
     componentName: 'pages/profile',

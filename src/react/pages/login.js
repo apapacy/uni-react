@@ -59,7 +59,7 @@ class Login extends React.PureComponent {
     );
     const match = matchPath('/feed', routeTo);
     const store = getStore();
-    import(`./home`) // eslint-diszanle-line
+    import(`./home`) // eslint-disable-line
       .then(component => component.default || component)
       .then(component => component.getInitialProps({
         match,

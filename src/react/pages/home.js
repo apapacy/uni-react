@@ -6,7 +6,7 @@ import { feed, tags } from '../../redux/services/articles';
 import ArticlePreview from '../components/articlePreview';
 import NavItem from '../components/navItem';
 import Pagination from '../components/pagination';
-import Link from '../asyncLink';
+import Link from '../asyncLink'; // eslint-disable-line
 
 
 class Home extends React.PureComponent {
@@ -14,6 +14,7 @@ class Home extends React.PureComponent {
     const promises = [];
     const page = Number(match.params.page) || 1;
     let filter;
+    let value;
     if (req && !user) {
       await dispatch(me({ req }));
     }
@@ -22,16 +23,19 @@ class Home extends React.PureComponent {
         return { redirectUrl: '/' };
       }
       filter = 'feed';
+    } else if (match.params.tag) {
+      filter = 'tag';
+      value = match.params.tag;
     } else {
       filter = undefined;
     }
-    promises.push(dispatch(feed({ req, filter, page })));
+    promises.push(dispatch(feed({ req, filter, value, page })));
     promises.push(dispatch(tags({ req })));
     return Promise.all(promises);
   }
 
   async componentDidMount() {
-    if (['POP'].indexOf(this.props.history.action) > -1 && this.props.hydrated) {
+    if (this.props.history.action === 'POP' && this.props.hydrated) {
       await Home.getInitialProps(this.props);
     }
   }

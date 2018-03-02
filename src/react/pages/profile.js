@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { me, clearErrors } from '../../redux/services/user';
+import { me } from '../../redux/services/user';
 import { getProfile, follow } from '../../redux/services/profile';
 import { feed } from '../../redux/services/articles';
 import ArticlePreview from '../components/articlePreview';
@@ -10,35 +9,35 @@ import NavItem from '../components/navItem';
 import Pagination from '../components/pagination';
 import Following from '../components/following';
 
-
 class Profile extends React.PureComponent {
-  static async getInitialProps({ req, dispatch, user, match, profile, articles }) {
+  static async getInitialProps({ req, dispatch, user, match, profile }) {
     const promises = [];
     const page = Number(match.params.page) || 1;
-    const author = match.params.author;
+    const { author } = match.params;
     const filter = match.params[0];
 
     if (req && !user) {
       promises.unshift(dispatch(me({ req })));
     }
     if (!profile || profile.username !== author) {
-      promises.push(dispatch(getProfile({ req, author })))
+      promises.push(dispatch(getProfile({ req, author })));
     }
-    promises.push(dispatch(feed({ req, filter, author, page })));
+    promises.push(dispatch(feed({ req, filter, value: author, page })));
     await Promise.all(promises);
   }
 
+  constructor(...args) {
+    super(...args);
+    this.follow = this.follow.bind(this);
+  }
+
   componentDidMount() {
-    if (['POP'].indexOf(this.props.history.action) > -1 && this.props.hydrated) {
+    if (this.props.history.action === 'POP' && this.props.hydrated) {
       Profile.getInitialProps(this.props);
     }
   }
 
-  componentWillUnmount() {
-    // this.props.dispatch(clearErrors());
-  }
-
-  follow = async (event) => {
+  async follow(event) {
     event.persist();
     await this.props.dispatch(follow({
       author: this.props.profile.username,
@@ -75,8 +74,12 @@ class Profile extends React.PureComponent {
             <div className="col-xs-12 col-md-10 offset-md-1">
               <div className="articles-toggle">
                 <ul className="nav nav-pills outline-active">
-                  <NavItem to={`/author/${this.props.profile.username}`} data-test={`/author/${this.props.profile.username}`}>My Articles</NavItem>
-                  <NavItem to={`/favorited/${this.props.profile.username}`}>Favorited Articles</NavItem>
+                  <NavItem to={`/author/${this.props.profile.username}`}>
+                    My Articles
+                  </NavItem>
+                  <NavItem to={`/favorited/${this.props.profile.username}`}>
+                    Favorited Articles
+                  </NavItem>
                 </ul>
               </div>
               {
@@ -98,7 +101,9 @@ Profile.propTypes = {
     url: PropTypes.string,
     params: PropTypes.object,
   }).isRequired,
+  history: PropTypes.shape().isRequired,
   hydrated: PropTypes.bool.isRequired,
+  user: PropTypes.shape().isRequired,
   profile: PropTypes.shape({
     username: PropTypes.string,
     image: PropTypes.string,

@@ -59,10 +59,9 @@ export default function articlesReduser(state = initialState, action) {
   }
 }
 
-export function feed({ req, filter, author, page }) {
+export function feed({ req, filter, value, page }) {
   let limit;
   let offset;
-
   if (!filter || filter === 'feed') {
     limit = GLOBAL_FEED_COUNT;
   } else {
@@ -74,8 +73,8 @@ export function feed({ req, filter, author, page }) {
     offset = (page - 1) * limit;
   }
   const params = { limit, offset };
-  if (filter === 'author' || filter === 'favorited') {
-    params[filter] = decodeURIComponent(author);
+  if (filter === 'author' || filter === 'favorited' || filter === 'tag') {
+    params[filter] = decodeURIComponent(value);
   }
 
   return (dispatch) => {

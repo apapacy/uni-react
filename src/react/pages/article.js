@@ -32,7 +32,7 @@ class Article extends React.PureComponent {
   }
 
   async componentDidMount() {
-    if (['POP'].indexOf(this.props.history.action) > -1 && this.props.hydrated) {
+    if (this.props.history.action === 'POP' && this.props.hydrated) {
       await Article.getInitialProps(this.props);
     }
     this.commentBody = '';
