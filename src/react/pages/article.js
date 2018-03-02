@@ -8,6 +8,7 @@ import { article, deleteArticle, comments, addComment, deleteComment, follow, fa
 import Link from '../asyncLink'; // eslint-disable-line
 import Following from '../components/following';
 import Favorited from '../components/favorited';
+import Comments from '../components/comments';
 
 const KEY_DEL = 46;
 
@@ -29,6 +30,7 @@ class Article extends React.PureComponent {
     this.favorite = this.favorite.bind(this);
     this.deleteArticle = this.deleteArticle.bind(this);
     this.addComment = this.addComment.bind(this);
+    this.deleteComment = this.deleteComment.bind(this);
   }
 
   async componentDidMount() {
@@ -205,44 +207,11 @@ class Article extends React.PureComponent {
                   :
                     null
               }
-              {
-                this.props.article.comments.map((comment, index) => (
-                  <div className="card" key={comment.id}>
-                    <div className="card-block">
-                      <p className="card-text">
-                        {comment.body}
-                      </p>
-                    </div>
-                    <div className="card-footer">
-                      <Link to={`/author/${comment.author.username}`} className="comment-author">
-                        <img alt="" src={comment.author.image} className="comment-author-img" />
-                      </Link>
-                      &nbsp;
-                      <Link to={`/author/${comment.author.username}`} className="comment-author">{comment.author.username}</Link>
-                      <span className="date-posted">{moment(comment.updatedAt).format('ddd MMM DD YYYY HH:mm')}</span>
-                      {
-                        comment.author.username === (this.props.user && this.props.user.username) ?
-                          <span
-                            className="mod-options"
-                            tabIndex={-2 - index}
-                            role="button"
-                            onClick={() => this.deleteComment(comment.id)}
-                            onKeyUp={event => (
-                              event.keyCode === KEY_DEL ?
-                                this.deleteComment(comment.id)
-                              :
-                                undefined
-                            )}
-                          >
-                            <i className="ion-trash-a" />
-                          </span>
-                        :
-                          null
-                      }
-                    </div>
-                  </div>
-                ))
-              }
+              <Comments
+                comments={this.props.article.comments}
+                user={this.props.user}
+                deleteComment={this.deleteComment}
+              />
             </div>
           </div>
         </div>
