@@ -8,7 +8,6 @@ import NavItem from '../components/navItem';
 import Pagination from '../components/pagination';
 import Link from '../asyncLink'; // eslint-disable-line
 
-
 class Home extends React.PureComponent {
   static async getInitialProps({ req, store, dispatch, user, match }) {
     const promises = [];
@@ -112,6 +111,8 @@ Home.propTypes = {
     articlesCount: PropTypes.number,
     articles: PropTypes.arrayOf(PropTypes.shape({ slug: PropTypes.string })),
     tags: PropTypes.arrayOf(PropTypes.string),
+    filter: PropTypes.string,
+    value: PropTypes.string,
   }).isRequired,
 };
 

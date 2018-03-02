@@ -92,7 +92,7 @@ export function feed({ req, filter, value, page }) {
         pageLength: limit,
         page: page || 1,
         filter,
-        value
+        value,
       }),
       error => dispatch({ type: ARTICLES_FAILURE, error: parseError(error) }),
     );
