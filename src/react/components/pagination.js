@@ -5,7 +5,7 @@ import Link from '../asyncLink'; // eslint-disable-line
 
 function prepareLink(match, page) {
   const { url } = match;
-  const basePath = url.replace(/\/page\/[0-9]+$/, '');
+  const basePath = url.replace(/\/(page\/[0-9]+)?$/, '');
   if (page === 1) {
     return basePath || '/';
   }
