@@ -152,7 +152,9 @@ class Article extends React.PureComponent {
           <ul className="tag-list">
             {
               this.props.article.article.tagList.map(tag => (
-                <li className="tag-default tag-pill tag-outline" key={tag}><Link to={`/tag/${tag}`}>{tag}</Link></li>
+                <li className="tag-default tag-pill tag-outline" key={tag}>
+                  <Link to={`/tag/${tag}`}>#{tag}</Link>
+                </li>
               ))
             }
           </ul>

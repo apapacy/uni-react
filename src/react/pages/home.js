@@ -83,8 +83,15 @@ class Home extends React.PureComponent {
                 <p>Popular Tags</p>
                 <div className="tag-list">
                   {
-                    this.props.articles.tags
-                      .map(tag => <Link to={`/tag/${tag}`} className="tag-pill tag-default" key={tag}>{tag}</Link>)
+                    this.props.articles.tags.map(tag => (
+                      <Link
+                        to={`/tag/${tag}`}
+                        className="tag-pill tag-default"
+                        key={tag}
+                      >
+                        #{tag}
+                      </Link>
+                    ))
                   }
                 </div>
               </div>

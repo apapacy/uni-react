@@ -35,14 +35,18 @@ const ArticlePreview = (props) => {
         <h1>{props.title}</h1>
         <p>{props.description}</p>
         <span>Read more...</span>
+      </Link>
+      <div>
         <ul className="tag-list">
           {
             props.tagList.map(tag => (
-              <li className="tag-default tag-pill tag-outline" key={tag}>{tag}</li>
+              <li className="tag-default tag-pill tag-outline" key={tag}>
+                <Link to={`/tag/${tag}`}>#{tag}</Link>
+              </li>
             ))
           }
         </ul>
-      </Link>
+      </div>
     </div>
   );
 };
