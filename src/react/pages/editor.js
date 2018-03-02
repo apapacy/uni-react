@@ -58,6 +58,9 @@ class Editor extends React.PureComponent {
 
   async handleSubmit(event) {
     event.preventDefault();
+    if (this.props.article.transition) {
+      return;
+    }
     const articleToSave = { ...this.state };
     let { slug } = this.props.match.params;
     await this.props.dispatch(saveArticle({

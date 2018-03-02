@@ -51,11 +51,14 @@ export default function articleReduser(state = initialState, action) {
     case ARTICLE_FAILURE:
       return { ...state, error: action.error };
 
+    case ARTICLE_SAVE_REQUEST:
+      ({ error, ...rest } = state);
+      return { ...rest, transition: true };
     case ARTICLE_SAVE_SUCCESS:
       ({ error, ...rest } = state);
-      return { ...rest, article: action.payload.article };
+      return { ...rest, article: action.payload.article, transition: false };
     case ARTICLE_SAVE_FAILURE:
-      return { ...state, error: action.error };
+      return { ...state, error: action.error, transition: false };
 
     case ARTICLE_DELETE_SUCCESS:
       ({ error, ...rest } = state);
