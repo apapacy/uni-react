@@ -3,37 +3,13 @@ import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import Link from '../asyncLink'; // eslint-disable-line
 
-function prepareLink(match, page, author) {
-  let [basePath] = match.path.split('/:');
-  [basePath] = basePath.split('/(');
-  [basePath] = basePath.split(/\/page(\/|$)/);
-  if (basePath.slice(0, 1) === '/') {
-    basePath = basePath.slice(1);
-  }
-  if (basePath === 'page') {
-    basePath = '';
-  }
-  const param = match.params[0];
-  if (param) {
-    if (basePath) {
-      basePath = `${basePath}/${param}`;
-    } else {
-      basePath = param;
-    }
-  }
+function prepareLink(match, page) {
+  const { url } = match;
+  const basePath = url.replace(/\/page\/[0-9]+$/, '');
   if (page === 1) {
-    if (author) {
-      return `/${basePath}/${author}`;
-    }
-    return `/${basePath}`;
+    return basePath || '/';
   }
-  if (author) {
-    return `/${basePath}/${author}/page/${page}`;
-  }
-  if (basePath) {
-    return `/${basePath}/page/${page}`;
-  }
-  return `/page/${page}`;
+  return `${basePath}/page/${page}`;
 }
 
 const Pagination = ({ count, pageLength, page, match, author }) => ( // eslint-disable-line react/prop-types, max-len

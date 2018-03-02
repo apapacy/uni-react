@@ -63,6 +63,14 @@ class Home extends React.PureComponent {
                       : null
                   }
                   <NavItem to="/">Global Feed</NavItem>
+                  {
+                    this.props.articles.filter === 'tag' ?
+                      <NavItem to={`/tag/${this.props.articles.value}`}>
+                        #{this.props.articles.value}
+                      </NavItem>
+                    :
+                      null
+                  }
                 </ul>
               </div>
               {

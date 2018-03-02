@@ -32,6 +32,7 @@ export default function articlesReduser(state = initialState, action) {
         pageLength: action.pageLength,
         page: action.page,
         filter: action.filter,
+        value: action.value,
       };
     case ARTICLES_FAILURE:
       return { ...initialState, error: action.error };
@@ -62,7 +63,7 @@ export default function articlesReduser(state = initialState, action) {
 export function feed({ req, filter, value, page }) {
   let limit;
   let offset;
-  if (!filter || filter === 'feed') {
+  if (!filter || filter === 'feed' || filter === 'tag') {
     limit = GLOBAL_FEED_COUNT;
   } else {
     limit = PERSONAL_FEED_COUNT;
@@ -91,6 +92,7 @@ export function feed({ req, filter, value, page }) {
         pageLength: limit,
         page: page || 1,
         filter,
+        value
       }),
       error => dispatch({ type: ARTICLES_FAILURE, error: parseError(error) }),
     );
