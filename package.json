@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "hot": "rm -rf ./dist && mkdir ./dist && NODE_ENV=development webpack -d --config=./webpack/config.server.js && NODE_ENV=development webpack -d --config=./webpack/config.client.js && node ./server",
-    "build": "rm -rf ./dist && mkdir ./dist && NODE_ENV=production  webpack --config=./webpack/config.server.js --mode=production && NODE_ENV=production webpack -p --config=./webpack/config.client.js",
+    "hot": "rm -rf ./dist && mkdir ./dist && NODE_ENV=development webpack -d --config=./webpack/config.server.js --mode=development && NODE_ENV=development webpack -d --config=./webpack/config.client.js --mode=development && node ./server",
+    "build": "rm -rf ./dist && mkdir ./dist && NODE_ENV=production  webpack --config=./webpack/config.server.js --mode=production && NODE_ENV=production webpack -p --config=./webpack/config.client.js --mode=production",
     "start": "NODE_ENV=production node ./server",
     "eslint": "eslint src/*.js"
   },

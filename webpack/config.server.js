@@ -22,7 +22,7 @@ module.exports = {
     },
   ],
   output: {
-    path: path.resolve(__dirname, '../src'),
+    path: path.resolve(__dirname, '../dist'),
     filename: 'render.bundle.js',
     libraryTarget: 'commonjs2',
   },
