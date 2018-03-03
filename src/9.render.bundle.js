@@ -1,0 +1,1 @@
+exports.ids=[9],exports.modules={37:function(e,t,u){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var d,l=u(0),n=(d=l)&&d.__esModule?d:{default:d};t.default=function(){return n.default.createElement("div",null,"Page not found")}}};

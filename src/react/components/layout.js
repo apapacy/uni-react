@@ -7,7 +7,9 @@ const Layout = ({ children, user }) => ( // eslint-disable-line react/prop-types
   <div>
     <nav className="navbar navbar-light">
       <div className="container">
-        <Link className="navbar-brand" to={user && user.id ? '/feed' : '/'}>conduit</Link>
+        <Link className="navbar-brand" to={user && user.id ? '/feed' : '/'}>
+          conduit
+        </Link>
         <ul className="nav navbar-nav pull-xs-right">
           {
             user && user.id ?

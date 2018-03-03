@@ -1,23 +1,22 @@
 const webpack = require('webpack');
 const path = require('path');
-const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
+const { splitChuncks } = webpack.optimize;
+
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isDevelopment = nodeEnv === 'development';
 const routes = require('../src/react/routes');
 const hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000';
 const entry = {};
 
-for (let i = 0; i < routes.length; i++) {
-  entry[routes[i].componentName] = [
-    '../src/client.js',
-    `../src/react/${routes[i].componentName}.js`,
-  ];
-  if (isDevelopment) {
-    entry[routes[i].componentName].unshift(hotMiddlewareScript);
-  }
+entry['main'] = [
+  '../src/client.js',
+];
+if (isDevelopment) {
+  entry['main'].unshift(hotMiddlewareScript);
 }
 
 module.exports = {
+  mode: isDevelopment ? 'development' : 'production',
   name: 'client',
   target: 'web',
   cache: isDevelopment,
@@ -61,10 +60,23 @@ module.exports = {
       },
     }],
   },
+  optimization: {
+    minimize: !isDevelopment,
+    runtimeChunk: isDevelopment ? false : { name: 'common' },
+    splitChunks: isDevelopment ? false : {
+      cacheGroups: {
+        default: false,
+        commons: {
+          test: /client\.js/,
+          chunks: 'all',
+          minChunks: 2,
+          name: 'common',
+          enforce: true,
+        },
+      },
+    },
+  },
   plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.NamedModulesPlugin(),
     function StatsPlugin() {
       this.plugin('done', stats =>
         require('fs').writeFileSync( // eslint-disable-line no-sync, global-require
@@ -75,9 +87,5 @@ module.exports = {
   ].concat(isDevelopment ? [
     new webpack.HotModuleReplacementPlugin(),
   ] : [
-    new CommonsChunkPlugin({
-      name: 'common',
-      minChunks: 2,
-    }),
   ]),
 };

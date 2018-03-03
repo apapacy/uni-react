@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "hot": "rm -rf ./dist && mkdir ./dist && NODE_ENV=development webpack -d --config=./webpack/config.server.js && NODE_ENV=development webpack -d --config=./webpack/config.client.js && node ./server",
-    "build": "rm -rf ./dist && mkdir ./dist && NODE_ENV=production  webpack --config=./webpack/config.server.js && NODE_ENV=production webpack -p --config=./webpack/config.client.js",
+    "build": "rm -rf ./dist && mkdir ./dist && NODE_ENV=production  webpack --config=./webpack/config.server.js --mode=production && NODE_ENV=production webpack -p --config=./webpack/config.client.js",
     "start": "NODE_ENV=production node ./server",
     "eslint": "eslint src/*.js"
   },
@@ -61,6 +61,8 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
+    "webpack-cli": "^2.0.10",
+    "webpack-dev-middleware": "^3.0.0",
     "webpack-hot-server-middleware": "^0.4.0",
     "webpack-node-externals": "^1.6.0"
   },
@@ -87,7 +89,7 @@
     "raw-loader": "^0.5.1",
     "react-transform-hmr": "^1.0.4",
     "source-map-loader": "^0.2.3",
-    "webpack": "^3.10.0",
+    "webpack": "^4.0.1",
     "webpack-config": "^7.5.0"
   }
 }
