@@ -5,6 +5,7 @@ const nodeEnv = process.env.NODE_ENV || 'development';
 const isDevelopment = nodeEnv === 'development';
 
 module.exports = {
+  mode: isDevelopment ? 'development' : 'production',
   name: 'server',
   devtool: isDevelopment ? 'eval' : false,
   entry: './src/render.js',
@@ -32,4 +33,9 @@ module.exports = {
       use: 'babel-loader?retainLines=true',
     }, ],
   },
+  optimization: {
+    minimize: false,
+    runtimeChunk: false,
+    splitChunks: false,
+  }
 };

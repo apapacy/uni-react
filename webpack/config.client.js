@@ -70,9 +70,10 @@ module.exports = {
       cacheGroups: {
         default: false,
         commons: {
-          test: /\.jsx?$/,
+          //test: /\.jsx?$/,
+          test: /\.\.\/src\/client\.js/,
           chunks: 'all',
-          minChunks: 5,
+          minChunks: 10,
           name: 'common',
           enforce: true,
         },
