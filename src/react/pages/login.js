@@ -66,7 +66,7 @@ class Login extends React.PureComponent {
         store,
         dispatch: store.dispatch
       }))
-      .then(() => this.props.history.push('/feed'));
+      .then(() => this.props.history.replace('/feed'));
 
   }
 

@@ -64,7 +64,7 @@ module.exports = {
     }],
   },
   optimization: {
-    minimize: false,
+    minimize: !isDevelopment,
     runtimeChunk: { name: 'common' },
     splitChunks: {
       cacheGroups: {
@@ -73,9 +73,11 @@ module.exports = {
           //test: /\.jsx?$/,
           test: /\.\.\/src\/client\.js/,
           chunks: 'all',
-          minChunks: 10,
+          minChunks: 2,
           name: 'common',
           enforce: true,
+          maxAsyncRequests: 1,
+          maxInitialRequests: 1,
         },
       },
     },

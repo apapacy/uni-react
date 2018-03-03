@@ -76,7 +76,7 @@ class Editor extends React.PureComponent {
       ];
       await Promise.all(promises);
       if (!this.props.article.error) {
-        this.props.history.push(`/${slug}`);
+        this.props.history.replace(`/${slug}`);
       }
     }
   }

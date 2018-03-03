@@ -42,9 +42,12 @@ class Article extends React.PureComponent {
 
   async deleteArticle(event) {
     event.preventDefault();
+    if (this.props.article.transition) {
+      return;
+    }
     await this.props.dispatch(deleteArticle({ slug: this.props.article.article.slug }));
     if (!this.props.article.error) {
-      this.props.history.push(`/author/${this.props.user.username}`);
+      this.props.history.replace(`/author/${this.props.user.username}`);
     }
   }
 

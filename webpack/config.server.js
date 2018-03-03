@@ -33,9 +33,4 @@ module.exports = {
       use: 'babel-loader?retainLines=true',
     }, ],
   },
-  optimization: {
-    minimize: false,
-    runtimeChunk: false,
-    splitChunks: false,
-  }
 };

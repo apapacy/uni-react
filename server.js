@@ -8,6 +8,7 @@ const cookieEncrypter = require('cookie-encrypter');
 const bodyParser = require('body-parser');
 const serverPath = path.resolve(__dirname, './dist/render.bundle.js');
 let render = require(serverPath);
+  console.log(render)
 let serverCompiler;
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isDevelopment = nodeEnv === 'development';
