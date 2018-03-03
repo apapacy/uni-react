@@ -51,6 +51,7 @@ module.exports = {
           'transform-runtime',
           'syntax-dynamic-import',
         ].concat(isDevelopment ? [
+          // 'react-hot-loader/babel',
           ['react-transform', {
             transforms: [{
               transform: 'react-transform-hmr',
@@ -70,8 +71,8 @@ module.exports = {
       cacheGroups: {
         default: false,
         commons: {
-          //test: /\.jsx?$/,
-          test: /\.\.\/src\/client\.js/,
+          test: /\.jsx?$/,
+          // test: /\.\.\/src\/client\.js/,
           chunks: 'all',
           minChunks: 2,
           name: 'common',
@@ -83,9 +84,9 @@ module.exports = {
     },
   },
   plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.NamedModulesPlugin(),
+    // new webpack.optimize.OccurrenceOrderPlugin(),
+    // new webpack.NoEmitOnErrorsPlugin(),
+    // new webpack.NamedModulesPlugin(),
     function StatsPlugin() {
       this.plugin('done', stats =>
         require('fs').writeFileSync( // eslint-disable-line no-sync, global-require

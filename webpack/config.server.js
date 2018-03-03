@@ -27,10 +27,10 @@ module.exports = {
     libraryTarget: 'commonjs2',
   },
   module: {
-    rules: [ {
+    rules: [{
       test: /\.jsx?$/,
-      exclude: [ /node_modules/, ],
+      exclude: [/node_modules/],
       use: 'babel-loader?retainLines=true',
-    }, ],
+    }],
   },
 };
