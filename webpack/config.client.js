@@ -1,14 +1,14 @@
 const webpack = require('webpack');
 const path = require('path');
-const { splitChuncks } = webpack.optimize;
+const routes = require('../src/react/routes');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isDevelopment = nodeEnv === 'development';
-const routes = require('../src/react/routes');
+
 const hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000';
 const entry = {};
 
-for (let i = 0; i < routes.length; i++) {
+for (let i = 0; i < routes.length; i += 1) {
   entry[routes[i].componentName] = [
     '../src/client.js',
     `../src/react/${routes[i].componentName}.js`,
@@ -51,10 +51,10 @@ module.exports = {
           'transform-runtime',
           'syntax-dynamic-import',
         ].concat(isDevelopment ? [
-          // 'react-hot-loader/babel',
+          // 'react-hot-loader/babel', -- server rendering troubles
           ['react-transform', {
             transforms: [{
-              transform: 'react-transform-hmr',
+              transform: 'react-transform-hmr', // deprecated now but see above 'react-hot-loader/babel'
               imports: ['react'],
               locals: ['module'],
             }],
@@ -72,7 +72,6 @@ module.exports = {
         default: false,
         commons: {
           test: /\.jsx?$/,
-          // test: /\.\.\/src\/client\.js/,
           chunks: 'all',
           minChunks: 2,
           name: 'common',
@@ -84,14 +83,11 @@ module.exports = {
     },
   },
   plugins: [
-    // new webpack.optimize.OccurrenceOrderPlugin(),
-    // new webpack.NoEmitOnErrorsPlugin(),
-    // new webpack.NamedModulesPlugin(),
     function StatsPlugin() {
       this.plugin('done', stats =>
         require('fs').writeFileSync( // eslint-disable-line no-sync, global-require
           path.join(__dirname, '../dist', 'stats.generated.js'),
-          `module.exports=${JSON.stringify(stats.toJson().assetsByChunkName)};\n`
+          `module.exports=${JSON.stringify(stats.toJson().assetsByChunkName)};\n`,
         ));
     },
   ].concat(isDevelopment ? [

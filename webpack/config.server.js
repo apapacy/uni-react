@@ -1,5 +1,6 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
+
 const externalFolder = new RegExp(`^${path.resolve(__dirname, '../src')}/(react|redux)/.*$`);
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isDevelopment = nodeEnv === 'development';

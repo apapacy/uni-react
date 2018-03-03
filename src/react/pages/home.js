@@ -34,6 +34,7 @@ class Home extends React.PureComponent {
   }
 
   async componentDidMount() {
+    console.log(this.props.history.action)
     if (this.props.history.action === 'POP' && this.props.hydrated) {
       await Home.getInitialProps(this.props);
     }
