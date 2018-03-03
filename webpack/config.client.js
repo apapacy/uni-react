@@ -8,11 +8,14 @@ const routes = require('../src/react/routes');
 const hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000';
 const entry = {};
 
-entry['main'] = [
-  '../src/client.js',
-];
-if (isDevelopment) {
-  entry['main'].unshift(hotMiddlewareScript);
+for (let i = 0; i < routes.length; i++) {
+  entry[routes[i].componentName] = [
+    '../src/client.js',
+    `../src/react/${routes[i].componentName}.js`,
+  ];
+  if (isDevelopment) {
+    entry[routes[i].componentName].unshift(hotMiddlewareScript);
+  }
 }
 
 module.exports = {
@@ -61,15 +64,15 @@ module.exports = {
     }],
   },
   optimization: {
-    minimize: !isDevelopment,
-    runtimeChunk: isDevelopment ? false : { name: 'common' },
-    splitChunks: isDevelopment ? false : {
+    minimize: false,
+    runtimeChunk: { name: 'common' },
+    splitChunks: {
       cacheGroups: {
         default: false,
         commons: {
-          test: /client\.js/,
+          test: /\.jsx?$/,
           chunks: 'all',
-          minChunks: 2,
+          minChunks: 5,
           name: 'common',
           enforce: true,
         },
@@ -77,6 +80,9 @@ module.exports = {
     },
   },
   plugins: [
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.NamedModulesPlugin(),
     function StatsPlugin() {
       this.plugin('done', stats =>
         require('fs').writeFileSync( // eslint-disable-line no-sync, global-require
