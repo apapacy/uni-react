@@ -27,5 +27,3 @@ npm start
 
 
 sudo dpkg-reconfigure locales
-
-
