@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import moment from 'moment';
 import Link from '../asyncLink'; // eslint-disable-line
 
@@ -41,9 +40,5 @@ const Comments = ({ user, comments, deleteComment }) => comments.map((comment, i
     </div>
   </div>
 ));
-
-
-Comments.propTypes = {
-};
 
 export default Comments;

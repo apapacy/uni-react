@@ -10,7 +10,7 @@ export default () => (
       {
         routes.map(props => {
           props.component = Loadable({ // eslint-disable-line  no-param-reassign
-            loader: () => import(`./${props.componentName}`),
+            loader: () => import(`./${props.componentName}`), // eslint-disable-line
             loading: () => null,
             delay: 0,
             timeout: 10000,

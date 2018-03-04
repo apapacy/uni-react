@@ -1,12 +1,17 @@
+/* eslint-disable import/prefer-default-export */
 export function parseError(error) {
-  let errors = void 0;
-  let message = void 0;
+  let errors;
+  let message;
 
-  if (error && error.response && error.response.data && error.response.data.errors instanceof Object) {
-    errors = error.response.data.errors;
+  if (error
+    && error.response
+    && error.response.data
+    && error.response.data.errors instanceof Object) {
+    ({ errors } = error.response.data);
   }
   if (error) {
-    message = error.message;
+    ({ message } = error);
   }
-  return { errors, message, };
+  return { errors, message };
 }
+/* eslint-enable */

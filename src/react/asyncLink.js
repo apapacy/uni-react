@@ -33,7 +33,7 @@ function handleClick(event){
       const match = matchPath(this.props.to, routeTo);
       const store = getStore();
       if (routeTo) {
-        import(`./${routeTo.componentName}`)
+        import(`./${routeTo.componentName}`)  // eslint-disable-line
           .then(component => component.default || component)
           .then(component => component.getInitialProps({
             match,

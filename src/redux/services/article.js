@@ -61,8 +61,8 @@ export default function articleReduser(state = initialState, action) {
       return { ...state, error: action.error, transition: false };
 
     case ARTICLE_DELETE_REQUEST:
-        ({ error, ...rest } = state);
-        return { ...rest, transition: true };
+      ({ error, ...rest } = state);
+      return { ...rest, transition: true };
     case ARTICLE_DELETE_SUCCESS:
       ({ error, ...rest } = state);
       return { ...rest, transition: false };
