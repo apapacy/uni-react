@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Link changes the class when hovered. 1`] = `
+<div>
+  Page not found
+</div>
+`;
+
+exports[`Link changes the class when hovered. 2`] = `
+<div>
+  Page not found
+</div>
+`;
+
+exports[`Link changes the class when hovered. 3`] = `
+<div>
+  Page not found
+</div>
+`;

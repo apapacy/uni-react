@@ -83,6 +83,9 @@ module.exports = {
     },
   },
   plugins: [
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.NamedModulesPlugin(),
     function StatsPlugin() {
       this.plugin('done', stats =>
         require('fs').writeFileSync( // eslint-disable-line no-sync, global-require
