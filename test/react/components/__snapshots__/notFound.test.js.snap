@@ -5,15 +5,3 @@ exports[`Link changes the class when hovered. 1`] = `
   Page not found
 </div>
 `;
-
-exports[`Link changes the class when hovered. 2`] = `
-<div>
-  Page not found
-</div>
-`;
-
-exports[`Link changes the class when hovered. 3`] = `
-<div>
-  Page not found
-</div>
-`;

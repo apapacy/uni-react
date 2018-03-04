@@ -12,7 +12,7 @@ function prepareLink(match, page) {
   return `${basePath}/page/${page}`;
 }
 
-const Pagination = ({ count, pageLength, page, match, author }) => ( // eslint-disable-line react/prop-types, max-len
+const Pagination = ({ count, pageLength, page, match }) => ( // eslint-disable-line react/prop-types, max-len
   count && pageLength && count > pageLength
     ?
       <nav>
@@ -20,7 +20,7 @@ const Pagination = ({ count, pageLength, page, match, author }) => ( // eslint-d
           {
             _.range(1, 1 + Math.ceil(count / pageLength)).map(index => (
               <li className={`page-item${index === page ? ' active' : ''}`} key={index}>
-                <Link className="page-link" to={prepareLink(match, index, author)}>
+                <Link className="page-link" to={prepareLink(match, index)}>
                   {index}
                 </Link>
               </li>))

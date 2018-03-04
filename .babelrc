@@ -8,6 +8,7 @@
   ],
   "plugins": [
     "transform-runtime",
-    "syntax-dynamic-import"
+    "syntax-dynamic-import",
+    "babel-plugin-dynamic-import-node"
   ]
 }

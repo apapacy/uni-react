@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, } from 'react-router';
+import { Route, Switch } from 'react-router';
 import routes from './routes';
 import Loadable from 'react-loadable';
 import Layout from './components/layout';

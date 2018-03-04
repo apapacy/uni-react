@@ -26,6 +26,7 @@
     "axios": "^0.17.1",
     "babel": "^6.23.0",
     "babel-eslint": "^8.2.2",
+    "babel-plugin-dynamic-import-node": "^1.2.0",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-plugin-universal-import": "^1.4.0",
     "babel-polyfill": "^6.26.0",
@@ -96,6 +97,7 @@
     "html-webpack-plugin": "^2.30.1",
     "jest": "^22.4.2",
     "raw-loader": "^0.5.1",
+    "react-router-test-context": "^0.1.0",
     "react-test-renderer": "^16.2.0",
     "react-transform-hmr": "^1.0.4",
     "source-map-loader": "^0.2.3"
