@@ -1,22 +1,23 @@
-'use strict'
 import React from 'react';
 import { hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
-import {BrowserRouter} from 'react-router-dom';
-import Layout from './react/components/layout';
-import AppRouter from './react/clientRouter';
-import routes from './react/routes';
+import { BrowserRouter } from 'react-router-dom';
+import AppRouter from './react/clientRouter'; // eslint-disable-line
 import createStore from './redux/store';
+import { setHydrated } from './redux/services/hydrated';
 
-const preloadedState = window.__PRELOADED_STATE__;
-delete window.__PRELOADED_STATE__;
+const preloadedState = window.__PRELOADED_STATE__; // eslint-disable-line
+delete window.__PRELOADED_STATE__; // eslint-disable-line
 const store = createStore(preloadedState);
 
-const component = hydrate(
+window.onload= () => store.dispatch(setHydrated()); // eslint-disable-line
+
+hydrate(
   <Provider store={store}>
     <BrowserRouter>
-        <AppRouter />
+      <AppRouter />
     </BrowserRouter>
   </Provider>,
-  document.getElementById('app')
+  document.getElementById('app') // eslint-disable-line
 );
+

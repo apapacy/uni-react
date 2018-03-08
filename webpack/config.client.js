@@ -1,13 +1,14 @@
 const webpack = require('webpack');
 const path = require('path');
-const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
+const routes = require('../src/react/routes');
+
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isDevelopment = nodeEnv === 'development';
-const routes = require('../src/react/routes');
+
 const hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000';
 const entry = {};
 
-for (let i = 0; i < routes.length; i++) {
+for (let i = 0; i < routes.length; i += 1) {
   entry[routes[i].componentName] = [
     '../src/client.js',
     `../src/react/${routes[i].componentName}.js`,
@@ -18,6 +19,7 @@ for (let i = 0; i < routes.length; i++) {
 }
 
 module.exports = {
+  mode: isDevelopment ? 'development' : 'production',
   name: 'client',
   target: 'web',
   cache: isDevelopment,
@@ -31,7 +33,7 @@ module.exports = {
     chunkFilename: isDevelopment ? '[name].bundle.js' : '[name].[hash].bundle.js',
   },
   module: {
-    rules: [ {
+    rules: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
       loader: 'babel-loader',
@@ -49,35 +51,50 @@ module.exports = {
           'transform-runtime',
           'syntax-dynamic-import',
         ].concat(isDevelopment ? [
+          // 'react-hot-loader/babel', -- server rendering troubles
           ['react-transform', {
-            'transforms': [ {
-              'transform': 'react-transform-hmr',
-              'imports': [ 'react', ],
-              'locals': [ 'module', ],
-            }, ],
-          }, ],
+            transforms: [{
+              transform: 'react-transform-hmr', // deprecated now but see above 'react-hot-loader/babel'
+              imports: ['react'],
+              locals: ['module'],
+            }],
+          }],
         ] : [
-        ]
-        ),
+        ]),
       },
-    }, ],
+    }],
+  },
+  optimization: {
+    minimize: !isDevelopment,
+    runtimeChunk: { name: 'common' },
+    splitChunks: {
+      cacheGroups: {
+        default: false,
+        commons: {
+          test: /\.jsx?$/,
+          chunks: 'all',
+          minChunks: 2,
+          name: 'common',
+          enforce: true,
+          maxAsyncRequests: 1,
+          maxInitialRequests: 1,
+        },
+      },
+    },
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.NamedModulesPlugin(),
     function StatsPlugin() {
-      this.plugin('done', (stats) =>
-        require('fs').writeFileSync(path.join(__dirname, '../dist', 'stats.generated.js'), // eslint-disable-line no-sync
-          `module.exports=${JSON.stringify(stats.toJson().assetsByChunkName)};\n`)
-      );
+      this.plugin('done', stats =>
+        require('fs').writeFileSync( // eslint-disable-line no-sync, global-require
+          path.join(__dirname, '../dist', 'stats.generated.js'),
+          `module.exports=${JSON.stringify(stats.toJson().assetsByChunkName)};\n`,
+        ));
     },
   ].concat(isDevelopment ? [
+    new webpack.HotModuleReplacementPlugin(),
   ] : [
-    new CommonsChunkPlugin({
-      name: 'common',
-      minChunks: 2,
-    }),
   ]),
 };
