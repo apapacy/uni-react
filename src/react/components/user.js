@@ -34,6 +34,8 @@ class User extends React.PureComponent {
   }
 }
 
+User.defaultProps = { user: {} };
+
 User.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number,

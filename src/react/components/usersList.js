@@ -42,7 +42,7 @@ UsersList.propTypes = {
   hydrated: PropTypes.bool.isRequired,
 };
 
-// UsersList.defaultProps = { users: [] };
+UsersList.defaultProps = { users: [] };
 
 export default connect(state => ({
   users: state.user.users,
