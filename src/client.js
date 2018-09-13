@@ -1,3 +1,4 @@
+import { AppContainer } from 'react-hot-loader'
 import React from 'react';
 import { hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -15,9 +16,19 @@ window.onload= () => store.dispatch(setHydrated()); // eslint-disable-line
 hydrate(
   <Provider store={store}>
     <BrowserRouter>
-      <AppRouter />
+      <AppContainer>
+        <AppRouter />
+      </AppContainer>
     </BrowserRouter>
   </Provider>,
   document.getElementById('app') // eslint-disable-line
 );
 
+if (module.hot || true) {
+  module.hot.accept('./react/clientRouter', () => {
+    // if you are using harmony modules ({modules:false})
+    render(AppRouter)
+    // in all other cases - re-require App manually
+    render(require('./react/clientRouter'))
+  })
+}

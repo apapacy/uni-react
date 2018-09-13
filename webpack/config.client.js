@@ -13,9 +13,9 @@ for (let i = 0; i < routes.length; i += 1) {
     '../src/client.js',
     `../src/react/${routes[i].componentName}.js`,
   ];
-  if (isDevelopment) {
-    entry[routes[i].componentName].unshift(hotMiddlewareScript);
-  }
+  //if (isDevelopment) {
+  //  entry[routes[i].componentName].unshift(hotMiddlewareScript);
+  //}
 }
 
 module.exports = {
@@ -36,10 +36,10 @@ module.exports = {
     rules: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
-      loader: 'babel-loader',
+      loader: require.resolve('babel-loader'),
       options: {
         cacheDirectory: isDevelopment,
-        babelrc: false,
+        babelrc: true,
         presets: [
           'es2015',
           'es2017',
@@ -50,15 +50,16 @@ module.exports = {
         plugins: [
           'transform-runtime',
           'syntax-dynamic-import',
+          'react-hot-loader/babel',
         ].concat(isDevelopment ? [
-          // 'react-hot-loader/babel', -- server rendering troubles
-          ['react-transform', {
+          //'react-hot-loader/babel', //-- server rendering troubles
+          /*['react-transform', {
             transforms: [{
               transform: 'react-transform-hmr', // deprecated now but see above 'react-hot-loader/babel'
               imports: ['react'],
               locals: ['module'],
             }],
-          }],
+          }],*/
         ] : [
         ]),
       },
