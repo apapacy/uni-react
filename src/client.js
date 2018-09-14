@@ -25,11 +25,11 @@ hydrate(
 );
 
 if (module.hot) {
-  hot.module(AppRouter)
-  module.hot.accept('./react/clientRouter', () => {
+  hot.module(AppRouter);
+  /* module.hot.accept('./react/clientRouter', () => {
     // if you are using harmony modules ({modules:false})
-    //render(AppRouter)
+    render(AppRouter)
     // in all other cases - re-require App manually
-    render(require('./react/clientRouter'))
-  })
+    // render(require('./react/clientRouter'))
+  }) */
 }

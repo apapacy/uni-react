@@ -1,22 +1,18 @@
 const webpack = require('webpack');
 const path = require('path');
 const routes = require('../src/react/routes');
-
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isDevelopment = nodeEnv === 'development';
-
-const hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000';
 const entry = {};
 
 for (let i = 0; i < routes.length; i += 1) {
   entry[routes[i].componentName] = [
-    'webpack-hot-middleware/client',
     '../src/client.js',
     `../src/react/${routes[i].componentName}.js`,
   ];
-  //if (isDevelopment) {
-  //  entry[routes[i].componentName].unshift(hotMiddlewareScript);
-  //}
+  if (isDevelopment) {
+    entry[routes[i].componentName].unshift('webpack-hot-middleware/client');
+  }
 }
 
 module.exports = {
@@ -40,7 +36,7 @@ module.exports = {
       exclude: /node_modules/,
       loader: require.resolve('babel-loader'),
       options: {
-        cacheDirectory: isDevelopment,
+        cacheDirectory: false, // isDevelopment,
         babelrc: false,
         
         presets: [
@@ -50,20 +46,20 @@ module.exports = {
           'stage-0',
           'stage-3',
         ],
-        plugins: [
+        plugins: (isDevelopment ? [
           'react-hot-loader/babel',
-          'transform-runtime',
-          'syntax-dynamic-import',
-        ].concat(isDevelopment ? [
-          //'react-hot-loader/babel', //-- server rendering troubles
-          /*['react-transform', {
+          // 'react-hot-loader/babel', //-- server rendering troubles
+          /* ['react-transform', {
             transforms: [{
               transform: 'react-transform-hmr', // deprecated now but see above 'react-hot-loader/babel'
               imports: ['react'],
               locals: ['module'],
             }],
-          }],*/
+          }], */
         ] : [
+        ]).concat([
+          'transform-runtime',
+          'syntax-dynamic-import',
         ]),
       },
     }],
