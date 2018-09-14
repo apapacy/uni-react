@@ -10,6 +10,7 @@ const entry = {};
 
 for (let i = 0; i < routes.length; i += 1) {
   entry[routes[i].componentName] = [
+    'webpack-hot-middleware/client',
     '../src/client.js',
     `../src/react/${routes[i].componentName}.js`,
   ];
@@ -35,11 +36,13 @@ module.exports = {
   module: {
     rules: [{
       test: /\.jsx?$/,
+      include: path.join(__dirname, '../src'),
       exclude: /node_modules/,
       loader: require.resolve('babel-loader'),
       options: {
         cacheDirectory: isDevelopment,
-        babelrc: true,
+        babelrc: false,
+        
         presets: [
           'es2015',
           'es2017',
@@ -48,9 +51,9 @@ module.exports = {
           'stage-3',
         ],
         plugins: [
+          'react-hot-loader/babel',
           'transform-runtime',
           'syntax-dynamic-import',
-          'react-hot-loader/babel',
         ].concat(isDevelopment ? [
           //'react-hot-loader/babel', //-- server rendering troubles
           /*['react-transform', {
