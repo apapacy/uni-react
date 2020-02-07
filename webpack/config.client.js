@@ -1,17 +1,20 @@
 const webpack = require('webpack');
 const path = require('path');
 const routes = require('../src/react/routes');
+
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isDevelopment = nodeEnv === 'development';
+
 const entry = {};
 
 for (let i = 0; i < routes.length; i += 1) {
   entry[routes[i].componentName] = [
     '../src/client.js',
-    `../src/react/${routes[i].componentName}.js`,
   ];
   if (isDevelopment) {
     entry[routes[i].componentName].unshift('webpack-hot-middleware/client');
+  } else {
+    entry[routes[i].componentName].push(`../src/react/${routes[i].componentName}.js`);
   }
 }
 
@@ -26,40 +29,45 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, '../dist'),
     publicPath: isDevelopment ? '/static/' : '/static/',
-    filename: isDevelopment ? '[name].bundle.js' : '[name].[hash].bundle.js',
-    chunkFilename: isDevelopment ? '[name].bundle.js' : '[name].[hash].bundle.js',
+    filename: isDevelopment ? '[name].[hash].bundle.js' : '[name].[hash].bundle.js',
+    chunkFilename: isDevelopment ? '[name].[hash].bundle.js' : '[name].[hash].bundle.js',
   },
   module: {
     rules: [{
       test: /\.jsx?$/,
-      // include: path.join(__dirname, '../src'),
       exclude: /node_modules/,
       loader: require.resolve('babel-loader'),
       options: {
-        cacheDirectory: false, // isDevelopment,
+        cacheDirectory: isDevelopment,
         babelrc: false,
-        
         presets: [
-          'es2015',
-          'es2017',
-          'react',
-          'stage-0',
-          'stage-3',
+          ['@babel/preset-env', {
+            targets: {
+              browsers: ['>90%'],
+            },
+            exclude: ['transform-async-to-generator', 'transform-regenerator',],
+          }],
+          '@babel/preset-react',
         ],
         plugins: (isDevelopment ? [
           'react-hot-loader/babel',
-          // 'react-hot-loader/babel', //-- server rendering troubles
-          /* ['react-transform', {
-            transforms: [{
-              transform: 'react-transform-hmr', // deprecated now but see above 'react-hot-loader/babel'
-              imports: ['react'],
-              locals: ['module'],
-            }],
-          }], */
-        ] : [
-        ]).concat([
-          'transform-runtime',
+          ['module:fast-async', { spec: true }],
+          ['@babel/plugin-transform-runtime', {
+            corejs: false,
+            helpers: true,
+            regenerator: true,
+            useESModules: false,
+          }],
           'syntax-dynamic-import',
+        ] : [
+          ['@babel/plugin-transform-runtime', {
+            corejs: false,
+            helpers: true,
+            regenerator: true,
+            useESModules: false,
+          }],
+          'syntax-dynamic-import',
+        ]).concat([
         ]),
       },
     }],
