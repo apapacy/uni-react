@@ -1,14 +1,15 @@
 {
   "presets": [
-    "es2015",
-    "es2017",
-    "react",
-    "stage-0",
-    "stage-3"
+    ["@babel/preset-env", {
+      "targets": {
+        "node": "6.11.1"
+      }
+    }],
+    "@babel/preset-react"
   ],
   "plugins": [
-    "transform-runtime",
     "syntax-dynamic-import",
-    "babel-plugin-dynamic-import-node"
+    "babel-plugin-dynamic-import-node",
+    "@babel/plugin-transform-modules-commonjs"
   ]
 }
