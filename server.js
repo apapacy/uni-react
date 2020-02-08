@@ -20,7 +20,7 @@ const cache = apicache.options({
 
 app.set('env', nodeEnv);
 app.use(cookieParser('change secret value'));
-app.use(cookieEncrypter('change secret value'));
+app.use(cookieEncrypter('12345678901234567890123456789012'));
 app.use(bodyParser.json());
 app.use('/api', api);
 app.use('/static', express.static('dist'));

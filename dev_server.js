@@ -22,7 +22,7 @@ let render = require(serverPath); // eslint-disable-line import/no-dynamic-requi
 
 app.set('env', nodeEnv);
 app.use(cookieParser('change secret value'));
-app.use(cookieEncrypter('change secret value'));
+app.use(cookieEncrypter('12345678901234567890123456789012'));
 app.use(bodyParser.json());
 app.use('/api', api);
 

@@ -34,12 +34,14 @@ class User extends React.PureComponent {
   }
 }
 
-User.defaultProps = { user: {} };
+// User.defaultProps = { user: {} };
 
 User.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
+    email: PropTypes.string,
+    phone: PropTypes.string,
   }).isRequired,
   history: PropTypes.shape().isRequired,
   hydrated: PropTypes.bool.isRequired,

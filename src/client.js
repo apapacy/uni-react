@@ -1,6 +1,6 @@
 import { AppContainer } from 'react-hot-loader';
 import React from 'react';
-import { hydrate, render } from 'react-dom';
+import { hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import AppRouter from './react/clientRouter'; // eslint-disable-line
@@ -23,13 +23,3 @@ hydrate(
   </AppContainer>,
   document.getElementById('app') // eslint-disable-line
 );
-
-if (module.hot) {
-  hot.module(AppRouter);
-  /* module.hot.accept('./react/clientRouter', () => {
-    // if you are using harmony modules ({modules:false})
-    render(AppRouter)
-    // in all other cases - re-require App manually
-    // render(require('./react/clientRouter'))
-  }) */
-}

@@ -12,7 +12,7 @@ export default ({ children }) => ( // eslint-disable-line react/prop-types
     </header>
     { children }
     <footer>
-      {'I`m here to stay'}
+      I'm here to stay
     </footer>
   </div>
 );
