@@ -62,7 +62,7 @@
     "fast-async": "^6.3.8",
     "from": "^0.1.7",
     "import": "0.0.6",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.21.0",
     "morgan": "^1.9.0",
     "prop-types": "^15.6.1",
