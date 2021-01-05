@@ -53,7 +53,7 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/runtime": "^7.0.0",
     "apicache": "^1.5.3",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-jest": "^25.1.0",
     "body-parser": "^1.18.2",
     "cookie-encrypter": "^1.0.1",
