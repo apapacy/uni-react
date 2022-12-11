@@ -58,7 +58,7 @@
     "body-parser": "^1.18.2",
     "cookie-encrypter": "^1.0.1",
     "cookie-parser": "^1.4.3",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "fast-async": "^6.3.8",
     "from": "^0.1.7",
     "import": "0.0.6",
